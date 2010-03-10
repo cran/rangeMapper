@@ -1,5 +1,20 @@
----  0---|--- 10---|--- 20---|--- 30---|--- 40---|--- 50---|--- 60---|
-123456789|123456789|123456789|123456789|123456789|123456789|123456789|
+		 *************************************************
+		 			rangeMapper VERSION 0.0-2
+		 *************************************************
+
+NEW FEATURES
+	o	processRanges() (and the corresponding GUI function) got a
+		'metadata' argument. If metadata = TRUE then the range 
+		centroid and the range extents (min, max) of each species 
+		is saved to the 'metadata_ranges' table. 
+MINOR CHANGES
+	o	tcltk, tcltk2, pixmap moved to 'Suggests' in the DESCRIPTION file.
+FUTURE RELEASES 
+	o	Raster to vector batch conversion function (once raster package is
+		on CRAN).
+	o	Add subset support to rangeMap(). Subsetting/mapping should be
+		done by geometry characteristics (centroid location, polygon 
+		size), life-history traits or and/or taxonomy.
 
 		 *************************************************
 		 			rangeMapper VERSION 0.0-1

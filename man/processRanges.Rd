@@ -10,10 +10,11 @@ Each range (.shp file) is imported using \code{\link{readOGR}}, overlayed on the
 \arguments{
 	  \item{con}{A valid sqlite connection.}
 	  \item{Files}{range file location on disk as retrieved by \code{\link{selectShpFiles}}}
+	  \item{metadata}{A logical value. If \sQuote{TRUE} ranges metadata: average range centroid and range extents are saved to \sQuote{metadata_ranges} table}
 	}
 
 \usage{
-processRanges(Files, con)
+processRanges(Files, con, metadata)
 }
 
  \section{Warning}{

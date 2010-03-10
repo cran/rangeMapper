@@ -76,7 +76,7 @@ Orme, CDL; Davies, RG; Burgess, M; et al.(2005) Global hotspots of species richn
 
 # PROCESS RANGES
 	ranges = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)
-	processRanges(ranges, dbcon)
+	processRanges(ranges, dbcon, metadata = TRUE)
 
 # SAVE BIO TABLE
 	bio.save(dbcon, table_name = NULL, wrens, common_id= "species_name") 

@@ -1,5 +1,6 @@
 tkdbBrowse <- function(dbcon, prefix = NULL, tables.name.only = FALSE) {
 	
+	require(tcltk)
 	tclRequire("BWidget")
 	
 	dbpath = dbGetInfo(dbcon)$dbname

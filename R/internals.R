@@ -30,11 +30,16 @@ unlist(lapply(fl, FUN = function(x) .Call("ogrP4S", x[,1], x[,2], PACKAGE = "rgd
 
 }
 
+.sp.metadata <- function(spdf) {
 
+	Area = mean(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
 
+	metad = apply(coordinates(spdf), 2, FUN = function(x) data.frame(Avg = mean(x), Min = min(x), Max = max(x) ) )
 
+	names(metad[[1]]) = paste(names(metad[[1]]), "x", sep = "_")
+	names(metad[[2]]) = paste(names(metad[[2]]), "y", sep = "_")
 
+	cbind(metad[[1]], metad[[2]])
+	}
 
-
-
 
