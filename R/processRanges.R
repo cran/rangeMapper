@@ -1,11 +1,9 @@
 
-processRanges <- function(Files, con) {
+processRanges <- function(Files, con, metadata = FALSE) {
 
 
 	cnv = canvas.fetch(con)
 	 if(nrow(cnv) == 0) stop(gui.msg("The canvas is empty!"))
-
-
 
 	 # TODO: check on update
 	Startprocess = Sys.time()
@@ -35,6 +33,12 @@ processRanges <- function(Files, con) {
 
 			# save  to db
 			dbWriteTable(con, "ranges", o, append = TRUE, row.names = FALSE) 
+			
+			if(metadata) {
+			md = data.frame(bioid =Files$layer[i], .sp.metadata(r) )
+			dbWriteTable(con, "metadata_ranges", md, append = TRUE, row.names = FALSE) 
+			}
+			
 			
 			# progress bar	
 			gui.msg( paste("Processsing ranges, please wait!...", 

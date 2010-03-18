@@ -20,6 +20,7 @@
 \alias{gui.tkColorPalette}
 \alias{gui.rangeMap.save}
 \alias{gui.rangeMap.fetch}
+\alias{gui.yn}
 
 \title{Undocumented gui functions}
 \description{These functions are undocumented; All functions starting with 'gui.' are used internally by \code{\link{rangeMapper}}}

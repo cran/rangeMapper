@@ -28,6 +28,36 @@ if (class(obj) == "try-error") return (FALSE) else return(obj)
 
 }
 
+gui.yn <- function(text = "Choose!", yn = c("YES", "NO"), title) {
+
+	if(missing(title)) title = paste("rangeMapper", packageDescription("rangeMapper")$Version) 
+
+	font = "helvetica 12";  relief="flat"; borderwidth= 1
+
+	top <- tktoplevel()
+	but.width = ifelse(max(nchar(yn)) < 6, 6, max(nchar(yn)))
+	tkwm.minsize(top, 200, 50)
+	tkfocus(top)
+	tktitle(top) <- title
+	
+	bar1  <- tkframe(top, relief=relief, borderwidth=borderwidth)
+	tkgrid(tklabel(bar1,text=text),  sticky = "w", column  = 1, row= 0)
+	tkpack(bar1, fill="both", expand = 1)
+	
+	bar2  <- tkframe(top, relief=relief, borderwidth=borderwidth)
+	
+	select <- tclVar(0)
+	f.but <- tkbutton(bar2, text = yn[1], width = but.width, command = function() tclvalue(select) <- 1)
+	d.but <- tkbutton(bar2, text = yn[2], width = but.width, command = function() tclvalue(select) <- 0)
+	
+	tkgrid(f.but, d.but, column  = 1, row= 1, sticky = "w", padx = 2)
+	tkgrid(d.but, column  = 2, row= 1, sticky = "w", padx = 2)
+	tkpack(bar2, fill="both", expand = 1)
+	
+	tkwait.variable(select)
+	tkdestroy(top)
+	return(as.integer(tclvalue(select)))
+}
 
 gui.msg <- function(msg, tkMainWindow = "win", tkElement = "msg", eol = "\n", keep = FALSE, clearup = FALSE, getTime = FALSE) {
 
@@ -114,7 +144,6 @@ gui.help <- function(what, exec = FALSE) {
 
 	}
 
-
 gui.dbopen <- function(new = TRUE) {
 
 	gui.msg(clearup = TRUE)
@@ -138,35 +167,13 @@ gui.dbopen <- function(new = TRUE) {
 
 gui.selectShpFiles <- function(ogr, polygons.only) {
 
-	but = function() {
-	top <- tktoplevel()
-
-	tktitle(top) <- "Choose:" 
-
-	select <- tclVar(0)
-
-	f.but <- tkbutton(top, text = "  FILES  ", command = function() tclvalue(select) <- 1)
-	d.but <- tkbutton(top, text = "DIRECTORY", command = function() tclvalue(select) <- 2)
-
-	tkgrid(f.but, d.but, column  = 1, row= 0, sticky = "w", padx = 16)
-	tkgrid(d.but, column  = 2, row= 0, sticky = "e", padx = 16)
-
-	tkwait.variable(select)
-
-	tkdestroy(top)
-	return(as.integer(tclvalue(select)))
-	}
-
-	selectVal = but()
-
-	if(selectVal == 2) {
+	selectVal = gui.yn(yn = c("FILES", "DIRECTORY")) 
+	
+	if(selectVal == 0) { # directory
 		ff = selectShpFiles(tk_choose.dir(default = getwd(), caption = "Select ranges directory"), ogr = ogr, polygons.only = polygons.only)
-		
 		} 
 
-	if(selectVal == 1) {
-
-
+	if(selectVal == 1) { # files
 		if(ogr) { 
 			ff = selectShpFiles(tk_choose.dir(default = getwd(), 
 				caption = "Select the upper level directory \n and then choose several files."), ogr = ogr, polygons.only = polygons.only)
@@ -227,7 +234,7 @@ gui.gridSize.save <- function() {
 		
 		gridSize.save(dbcon , val)
 		
-		if(val < WarnCellsize) gui.msg("WARNING: the canvas is going to have a high resolution, the next steps can be time consumming.")
+		if(val < WarnCellsize) gui.msg("WARNING: The canvas is going to have a high resolution, the next steps can be time consumming.")
 		
 		tkdestroy(top)
 	}
@@ -256,7 +263,24 @@ gui.processRanges <- function() {
 	
 	Files = gui.selectShpFiles(ogr = TRUE, polygons.only = TRUE)
 	
-	processRanges(gui.get.from.env("ranges"),dbcon)		
+	# save to 'metadata_ranges' ?
+	selectVal = gui.yn(text = "Save range centroid and range extent?") 
+
+	if(selectVal == 1) {
+	processRanges(gui.get.from.env("ranges"),dbcon, metadata = TRUE)	
+		}	
+
+	
+	if(selectVal == 0) {
+	processRanges(gui.get.from.env("ranges"),dbcon, metadata = FALSE)	
+		} 
+
+
+	
+	
+	
+	
+		
 }
 
 gui.bio.save <- function() {
@@ -386,25 +410,6 @@ gui.rangeMap.fetch <- function() {
 	suppressWarnings(print(spplot(rangeMap , names(rangeMap)[!names(rangeMap)=="id"] ,  scales = list(draw = FALSE), cuts = 20)))
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

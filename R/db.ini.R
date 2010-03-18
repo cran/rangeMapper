@@ -6,12 +6,14 @@ db.scheleton <- function() {
 		create = 
 		c("CREATE TABLE metadata (xmin FLOAT,xmax FLOAT,ymin FLOAT,ymax FLOAT,p4s CHAR,gridSize FLOAT)", 
 			"CREATE TABLE canvas (x FLOAT,y FLOAT,id INT)", 
-			"CREATE TABLE ranges (id INT,bioid CHAR)"),
-
+			"CREATE TABLE ranges (id INT,bioid CHAR)",
+			"CREATE TABLE metadata_ranges (bioid CHAR, Avg_x INT,Min_x INT, Max_x INT,Avg_y INT, Min_y INT, Max_y)")
+		,
 		index = 
-		c("CREATE INDEX IF NOT EXISTS id_canvas ON canvas (id)", 
-			"CREATE INDEX IF NOT EXISTS  id_ranges ON ranges (id)", 
-			"CREATE INDEX IF NOT EXISTS   bioid_ranges ON ranges (bioid)")
+		c(  "CREATE INDEX IF NOT EXISTS   id_canvas ON canvas (id)", 
+			"CREATE INDEX IF NOT EXISTS   id_ranges ON ranges (id)", 
+			"CREATE INDEX IF NOT EXISTS   bioid_ranges ON ranges (bioid)",
+			"CREATE INDEX IF NOT EXISTS   bioid_metadata_ranges ON metadata_ranges (bioid)")
 	)
 }
 

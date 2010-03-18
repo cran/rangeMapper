@@ -9,6 +9,7 @@ brewer.pal.get <- function(palette = NULL) {
 
 tkColorPalette <- function(pal , name, palette.size = 45, envir = .GlobalEnv) { 
 
+	require(tcltk)
 
 	wd = getwd()
 	on.exit(setwd(wd))
