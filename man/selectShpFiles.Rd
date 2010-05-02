@@ -21,7 +21,6 @@ selectShpFiles(dir, ogr = TRUE, polygons.only = TRUE)
 	\item{polygons.only}{A logical value.
 	  If \sQuote{TRUE} only polygon file paths are returned. If \sQuote{FALSE} the location of all shape files is returned.
 	}}
-\seealso{\code{\link{getinfo.shape}}}
 
 \examples{
 f= system.file(package="rangeMapper", "extdata", "wrens", "vector")

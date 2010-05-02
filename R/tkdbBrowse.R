@@ -1,13 +1,18 @@
-tkdbBrowse <- function(dbcon, prefix = NULL, tables.name.only = FALSE) {
+
+tkdbBrowse <- function(con, prefix = NULL, tables.name.only = FALSE, info) {
 	
 	require(tcltk)
 	tclRequire("BWidget")
 	
-	dbpath = dbGetInfo(dbcon)$dbname
 	
-	tabs = .sqlQuery(dbcon, "select name from sqlite_master where type = 'table';")$name
+	if(!is.null(prefix) && !.dbtable.exists(con, paste(prefix, "%", sep = "") ) ) 
+		stop(gui.msg(paste("The active project does not contain any", dQuote(prefix), "table" )))
 	
-	fields = lapply(split(tabs, tabs), function(x) .sqlQuery(dbcon, paste("PRAGMA table_info(", x, ");"))$name)
+	dbpath = dbGetInfo(con)$dbname
+	
+	tabs = .sqlQuery(con, "select name from sqlite_master where type = 'table';")$name
+	
+	fields = lapply(split(tabs, tabs), function(x) .sqlQuery(con, paste("PRAGMA table_info(", x, ");"))$name)
 	
 	if(!is.null(prefix)) { 
 		fields = fields[grep(prefix, names(fields))]
@@ -15,7 +20,7 @@ tkdbBrowse <- function(dbcon, prefix = NULL, tables.name.only = FALSE) {
 		}
 
 	top <- tktoplevel()
-	tkwm.title(top,dbGetInfo(dbcon)$dbname)
+	tkwm.title(top,dbGetInfo(con)$dbname)
 	tkfocus(top)
 	
 	xScr       <- tkscrollbar(top,command=function(...)tkxview(dbTree,...),orient="horizontal")
@@ -56,10 +61,13 @@ tkdbBrowse <- function(dbcon, prefix = NULL, tables.name.only = FALSE) {
 	   tkdestroy(top)
 	}
 	
-  
-	OK <- tkbutton(top, text = "OK", width = 6, command = onOK )
+	
+	 if(!missing(info)) 
+		tkgrid(tklabel(top, text = info))
+
+	tkgrid(tkbutton(top, text = "OK", width = 6, command = onOK ))
  
-    tkgrid(OK)
+
 	
 	tkwait.window(top)
 	
@@ -70,4 +78,15 @@ tkdbBrowse <- function(dbcon, prefix = NULL, tables.name.only = FALSE) {
 
 	
 }
+
+
+
+
+
+
+
+
+
+
+
 

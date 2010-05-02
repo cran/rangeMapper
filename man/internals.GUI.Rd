@@ -19,8 +19,15 @@
 \alias{gui.chooseFunction}
 \alias{gui.tkColorPalette}
 \alias{gui.rangeMap.save}
-\alias{gui.rangeMap.fetch}
+\alias{gui.rangeMap.plot}
 \alias{gui.yn}
+\alias{gui.rangeMap.rm}
+\alias{gui.tooltips}
+\alias{gui.chooseSubset}
+\alias{gui.chooseVariable}
+\alias{gui.close}
+\alias{gui.tkComboEntryBox}
+\alias{gui.show.metadata}
 
 \title{Undocumented gui functions}
 \description{These functions are undocumented; All functions starting with 'gui.' are used internally by \code{\link{rangeMapper}}}

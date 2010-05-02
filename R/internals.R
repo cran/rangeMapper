@@ -32,14 +32,42 @@ unlist(lapply(fl, FUN = function(x) .Call("ogrP4S", x[,1], x[,2], PACKAGE = "rgd
 
 .sp.metadata <- function(spdf) {
 
-	Area = mean(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
+	Area = sum(sapply(slot(spdf, "polygons"), function(x) slot(x, "area") ))
 
-	metad = apply(coordinates(spdf), 2, FUN = function(x) data.frame(Avg = mean(x), Min = min(x), Max = max(x) ) )
+	metad = apply(coordinates(spdf), 2, FUN = function(x) data.frame(Median = median(x), Min = min(x), Max = max(x) ) )
 
 	names(metad[[1]]) = paste(names(metad[[1]]), "x", sep = "_")
 	names(metad[[2]]) = paste(names(metad[[2]]), "y", sep = "_")
 
-	cbind(metad[[1]], metad[[2]])
+	cbind(Area, metad[[1]], metad[[2]])
 	}
 
+.extract.indexed <-function(dbcon,table.name, name.sep = "_") {
 
+	indx = .sqlQuery(dbcon, 
+		paste("select * from sqlite_master where type = 'index' and tbl_name = '", 
+				table.name, "'", sep = ""))$name
+				
+	.sqlQuery(dbcon, paste("PRAGMA index_info(",indx, ")" ))$name
+}
+
+.dbtable.exists <- function(con, name) {
+	x = .sqlQuery(con,paste('select name from sqlite_master where type = "table" and tbl_name like', shQuote(name) ) )
+	if(nrow(x)>0) TRUE else FALSE
+	
+	}
+
+richness <- function(x) {
+	"richness"
+}
+
+
+
+
+
+
+
+
+
+
+ 
