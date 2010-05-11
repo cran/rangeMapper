@@ -22,7 +22,7 @@ canvas.fetch(con)
 
 \value{
 \item{\code{canvas.make}}{returns a \code{\link{SpatialPoints}} object}  
-\item{\code{canvas.make}}{saves the a \code{\link{SpatialPoints}} object returned by \code{canvas.make} to the project's data base}  
+\item{\code{canvas.save}}{saves the a \code{\link{SpatialPoints}} object returned by \code{canvas.make} to the project's data base}  
 \item{\code{canvas.fetch}}{retrieves the canvas previously saved by \code{canvas.save} from the project's data base as a \code{\link{SpatialPoints}} object}  
 }	
 	

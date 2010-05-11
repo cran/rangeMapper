@@ -1,4 +1,31 @@
 		 *************************************************
+		 			rangeMapper VERSION 0.0-3
+		 *************************************************
+
+NEW FEATURES
+	o	processRanges() optionally saves range area, mid-range
+		(median centroid), and range extents (min, max) to a 
+		'metadata_ranges' table.
+	o	rangeMap.save()calls now assemblage.stat() to compute values at 
+		each pixel. assemblage.stat() can be applied on a vector 
+		or on a data.frame, in which case a statistical model can be
+		used. For the moment only lmer{lme4} is available, however
+		assemblage.stat() can be extended by incorporating other models
+		without the need to change rangeMap.save().
+	o	rangeMap.save() got a subset option. Subsetting/mapping can be
+		done by geometry characteristics (centroid location, polygon 
+		size), life-history traits or and/or taxonomy.
+
+MINOR CHANGES
+	o  changes in the undocumented gui.zzz functions and in rangeMapper()
+	   reflecting changes in the underlying GUI functions. 
+	o  lme4 added to 'Suggests' packages.
+	
+FUTURE RELEASES 
+	o	Computation of mean range values: e.g. mean species richness 
+		within a range.
+
+		 *************************************************
 		 			rangeMapper VERSION 0.0-2
 		 *************************************************
 
@@ -10,8 +37,6 @@ NEW FEATURES
 MINOR CHANGES
 	o	tcltk, tcltk2, pixmap moved to 'Suggests' in the DESCRIPTION file.
 FUTURE RELEASES 
-	o	Raster to vector batch conversion function (once raster package is
-		on CRAN).
 	o	Add subset support to rangeMap(). Subsetting/mapping should be
 		done by geometry characteristics (centroid location, polygon 
 		size), life-history traits or and/or taxonomy.
@@ -30,6 +55,5 @@ FUTURE RELEASES
 	o	Add subset support to rangeMap(). Subsetting/mapping should be
 		done by geometry characteristics (centroid location, polygon 
 		size), life-history traits or and/or taxonomy.
-	o	Raster to vector batch conversion function.	
 
 

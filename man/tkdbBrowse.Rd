@@ -8,13 +8,14 @@ Browse an sqlite database.
 Browse an sqlite database using a tcltk interface.
 }
 \usage{
-tkdbBrowse(dbcon, prefix = NULL, tables.name.only = FALSE)
+tkdbBrowse(con, prefix = NULL, tables.name.only = FALSE, info)
 }
 
 \arguments{
-  \item{dbcon}{A valid sqlite connection.}
+  \item{con}{A valid sqlite connection.}
   \item{prefix}{Shows only tables with the given \code{prefix}}
   \item{tables.name.only}{If \sQuote{FALSE}, the default, shows only table names.}
+   \item{info}{A character string containing a short text to be shown left to the OK button.}
 	}
 	
 \author{Mihai Valcu \email{valcu@orn.mpg.de}}
