@@ -196,20 +196,16 @@ gui.help <- function(what) {
 	
 
 	out = switch(what, 
-			support.files= paste("'Wrens' breeding ranges and life hystory data:\n", wrens.shp, "\n", wrens.csv), 
-			man          = vignette("rangeMapper"),
-			citation     = attributes(citation("rangeMapper"))$textVersion
+			support.files = paste("'Wrens' breeding ranges and life hystory data:\n", wrens.shp, "\n", wrens.csv), 
+			man           = print(vignette("rangeMapper")),
+			citation      = attributes(citation("rangeMapper"))$textVersion
 			)
 		
-	if(what == support.files) setwd(wrens.shp)
+	if(what == "support.files") setwd(wrens.shp)
 	
 	gui.msg(out)
-	
-	
-	
-
 	}
-
+	
 gui.dbopen <- function(new = TRUE) {
 
 	gui.msg(clearup = TRUE)
