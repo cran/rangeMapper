@@ -1,26 +1,33 @@
+
 \name{brewer.pal.get}
 \alias{brewer.pal.get}
+
+
 \title{
-	Fetch all non-qualitative RColorBrewer's palettes.
-	}
+  brewer.pal color palettes.
+}
 \description{
-	This is a simple wrapper around \code{\link{brewer.pal.info}} returning a named list with all the available color palettes.
-	}
+ A simple wrapper around \code{\link{brewer.pal.info}}
+}
 \usage{
-  brewer.pal.get(palette = NULL)
-	}
+brewer.pal.get(palette)
+}
 \arguments{
-  \item{palette}{
-    If \code{palette} is \code{NULL}  the function returns a named list of palettes otherwise returns the given \code{palette} as a vector.
-	}
-}	
+  \item{palette}{The name of a color palette. When NULL all the qualitative color palettes are returned.}
+
+}
+
+
 
 \author{Mihai Valcu \email{valcu@orn.mpg.de}}
 
 \seealso{
-	See Also as \code{\link{brewer.pal.info}}
+  \code{\link{tkColorPalette}}
+  \code{\link{brewer.pal}}
+  
 }
-\examples{
-	brewer.pal.get()
-	brewer.pal.get("YlOrRd")
-}
+
+
+\keyword{color}
+
+

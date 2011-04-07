@@ -1,0 +1,24 @@
+
+import(methods)
+import(utils) 
+import(sp) 
+
+exportClasses(rangeFiles, rangeMapStart, rangeMap, gridSize, rangeMapProcess, rangeMapSave, bioSaveFile, bioSaveDataFrame, MapImport, rangeMapFetch, rangeMapRemove)
+
+exportMethods(bioSave, rangeMapBboxSave, rangeMapBboxFetch, gridSizeSave, gridSizeFetch, gridSizeSave, gridSizeFetch, canvasSave, canvasFetch, rangeMapRemove, rangeFiles, rangeMapFetch, rangeMapProcess,rangeMapSave, rangeMapExport, rangeMapStart, summary, plot )
+
+export(bioSave, rangeMapBboxSave, rangeMapBboxFetch, gridSizeSave, gridSizeFetch, gridSizeSave, gridSizeFetch, canvasSave, canvasFetch, rangeMapRemove, rangeFiles, rangeMapFetch, rangeMapProcess,rangeMapSave, rangeMapExport, rangeMapStart )
+
+export(bio.save, metadata2bio, global.bbox.save, global.bbox.fetch, canvas.fetch, canvas.save, gridSize.save ,gridSize.fetch, rm.rangeMapper,  selectShpFiles, rangeMap.fetch, processRanges, rangeMap.save, rangeMap.start, rangeMap.open, rangeMap.export)
+
+# exportPattern("^[^\\.]")
+exportPattern("*.")
+
+export(rangeMapper)
+
+
+
+
+
+
+
