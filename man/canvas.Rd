@@ -1,38 +1,42 @@
-\name{canvas}
-\alias{canvas}
-\alias{canvas.make}
+\name{canvas.save}
 \alias{canvas.save}
 \alias{canvas.fetch}
-
 
 \title{Project's canvas}
 
 \description{
-	The canvas is a  regular grid of a given resolution used further by \code{\link{rangeMap}} function to perform grid interpolation.}
+	The canvas is a  regular grid of a given resolution. Each range map is overlayed onto the canvas and the results saved to project.}
 
 \usage{
-canvas.make(con)
 canvas.save(con)
 canvas.fetch(con)
 }
 
 \arguments{
-	  \item{con}{A valid sqlite connection.}
-	}
+	  \item{con}{An sqlite connection pointing to a valid \code{rangeMapper} project. }
+
+}  
 
 \value{
-\item{\code{canvas.make}}{returns a \code{\link{SpatialPoints}} object}  
-\item{\code{canvas.save}}{saves the a \code{\link{SpatialPoints}} object returned by \code{canvas.make} to the project's data base}  
-\item{\code{canvas.fetch}}{retrieves the canvas previously saved by \code{canvas.save} from the project's data base as a \code{\link{SpatialPoints}} object}  
-}	
-	
+	\code{canvas.fetch} Returns a \code{\link[sp]{SpatialPixelsDataFrame}} object.
+}
+
+\note{
+The method canvasSave() fails if \code{grid.size} was not set.
+The method canvasSave() fails if the canvas was already constructed for the given project.
+}
 
 \author{Mihai Valcu \email{valcu@orn.mpg.de}}
 
 \seealso{
 	\code{\link{rangeMapper}} for a complete example.\cr
-	\code{\link{gridSize}} 
+	\code{\link{gridSize.save}} 
 	}
+	
+\references{
+Valcu, M., Dale, J. and Kempenaers, B. (in prep) rangeMapper: A platform for the study of macroecology of life history traits.
+}
+	
 
 \keyword{spatial}
 \keyword{sqlite}

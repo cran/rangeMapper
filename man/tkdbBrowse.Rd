@@ -25,12 +25,15 @@ tkdbBrowse(con, prefix = NULL, tables.name.only = FALSE, info)
 \dontrun{
 ## These cannot be run by examples() but should be OK when pasted
 ## into an interactive R session 
-setwd(tempdir())
-dbcon = dbConnect(dbDriver("SQLite"), dbname= "test.sqlite")
-db.ini(dbcon)
 
-# select one table and then press OK
-tkdbBrowse(dbcon)
+# Create an empty rangeMapper project
+dbcon = rangeMap.start(file = "wrens.sqlite",  overwrite = TRUE, dir = tempdir() )
+
+# Select one table and then press OK
+tkdbBrowse(dbcon, info = " select a field in one table and then push OK!")
+
+tkdbBrowse(dbcon, tables.name.only = TRUE)
+
 }
 }
 
