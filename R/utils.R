@@ -1,5 +1,53 @@
 
 
+
+x.Msg <- function(x.Msg=Sys.time(), tkMainWindow = "win", tkElement = "x.Msg", eol = "\n", keep = TRUE, clearup = FALSE, getTime = FALSE, envir = ".RangeMapper") {
+
+   x.Msg	= paste(x.Msg, collapse = eol)
+   x.Msg	= paste(" >>", x.Msg, collapse = " ")
+   
+   
+  if(getTime) x.Msg = paste( "<", Sys.time(), ">\n", x.Msg, sep = "")
+  
+  if(exists(envir)) env = eval(parse(text = envir)) else env = NULL
+  
+  # if  tcltk envir is set
+  if(is.environment(env) && exists(tkMainWindow, envir = env) && exists(tkElement, envir = env) ) {
+
+	  x.MsgWindow = get(tkElement, envir = env)
+	  mainWindow = get(tkMainWindow, envir = env)
+	  
+	# prepare  message container 
+	 if(! exists("sessionx.Msg", envir = env) ) assign("sessionx.Msg", list(), envir = env)
+	 
+	# clearup any existing messages from env	
+		if(clearup) {
+			tkdelete(x.MsgWindow, "0.0" , "1000.0" )
+			assign("sessionx.Msg", list(), envir = env)
+			}
+	# if x.Msg is to be kept then append it to sessionx.Msg 
+		if(keep) assign("sessionx.Msg", c( get("sessionx.Msg", envir = env), x.Msg ) , envir = env )
+			
+	#  print to GUI element
+		tkdelete(x.MsgWindow, "1.0" , "100.0" ) 
+		x.MsgList = get("sessionx.Msg", envir = env)
+		
+		lapply(x.MsgList , function(x) tkinsert(x.MsgWindow, "end" , paste(x,eol) ) )
+		
+		if(!keep) tkinsert(x.MsgWindow, "end" , paste(x.Msg,eol) ) 
+		
+		tkyview.moveto(get(tkElement, envir = env), 1)
+		tkfocus(get(tkMainWindow, envir = env ))
+		
+		tcl("update", "idletasks") 		 
+
+}	else   cat(x.Msg, eol)
+	
+    invisible(flush.console() )
+	
+} 
+
+
 brewer.pal.get <- function(palette = NULL) {
 	pal = brewer.pal.info[, ]
 	pal = pal[!pal$category == "qual",]
@@ -11,43 +59,45 @@ brewer.pal.get <- function(palette = NULL) {
 
 # tclttk	
 tkMakeColorPalette <- function(n) {
-top  =  tktoplevel()
-tkwm.title(top,"Choose one or more colors")
-
-cols = vector(mode = "list", length = 4)	  
-out <<- vector(mode = "character")	  
-
-PickColor  =  function(colCanvas) {
-	  color  =  tclvalue(tcl("tk_chooseColor"))
-	  if (nchar(color) > 0) { tkconfigure(colCanvas, bg = color)
-	  out <<- c(out, color)
-	  }
-}
-
-for(i in 1:length(cols))
- cols[[i]] = tkcanvas(top,width = 50,height = 36)
-
-tkgrid(cols[[1]], tkbutton(top,text="Choose 1st color", height= 2, command = function() PickColor(cols[[1]]) ) )
-tkgrid(cols[[2]], tkbutton(top,text="Choose 2nd color", height= 2, command = function() PickColor(cols[[2]]) ) )
-tkgrid(cols[[3]], tkbutton(top,text="Choose 3rd color", height= 2, command = function() PickColor(cols[[3]]) ) )
-tkgrid(cols[[4]], tkbutton(top,text="Choose 4th color", height= 2, command = function() PickColor(cols[[4]]) ) )
-
-	onOK = function() {
-		if(length(out) >= 1) {
+	if(missing(n)) n = 8
+	if(!exists(".RangeMapper")) x.make.env()	
 		
-		out <<- colorRampPalette(out, space = "Lab")(n)
-		
-		tkdestroy(top)
-		}
+	top  =  tktoplevel()
+	tkwm.title(top,"Choose one or more colors")
+
+	cols = vector(mode = "list", length = 4)	  
+
+	x.put("out", vector(mode = "character"))
+
+	PickColor  =  function(colCanvas) {
+		  color  =  tclvalue(tcl("tk_chooseColor"))
+		  if (nchar(color) > 0) { tkconfigure(colCanvas, bg = color)
+			  x.put("out", c(x.get("out"), color))
+			}
 	}
 
-tkgrid(tkbutton(top, text = "OK", width = 6, command = onOK ),sticky = "e")
- 
-tkwait.window(top)
+	for(i in 1:length(cols))
+	 cols[[i]] = tkcanvas(top,width = 50,height = 36)
 
-return(out)
+	tkgrid(cols[[1]], tkbutton(top,text="Choose 1st color", height= 2, command = function() PickColor(cols[[1]]) ) )
+	tkgrid(cols[[2]], tkbutton(top,text="Choose 2nd color", height= 2, command = function() PickColor(cols[[2]]) ) )
+	tkgrid(cols[[3]], tkbutton(top,text="Choose 3rd color", height= 2, command = function() PickColor(cols[[3]]) ) )
+	tkgrid(cols[[4]], tkbutton(top,text="Choose 4th color", height= 2, command = function() PickColor(cols[[4]]) ) )
 
-}
+		onOK = function() {
+			if(length(x.get("out")) >= 1) {
+				x.put("out", c(x.get("out"), colorRampPalette(x.get("out"), space = "Lab")(n)))
+				tkdestroy(top)
+				}
+		}
+
+	tkgrid(tkbutton(top, text = "OK", width = 6, command = onOK ),sticky = "e")
+	 
+	tkwait.window(top)
+
+	return(x.get("out"))
+
+	}
 	
 tkColorPalette <- function(pal, name, palette.size = 45, envir = .GlobalEnv) { 
 
@@ -136,7 +186,7 @@ tkdbBrowse <- function(con, prefix = NULL, tables.name.only = FALSE, info) {
 	
 	
 	if(!is.null(prefix) && !.dbtable.exists(con, paste(prefix, "%", sep = "") ) ) 
-		stop(.X.Msg(paste("The active project does not contain any", dQuote(prefix), "table" )))
+		stop(x.Msg(paste("The active project does not contain any", dQuote(prefix), "table" )))
 	
 	dbpath = dbGetInfo(con)$dbname
 	
@@ -234,8 +284,9 @@ RMQuery <- function (con, statement) {
 	indx = RMQuery(con, 
 		paste("select * from sqlite_master where type = 'index' and tbl_name = '", 
 				table.name, "'", sep = ""))$name
-				
-	RMQuery(con, paste("PRAGMA index_info(",indx, ")" ))$name
+	if(length(indx)  == 0)	res = NA else	
+	res = RMQuery(con, paste("PRAGMA index_info(",indx, ")" ))$name
+	res
 }
 
 .dbtable.exists <- function(con, table.name) {
@@ -245,7 +296,7 @@ RMQuery <- function (con, statement) {
 	
 	}
 
-.dbfield.exists <-function(con, table.name, col.name) {
+.dbfield.exists <- function(con, table.name, col.name) {
 	# returns TRUE if the column is part of table
 	stopifnot(.dbtable.exists(con, table.name))
 	
@@ -277,7 +328,7 @@ upper_quartile= "upper_quartile",
 sum           = "total",
 max           = "max",
 min           = "min",
-count         = "total")
+count         = "count")
  
 class(funs) = "simple.list"
 
@@ -286,16 +337,29 @@ class(funs) = "simple.list"
 if(missing(fun) )
  return(funs) else if
 	(fun%in%funs) return(TRUE) else
-			stop(.X.Msg(sQuote(fun), "is not a known sqlite aggregate function!" ))
+			stop(x.Msg(sQuote(fun), "is not a known sqlite aggregate function!" ))
 	}
 
+.dbRemoveField <- function(con, table.name, col.name) {
+	
+	# table def (type and indexes)
+	tinfo = RMQuery(con, paste("pragma table_info(" , shQuote(table.name),")" ))
+	
+	if( is.element(col.name, tinfo$name) ) {
+		tinfo = tinfo[tinfo$name != col.name, ]
+		indexSQL = RMQuery(con, paste("select * from sqlite_master where type = 'index' and tbl_name = '", table.name, "'", sep = ""))$sql
+		# do ALTER, CREATE, INSERT FROM SELECT, DROP
+		dbBeginTransaction(con)
+		dbSendQuery(con, paste("ALTER TABLE" ,table.name, "RENAME TO temptab") )
+		dbSendQuery(con, paste("CREATE TABLE" ,table.name, '(', paste(tinfo$name, tinfo$type, collapse = ',') , ')'))
+		dbSendQuery(con, paste("INSERT INTO" ,table.name, 'SELECT ', paste(tinfo$name, collapse = ',') , 'FROM temptab'))
+		dbSendQuery(con, " DROP TABLE temptab")
+		if(length(indexSQL > 1)) lapply(indexSQL, function(x) try(RMQuery(con, x), silent = TRUE) )
+		
+		dbCommit(con)
+		} else FALSE 
 
-
-
-
-
-
-
+	}
 
 
 

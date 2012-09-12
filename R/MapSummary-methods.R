@@ -4,7 +4,7 @@ if (!isGeneric("summary")) {
 	setGeneric("summary", function(object, ...) standardGeneric("summary")) 
 	}
 
-summary.rangeMap = function(object, ...) {
+summary.rangeMap <- function(object, ...) {
     out = list()
 	out[["class"]] = class(object)
 
@@ -21,14 +21,12 @@ summary.rangeMap = function(object, ...) {
 		
 		tbs = RMQuery(object@CON, "select name from sqlite_master where type = 'table' ")$name
 		
-		out[["BIO_tables"]] = paste(  gsub(object@BIO, "", tbs[grep(object@BIO, tbs)]), collapse = "\n" )
-		out[["MAP_tables"]] = paste(  gsub(object@MAP, "", tbs[grep(object@MAP, tbs)]), collapse = "\n" )
+		out[["BIO_tables"]] = paste(  gsub(object@BIO, "", tbs[grep(object@BIO, tbs)]), collapse = ";" )
+		out[["MAP_tables"]] = paste(  gsub(object@MAP, "", tbs[grep(object@MAP, tbs)]), collapse = ";" )
 	 
 		mtd =.is.empty(object@CON, object@METADATA_RANGES)
-		out[[object@METADATA_RANGES]]= paste(object@METADATA_RANGES, "is empty:", mtd, collapse = "\n" )
+		out[[object@METADATA_RANGES]]= paste(object@METADATA_RANGES, "is empty:", mtd, collapse = ";" )
 
-	
-	
 	}
 	
 	class(out) = "summary.rangeMap"
@@ -38,10 +36,25 @@ summary.rangeMap = function(object, ...) {
 print.summary.rangeMap <- function(x, ...) {
 
 
-	.X.Msg(paste(paste(names(x), ":", x), collapse = "\n"), ...)
+	x.Msg(paste(paste(names(x), ":", x), collapse = ";"), ...)
 	
 
 }
 
 setMethod("summary", "rangeMap", summary.rangeMap)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

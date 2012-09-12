@@ -18,7 +18,7 @@ setMethod("rangeMapRemove",
 			
 		for (i in 1:length(sql)) RMQuery(object@CON , sql[i]) 
 		
-	.X.Msg(paste( paste(object@tableName, collapse = "; "), "removed" , collapse = " ") )
+	x.Msg(paste( paste(object@tableName, collapse = "; "), "removed" , collapse = " ") )
 
 		
 		}

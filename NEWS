@@ -1,10 +1,25 @@
 
-*************************************************
-NEWS: rangeMapper VERSION 0.0-6
-*************************************************
-2011-Apr-07 
-	*	Package converted to S4. 
+Changes in version 0.1-7
+NEW FEATURES
+	o   method metadataUpdate() to compute taxa-level metadata  once a project is set.
+	o   A new utility function, rangeFetch(), to fetch a range from a rangeMapper project.
 
+Changes in version 0.1-5
 
+BUG FIXES
+    o   fixed a bug in vertices(). 
+
+NEW FEATURES
+    o   vertices is new method of general use. Extract vertices from a 
+		SpatialPolygonsDataFrame and optionally applies an aggregating function 
+		to each Polygon. 
+    o   rangeTraits() & processRanges () changed to work with vertices().
+
+Changes in version 0.1-3
+
+NEW FEATURES
+    o   rangeMapProcess-methods. Small-range polygons (i.e. smaller than a canvas cell)
+		will return as many cells as there are 'Polygon'- s(e.g. each polygon will snap
+		to the nearest canvas cell).
 
 

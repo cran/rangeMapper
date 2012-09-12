@@ -35,14 +35,65 @@ setMethod("rangeMapFetch",
 	)	
 	
 # user level functions 
-rangeMap.fetch <- function(dbcon, maps) { 
+rangeMap.fetch <- function(con, maps) { 
 	
-	if(missing(maps)) maps = RMQuery(dbcon, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
+	if(missing(maps)) maps = RMQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name
 
 	maps = gsub("MAP_", "", maps)
 	
-	x = new("rangeMapFetch", CON = dbcon, tableName = maps)
+	x = new("rangeMapFetch", CON = con, tableName = maps)
 	rangeMapFetch(x)	
 
-} 
+}
+
+rangeFetch <- function(rangeMap, bioid) {
+				
+		if( nrow(RMQuery(rangeMap@CON, paste("SELECT * from canvas limit 1"))) == 0)
+			stop('Empty project!')
+		
+		p4s = CRS(dbReadTable(rangeMap@CON, rangeMap@PROJ4STRING)[1,1]) 	# proj4string
+		cs2 = RMQuery(rangeMap@CON, "select * from gridsize")[1,1]/2 		# 1/2 grid size
+		
+		d = RMQuery(rangeMap@CON, paste("SELECT c.id, c.x, c.y from canvas c join ranges r on c.id = r.id where r.bioid = ", shQuote(bioid) ) )
+		if(nrow(d) == 0)	
+			stop(paste(dQuote(bioid), 'is not a valid name!'))		
+		
+		d = split(d, d$id)
+		
+		d = lapply(d, function(z) {
+			xi = z$x
+			yi = z$y
+			x = c(xi-cs2, xi-cs2, xi+cs2, xi+cs2, xi-cs2)
+			y = c(yi-cs2, yi+cs2, yi+cs2, yi-cs2, yi-cs2)
+			Polygons(list(Polygon(coords=cbind(x, y) )), ID = z$id)
+			})
+		
+		res = SpatialPolygons(d, proj4string= p4s)
+
+		if(require(rgeos)) {
+			res = gUnionCascaded(res)
+			} else
+			 warning('Adjacent SpatialPolygons cannot be dissolved, install rgeos and try again!')
+		res	
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
