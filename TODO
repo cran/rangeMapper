@@ -1,4 +1,0 @@
-
-	* save R function called by rangeMapSave/rangeMapSaveR to a table similar to sqlite_master "to SELECT sql FROM sqlite_master where type = 'table'"
-
-

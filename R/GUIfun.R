@@ -1,57 +1,13 @@
+if(getRversion() >= '2.15.1') utils::globalVariables(c('.RangeMapper')) 
+
 
 #UTILS
-.X.Msg <- function(.X.Msg=Sys.time(), tkMainWindow = "win", tkElement = ".X.Msg", eol = "\n", keep = TRUE, clearup = FALSE, getTime = FALSE, envir = ".RangeMapper") {
 
-   .X.Msg	= paste(.X.Msg, collapse = eol)
-   .X.Msg	= paste("\xBB\xBB", .X.Msg, collapse = " ")
-   
-   
-  if(getTime) .X.Msg = paste( "<", Sys.time(), ">\n", .X.Msg, sep = "")
-  
-  if(exists(envir)) env = eval(parse(text = envir)) else env = NULL
-  
-  # if  tcltk envir is set
-  if(is.environment(env) && exists(tkMainWindow, envir = env) && exists(tkElement, envir = env) ) {
-
-	  .X.MsgWindow = get(tkElement, envir = env)
-	  mainWindow = get(tkMainWindow, envir = env)
-	  
-	# prepare  message container 
-	 if(! exists("session.X.Msg", envir = env) ) assign("session.X.Msg", list(), envir = env)
-	 
-	# clearup any existing messages from env	
-		if(clearup) {
-			tkdelete(.X.MsgWindow, "0.0" , "1000.0" )
-			assign("session.X.Msg", list(), envir = env)
-			}
-	# if .X.Msg is to be kept then append it to session.X.Msg 
-		if(keep) assign("session.X.Msg", c( get("session.X.Msg", envir = env), .X.Msg ) , envir = env )
-			
-	#  print to GUI element
-		tkdelete(.X.MsgWindow, "1.0" , "100.0" ) 
-		.X.MsgList = get("session.X.Msg", envir = env)
-		
-		lapply(.X.MsgList , function(x) tkinsert(.X.MsgWindow, "end" , paste(x,eol) ) )
-		
-		if(!keep) tkinsert(.X.MsgWindow, "end" , paste(.X.Msg,eol) ) 
-		
-		tkyview.moveto(get(tkElement, envir = env), 1)
-		tkfocus(get(tkMainWindow, envir = env ))
-		
-		tcl("update", "idletasks") 		 
-
-}	else   cat(.X.Msg, eol)
-	
-    invisible(flush.console() )
-	
-} 
-
-.X.make.env <- function(env = ".RangeMapper") {
-
-assign(env , new.env(), env = .GlobalEnv)
+x.make.env <- function(env = ".RangeMapper") {
+assign(env , new.env(), envir = .GlobalEnv)
 }
 
-.X.get <- function(x, mode = "any", envir = .RangeMapper) {
+x.get <- function(x, mode = "any", envir = .RangeMapper) {
 
 obj = try(get(x, envir = envir, mode = mode, inherits = FALSE), silent = TRUE)
 
@@ -60,20 +16,20 @@ if (class(obj) == "try-error") return (NULL) else return(obj)
 
 }
 
-.X.put <- function(x, value, envir = .RangeMapper) { 
+x.put <- function(x, value, envir = .RangeMapper) { 
 
 obj = try(assign(x, value, envir = envir), silent = TRUE) 
 if (class(obj) == "try-error") return (NULL) else return(obj)
 
 }
 
-.X.exists <- function(x, envir = .RangeMapper) {
+x.exists <- function(x, envir = .RangeMapper) {
 
 exists(x, envir = envir)
 
 }
 
-.X.yn <- function(text = "Choose!", yn = c("YES", "NO"), title) {
+x.yn <- function(text = "Choose!", yn = c("YES", "NO"), title) {
 
 	if(missing(title)) title = paste("rangeMapper", packageDescription("rangeMapper")$Version) 
 
@@ -105,11 +61,11 @@ exists(x, envir = envir)
 	return(as.integer(tclvalue(select)))
 }
 
-.X.img <- function(gif, file=system.file("ico", paste(gif, "gif", sep = "."), package="rangeMapper")) {
+x.img <- function(gif, file = system.file("ico", paste(gif, "gif", sep = "."), package="rangeMapper")) {
 tkimage.create("photo",file=file)
  }
 
-.X.tkEntryBox <- function(txt = "enter value", default.entry = "", default.output =  "", make.sql.nam = TRUE) {
+x.tkEntryBox <- function(txt = "enter value", default.entry = "", default.output =  "", make.sql.nam = TRUE) {
 	
 	top<-tktoplevel()
 	
@@ -139,7 +95,7 @@ tkimage.create("photo",file=file)
 	getNam
 }	
 
-.X.tkComboEntryBox <- function(title = "", fixedTxt = c("a", "b") ,fixedTxtLab = "choose one", freeTxt = 1,freeTxtLab = "enter one", name, envir = .RangeMapper) {
+x.tkComboEntryBox <- function(title = "", fixedTxt = c("a", "b") ,fixedTxtLab = "choose one", freeTxt = 1,freeTxtLab = "enter one", name, envir = .RangeMapper) {
 	
 	tclRequire("BWidget")
 	
@@ -164,7 +120,7 @@ tkimage.create("photo",file=file)
 			fixedTextVal  =  fixedTxt[as.numeric(tclvalue(tcl(fixedText,"getvalue")))+1]
 			freeTextVal   =  tclvalue(tcl(freeText,"get"))
 						
-			.X.put(name, c(fixedTextVal, freeTextVal), envir = envir)
+			x.put(name, c(fixedTextVal, freeTextVal), envir = envir)
 			tkdestroy(top)
 		}
 
@@ -183,53 +139,53 @@ tkimage.create("photo",file=file)
 	tkwait.window(top)	
 }
 
-.X.tkdbBrowse.active.proj <- function() {
+x.tkdbBrowse.active.proj <- function() {
 
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 	
 	tkdbBrowse(dbcon)
-		if(exists("out")) rm(out, envir = .GlobalEnv)
 
 }
 
-# MAIN GUI ELEMENTS 
-.X.dbopen <- function(new = TRUE) {
 
-	.X.Msg("Starting new session....", clearup = TRUE)
-	.X.Msg("", getTime = TRUE, keep = TRUE)
+# MAIN GUI ELEMENTS 
+x.dbopen <- function(new = TRUE) {
+
+	x.Msg("Starting new session....", clearup = TRUE)
+	x.Msg("", getTime = TRUE, keep = TRUE)
 	
 	if(new) {
 		path = tclvalue(tkgetSaveFile(defaultextension = ".sqlite", filetypes = "{rangeMapper_project {.sqlite}}" ) )
-		 if(nchar(path)==0)  stop(.X.Msg("Nothing selected!"))
+		 if(nchar(path)==0)  stop(x.Msg("Nothing selected!"))
 		dbcon = rangeMap.start(file = basename(path), overwrite = TRUE, dir = dirname(path) )
 		
 		}
 	
 	if(!new) {
 		path = tclvalue(tkgetOpenFile(defaultextension = ".sqlite", filetypes = "{rangeMapper_project {.sqlite}}" ) )
-		if(nchar(path)==0)  stop(.X.Msg("Nothing selected!"))
+		if(nchar(path)==0)  stop(x.Msg("Nothing selected!"))
 		dbcon = rangeMap.open(path, verbose = TRUE)
 		}
 		
-		.X.put("con", dbcon)
-		.X.put("path", path)
+		x.put("con", dbcon)
+		x.put("path", path)
 		
-		print(summary(new("rangeMap", CON = .X.get("con"))))
+		print(summary(new("rangeMap", CON = x.get("con"))))
 
 				
 	}
 	
-.X.close <- function(quitR = FALSE) {
+x.close <- function(quitR = FALSE) {
 
  if(quitR) q(save = "no") else {
 
-   if(!is.null( .X.get("con"))) {
-	  try(sqliteCloseConnection(.X.get("con")), silent = TRUE)
+   if(!is.null( x.get("con"))) {
+	  try(sqliteCloseConnection(x.get("con")), silent = TRUE)
 	  rm("con", envir = .RangeMapper)
    }
    
-   tkdestroy(.X.get ("win"))
+   tkdestroy(x.get ("win"))
    rm(list = ls( envir = .RangeMapper), envir = .RangeMapper, inherits = TRUE)
    rm(.RangeMapper, envir = .GlobalEnv)
    
@@ -238,15 +194,15 @@ tkimage.create("photo",file=file)
 
 }
 
-.X.show.metadata <- function() {
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+x.show.metadata <- function() {
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 	
-	print(summary(new("rangeMap", CON = .X.get("con"))))
+	print(summary(new("rangeMap", CON = x.get("con"))))
 
 }
 
-.X.help <- function(what) {
+x.help <- function(what) {
 
 	wrens.shp = 	system.file(package="rangeMapper", "extdata", "wrens", "vector")
 	wrens.csv = 	system.file(package="rangeMapper", "data", "wrens.csv")
@@ -260,25 +216,27 @@ tkimage.create("photo",file=file)
 		
 	if(what == "support.files") setwd(wrens.shp)
 	
-	.X.Msg(out)
+	x.Msg(out)
 	}
 	
-.X.global.bbox.save <- function() {
+x.global.bbox.save <- function() {
 
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
-	Dir = tk_choose.dir(default = getwd(), caption = "Select ranges directory")
+	chdr = if(.Platform$OS.type == "windows")	choose.dir else tk_choose.dir
+		
+	Dir = chdr(default = getwd(), caption = "Select ranges directory")
 	
 	global.bbox.save(con = dbcon , bbox = Dir)
 	
 }
 	
-.X.gridSize.save <- function() {
+x.gridSize.save <- function() {
 
-	dbcon = .X.get("con")
+	dbcon = x.get("con")
 	if(is.null(dbcon)) 
-		stop(.X.Msg("There is no active project!"))
+		stop(x.Msg("There is no active project!"))
 	
 	
 	bb  = global.bbox.fetch(dbcon)
@@ -298,7 +256,7 @@ tkimage.create("photo",file=file)
 		
 		gridSize.save(dbcon ,gridSize = val)
 		
-		if(val < WarnCellsize) .X.Msg("WARNING: The canvas is going to have a high resolution, processing all ranges will be potentially time consumming.")
+		if(val < WarnCellsize) x.Msg("WARNING: The canvas is going to have a high resolution, processing all ranges will be potentially time consumming.")
 		
 		tkdestroy(top)
 	}
@@ -312,34 +270,36 @@ tkimage.create("photo",file=file)
 
 }
  
-.X.canvas.save <- function() {
-		dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+x.canvas.save <- function() {
+		dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 		
 		canvas.save(dbcon)
 
 	}	
 		
-.X.processRanges <- function() {
+x.processRanges <- function() {
+	chdr = if(.Platform$OS.type == "windows")	choose.dir else tk_choose.dir
 	
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
-	selectVal = .X.yn(text = "Save range centroid and range extent?") 
+	selectVal = x.yn(text = "Save range centroid and range extent?") 
 
 	if(selectVal == 1) {
-		processRanges(con = dbcon,dir = tk_choose.dir(default = getwd(), caption = "Select ranges directory"), metadata = TRUE)	
+	
+		processRanges(con = dbcon,dir =chdr(default = getwd(), caption = "Select ranges directory"), metadata = rangeTraits())	
 		}	
 	
 	if(selectVal == 0) {
-		processRanges(con = dbcon,dir = tk_choose.dir(default = getwd(), caption = "Select ranges directory"), metadata = TRUE)		} 
+		processRanges(con = dbcon,dir = chdr(default = getwd(), caption = "Select ranges directory"))		} 
 
 }
 
-.X.bio.save <- function() {
+x.bio.save <- function() {
 
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
 	f = tk_choose.files( filters = matrix(c("comma delim, sep = ';'", ".csv"), ncol = 2) )
 	
@@ -349,33 +309,33 @@ tkimage.create("photo",file=file)
 	
     common_id = tk_select.list(names(dat),  multiple = FALSE, title = "Select range ID")
 	
-	if(nchar(common_id) ==0) .X.Msg ("Nothing selected") else 
+	if(nchar(common_id) ==0) x.Msg ("Nothing selected") else 
 		bio.save(con = dbcon, loc =  dat,  ID = common_id, tableName = tabnam)
 
 }
 
-.X.chooseVariable <- function() {
+x.chooseVariable <- function() {
 
-	con = .X.get("con")
-	if(is.null(con)) stop(.X.Msg("There is no active project!"))
+	con = x.get("con")
+	if(is.null(con)) stop(x.Msg("There is no active project!"))
 
-	if(.X.exists("VAR")) rm(list = "VAR", envir = .RangeMapper)
+	if(x.exists("VAR")) rm(list = "VAR", envir = .RangeMapper)
 	
 	VAR = tkdbBrowse(con, prefix = "BIO", tables.name.only = FALSE, info = "Choose a variable to map.")	
 		
-	.X.put("VAR", VAR[1, ])
+	x.put("VAR", VAR[1, ])
 	
-	.X.Msg = .X.get("VAR")
-	.X.Msg( paste("<ACTIVE VARIABLE>", paste(.X.Msg[2], "in table ", .X.Msg[1])), keep = TRUE )
+	x.Msg = x.get("VAR")
+	x.Msg( paste("<ACTIVE VARIABLE>", paste(x.Msg[2], "in table ", x.Msg[1])), keep = TRUE )
 	
 }
 
-.X.chooseFunction <- function() {
+x.chooseFunction <- function() {
 	
 	# all sqlite aggreegate functions + functions in assemblageStat.R without (default) extra arguments
 	predefined =  as.character(.sqlAggregate())
 	
-	if(.X.exists("FUN")) rm("FUN", envir = .RangeMapper)
+	if(x.exists("FUN")) rm("FUN", envir = .RangeMapper)
 	
 	top  =  tktoplevel()
 	tkwm.title(top, "Choose or define a function") 
@@ -395,7 +355,7 @@ tkimage.create("photo",file=file)
 	tkinsert(txtFUN, "0.0", "function(x) {\n\n}")
 
 	# formula
-	depvar = paste(.X.get("VAR")[2], "~")
+	depvar = paste(x.get("VAR")[2], "~")
 	depvarLab = tklabel(Frame1, text = depvar)
 	Formula =  tclVar("")
 	pred  = tkentry(Frame1, width = "50" , textvariable= Formula)
@@ -426,14 +386,14 @@ tkimage.create("photo",file=file)
 			}
 			
 			# save output	
-			.X.put("FUN", fun)
-			.X.put("FUN.formula", formVal)
+			x.put("FUN", fun)
+			x.put("FUN.formula", formVal)
 
-			funStr = .X.get("FUN")
+			funStr = x.get("FUN")
 			funStr = gsub(" ", "", paste(deparse(funStr), collapse = "" ) )
 			
 			
-			.X.Msg( paste("<ACTIVE FUNCTION>", funStr ), keep = TRUE )
+			x.Msg( paste("<ACTIVE FUNCTION>", funStr ), keep = TRUE )
 			
 			tkdestroy(top)
 		}
@@ -461,12 +421,12 @@ tkimage.create("photo",file=file)
 
 }
 
-.X.chooseSubset <- function() {
+x.chooseSubset <- function() {
 
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
-	if(.X.exists("SUBSET")) rm("SUBSET", envir = .RangeMapper)
+	if(x.exists("SUBSET")) rm("SUBSET", envir = .RangeMapper)
 		
 	tabs = RMQuery(dbcon, "select name from sqlite_master where type = 'table' and (name like 'BIO_%' or name like 'MAP_%' or name = 'metadata_ranges')")$name
 	tabs = lapply(split(tabs, tabs), function(x) RMQuery(dbcon, paste("PRAGMA table_info(", x, ");"))$name)
@@ -484,15 +444,15 @@ tkimage.create("photo",file=file)
 	for(i in 1:length(tabs) ) {
 		tkgrid(tklabel(top, text = names(tabs[i])), sticky="w", column  = 0, row = i)
 		
-		text[[i]] <- tclVar(queryTxt[i])
-		textField[[i]] <- tkentry(top,width = "75", textvariable=text[[i]])
+		Text[[i]] <- tclVar(queryTxt[i])
+		textField[[i]] <- tkentry(top,width = "75", textvariable=Text[[i]])
 		
 		tk2tip(textField[[i]], SQL[[i]])
 		tkgrid(textField[[i]], sticky="w", column  = 1, row = i)
 		}
 	
 	OnOK <- function() {
-		Out <<- text
+		x.put("out", Text )
 		tkdestroy(top)
 	}
 	
@@ -503,43 +463,43 @@ tkimage.create("photo",file=file)
 	tkfocus(top)
 	tkwait.window(top)
 	
-	Res = 	lapply(Out, function(x) tclvalue(x))
+	Res = 	lapply(x.get('out'), function(x) tclvalue(x))
 	Res = Res[unlist(lapply(Res, nchar))>0]
 	
 
-	.X.put("SUBSET", Res)
+	x.put("SUBSET", Res)
 		
 	
-	if( .X.exists("SUBSET") ) .X.Msg( paste("<ACTIVE SUBSET>", .X.get("SUBSET") ), keep = FALSE )
+	if( x.exists("SUBSET") ) x.Msg( paste("<ACTIVE SUBSET>", x.get("SUBSET") ), keep = FALSE )
 
 	
 	
 	}
 
-.X.tkColorPalette <- function() {
+x.tkColorPalette <- function() {
 
-	.X.Msg("Loading color palettes...", keep = FALSE)
+	x.Msg("Loading color palettes...", keep = FALSE)
 
 	pal =  c(brewer.pal.get(), list(heatcol = heat.colors (9),terraincol = terrain.colors(9), topocol = topo.colors(9) ))
  	
 	tkColorPalette(pal = pal, name = "palette" , palette.size = 43, envir = .RangeMapper)
 
-	if( .X.exists("palette") ) .X.Msg( paste("<ACTIVE PALETTE>", attributes(.X.get("palette")) ), keep = TRUE )
+	if( x.exists("palette") ) x.Msg( paste("<ACTIVE PALETTE>", attributes(x.get("palette")) ), keep = TRUE )
 }
 
-.X.rangeMap.save <- function() {
+x.rangeMap.save <- function() {
 	t1 = Sys.time()
-	dbcon       =.X.get("con")
-	FUN         =.X.get("FUN")
-	VAR         =.X.get("VAR")
-	FUN.formula =.X.get("FUN.formula")
-	subsetSQL   =.X.get("SUBSET")
+	dbcon       =x.get("con")
+	FUN         =x.get("FUN")
+	VAR         =x.get("VAR")
+	FUN.formula =x.get("FUN.formula")
+	subsetSQL   =x.get("SUBSET")
 	
 	if(is.null(subsetSQL)) subsetSQL = list()
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
 	if(is.null(FUN)) {
-		.X.Msg("Since no function was chosen SPECIES RICHNESS will be computed by default!")
+		x.Msg("Since no function was chosen SPECIES RICHNESS will be computed by default!")
 		tableName = "species_richness"
 		rangeMap.save(dbcon, tableName = tableName)
 		} 
@@ -547,7 +507,7 @@ tkimage.create("photo",file=file)
 	
 	if(is.character(FUN)) {
 		suggested.tab.nam = paste( c(VAR[1], VAR[2], FUN), collapse  = "_")
-		tableName =  .X.tkEntryBox(txt = "enter table name\n(-MAP_- prefix will be appended to it).", default.entry =  suggested.tab.nam, default.output = "." )
+		tableName =  x.tkEntryBox(txt = "enter table name\n(-MAP_- prefix will be appended to it).", default.entry =  suggested.tab.nam, default.output = "." )
 		if(tableName!="_")
 		rangeMap.save(CON = dbcon, FUN = FUN, biotab =  VAR[1][,1], biotrait =  VAR[2][,1], tableName = tableName, subset = subsetSQL)
 		}
@@ -555,7 +515,7 @@ tkimage.create("photo",file=file)
 
 	if(is.function(FUN)) {
 		suggested.tab.nam = paste( c(VAR[1], VAR[2], "aggregate_R_function"), collapse  = "_")
-		tableName =  .X.tkEntryBox(txt = "enter table name\n(-MAP_- prefix will be appended to it).", default.entry =  suggested.tab.nam )
+		tableName =  x.tkEntryBox(txt = "enter table name\n(-MAP_- prefix will be appended to it).", default.entry =  suggested.tab.nam )
 		
 		if(tableName!="_") {
 			if(is.null(FUN.formula) )
@@ -569,13 +529,13 @@ tkimage.create("photo",file=file)
 
 	}
 
-.X.rangeMap.plot <- function() {
+x.rangeMap.plot <- function() {
 	
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
-	colorpalette = .X.get("palette")
-	if(is.null(colorpalette)) stop(.X.Msg("There is no active palette!"))
+	colorpalette = x.get("palette")
+	if(is.null(colorpalette)) stop(x.Msg("There is no active palette!"))
 	
 	map = tkdbBrowse(dbcon, prefix = "MAP", tables.name.only = TRUE)
 
@@ -583,24 +543,24 @@ tkimage.create("photo",file=file)
 	
 	# ncols and style
 	classType = c("sd", "equal", "quantile", "kmeans", "hclust", "bclust", "fisher", "jenks")
-	.X.tkComboEntryBox(title = "plot MAP", fixedTxt = classType,  fixedTxtLab = "Class interval type",  freeTxt = 20, freeTxtLab = "Number of classes", name = "CLASSINT")
+	x.tkComboEntryBox(title = "plot MAP", fixedTxt = classType,  fixedTxtLab = "Class interval type",  freeTxt = 20, freeTxtLab = "Number of classes", name = "CLASSINT")
 	
-	classint = .X.get("CLASSINT")	
+	classint = x.get("CLASSINT")	
 	
 	plot(rangeMap, colorpalette = colorpalette, ncols = as.numeric(classint[2]) , style = classint[1]) 
 
 }
 
-.X.rangeMap.rm <- function(table.type) {
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+x.rangeMap.rm <- function(table.type) {
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
 	nam = as.character(tkdbBrowse(dbcon, prefix = table.type, tables.name.only = TRUE)$dbtable)
-	if(exists("out")) rm(out, envir = .GlobalEnv)
+
 
 	table.nam = paste(table.type, nam, sep = "_")
 	
-	if(all(is.na(nam)) && .X.yn("Really delete all ?") )
+	if(all(is.na(nam)) && x.yn("Really delete all ?") )
 				rm.rangeMapper(dbcon, tablePrefix = table.type)
 
 	if(! all(is.na(nam)) ) 
@@ -609,13 +569,15 @@ tkimage.create("photo",file=file)
 
 }
 
-.X.mapImport <- function() {
+x.mapImport <- function() {
 
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 
 
-	rangeMap.save(dbcon , path = tk_choose.files(caption = "Select file to import", multi = FALSE))
+	path = tk_choose.files(caption = "Select file to import", multi = FALSE)
+	
+	rangeMap.save(dbcon , path = path, tableName = make.db.names(dbcon, basename(path)), FUN = mean, overwrite = TRUE)
 	
 	
 	
@@ -623,18 +585,18 @@ tkimage.create("photo",file=file)
 
 }
 
-.X.metadata2bio <-function() {
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+x.metadata2bio <-function() {
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 	
 	metadata2bio (dbcon)
 
 }
 
-.X.rangeMap.export <-function() {
+x.rangeMap.export <-function() {
 
-	dbcon = .X.get("con")
-		if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
+	dbcon = x.get("con")
+		if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
 		
 	path = tkchooseDirectory()
 
@@ -644,10 +606,10 @@ tkimage.create("photo",file=file)
 
 }
 
-.X.bio.merge <- function() {
-	dbcon = .X.get("con")
-	if(is.null(dbcon)) stop(.X.Msg("There is no active project!"))
-	tableName = .X.tkEntryBox("Name of the merged BIO table")
+x.bio.merge <- function() {
+	dbcon = x.get("con")
+	if(is.null(dbcon)) stop(x.Msg("There is no active project!"))
+	tableName = x.tkEntryBox("Name of the merged BIO table")
 	bio.merge(con = dbcon, tableName = tableName)
 	
 	

@@ -1,7 +1,11 @@
 
+
+setGeneric("rangeFiles", function(object, ...)   					standardGeneric("rangeFiles") )
+
+
 setMethod("rangeFiles",  
 		signature = "rangeFiles", 
-		definition = function(object){
+		definition = function(object, ...){
 		dir.list = list.files(object@dir, recursive = TRUE, full.names = TRUE, pattern = ".shp$")
 	
 	if(object@polygons.only){
@@ -18,13 +22,9 @@ setMethod("rangeFiles",
 )
 
 
-
 #user level function
-
 selectShpFiles <- function(dir,  ...) {
-
-rangeFiles(new("rangeFiles", dir =dir, ...))
-		
-		}
+	rangeFiles(new("rangeFiles", dir =dir, ...))
+	}
 
 
