@@ -36,7 +36,7 @@ summary.rangeMap <- function(object, ...) {
 print.summary.rangeMap <- function(x, ...) {
 
 
-	x.Msg(paste(paste(names(x), ":", x), collapse = ";"), ...)
+	message(paste(paste(names(x), ":", x), collapse = ";"), ...)
 	
 
 }

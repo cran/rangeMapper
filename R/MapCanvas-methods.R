@@ -22,7 +22,7 @@ setMethod("rangeMapBbox",
 		definition = function(object, checkProj = TRUE) {
 		shpFiles = rangeFiles(object)
 		
-		x.Msg(paste("Computing global bounding box for",length(shpFiles ), "ranges...") )
+		message(paste("Computing global bounding box for",length(shpFiles ), "ranges...") )
 		
 		nfo = lapply(shpFiles, getinfo.shape)
 			
@@ -32,15 +32,15 @@ setMethod("rangeMapBbox",
 		ogrShpFiles = data.frame(dsn = dirname(shpFiles), layer = gsub(".shp", "", basename(shpFiles)), stringsAsFactors = FALSE)
 		
 		if(checkProj) {
-		x.Msg("Checking for proj4 string differences...")
+		message("Checking for proj4 string differences...")
 			p4s = .extract.p4s(ogrShpFiles) 
 			p4s = p4s[!duplicated(p4s)]
-			if(length(p4s) > 1) warning(x.Msg(paste("More than one projection found:\n", paste("  *",p4s, collapse = "\n")) ) )
+			if(length(p4s) > 1) warning(paste("More than one projection found:\n", paste("  *",p4s, collapse = "\n")))
 			}	else 
 				p4s = .extract.p4s(ogrShpFiles[1, ])
 		
 		attributes(bb)$p4s = as.character(p4s)
-		x.Msg("Done!")
+		message("Done!")
 		
 		bb
 		
@@ -50,13 +50,13 @@ setMethod("rangeMapBbox",
 	setMethod("rangeMapBboxSave",  
 		signature  = c(object = "rangeMap", bbox = "missing", p4s = "missing"),
 		definition = function(object,bbox, p4s) {
-	if(! .is.empty(object@CON, object@BBOX) ) stop(x.Msg("Bounding box was allready saved for this project."))
+	if(! .is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 	
 	bb = structure(c(-180, 180, -90, 90), 
 		.Names = c("xmin", "xmax", "ymin", "ymax"), 
 		p4s = NA) # "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs "
 	
-	x.Msg(paste("Using unprojected global bouging box [", paste(bb, collapse = ","), "]..." ) )
+	warning(paste("Using unprojected global bounding box [", paste(bb, collapse = ","), "]..." ) )
 	
 	res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
 	res2 = dbWriteTable(object@CON, object@PROJ4STRING, data.frame(p4s = attributes(bb)$p4s), append = TRUE, row.names = FALSE)
@@ -64,8 +64,8 @@ setMethod("rangeMapBbox",
 	res = all(res1, res2)
 	
 	if(res) 
-		x.Msg(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
-		x.Msg("Bounding box upload failed.")
+		message(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
+		warning("Bounding box upload failed.")
  
 	 }
 )
@@ -73,20 +73,20 @@ setMethod("rangeMapBbox",
 setMethod("rangeMapBboxSave",  
 	signature  = c(object = "rangeMap", bbox = "missing", p4s = "CRS"),
 		definition = function(object, bbox, p4s) {
-		if(! .is.empty(object@CON, object@BBOX) ) stop(x.Msg("Bounding box was allready saved for this project."))
+		if(! .is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 		
 	bb = structure(c(-180, 180, -90,90), 
 		.Names = c("xmin", "xmax", "ymin", "ymax"), 
 		p4s = "+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs ")
 	
-	x.Msg(paste("Using unprojected global bouging box [", paste(bb, collapse = ","), "]..." ) )
+	warning(paste("Using unprojected global bounding box [", paste(bb, collapse = ","), "]..." ) )
 	
-		x.Msg(paste("Converting to", p4s@projargs) )
+		message(paste("Converting to", p4s@projargs) )
 			bbnew = .rect2spp(bb[1], bb[2], bb[3], bb[4])
 			bbnew =  spsample(bbnew, n = 1000, type = "regular", offset = c(0,0))
 			proj4string(bbnew) = attributes(bb)$p4s
 			bbnew = spTransform(bbnew , p4s )
-			bb = c(sp::bbox(bbnew )[1, ], sp::bbox(bbnew )[2, ] )
+			bb = c(bbox(bbnew )[1, ], bbox(bbnew )[2, ] )
 			attributes(bb)$p4s = p4s@projargs
 		
 		res1 = dbWriteTable(object@CON, object@BBOX, data.frame(t(bb)), append = TRUE, row.names = FALSE)
@@ -95,8 +95,8 @@ setMethod("rangeMapBboxSave",
 		res = all(res1, res2)
 		
 		if(res) 
-			x.Msg(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
-			x.Msg("Bounding box upload failed.")
+			message(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
+			warning("Bounding box upload failed.")
 	 
 	 }
 )
@@ -105,7 +105,7 @@ setMethod("rangeMapBboxSave",
 	setMethod("rangeMapBboxSave",  
 		signature  = c(object = "rangeMap", bbox = "character", p4s = "missing"),
 		definition = function(object,bbox, p4s) {
-		if(! .is.empty(object@CON, object@BBOX) ) stop(x.Msg("Bounding box was allready saved for this project."))
+		if(! .is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 		
 		# bbox  the path to the range file(s) directory, pass to new("rangeFiles" ....
 		
@@ -117,8 +117,8 @@ setMethod("rangeMapBboxSave",
 		res = all(res1, res2)
 		
 		if(res) 
-			x.Msg(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
-			x.Msg("Bounding box upload failed.")
+			message( paste("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
+			warning("Bounding box upload failed.")
 	 
 	 }
 )
@@ -126,11 +126,11 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxSave",  
 		signature  = c(object = "rangeMap", bbox = "character", p4s = "CRS"),
 		definition = function(object, bbox, p4s) {
-		if(! .is.empty(object@CON, object@BBOX) ) stop(x.Msg("Bounding box was allready saved for this project."))
+		if(! .is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 		
 		bb = rangeMapBbox( new("rangeFiles", dir = bbox, ogr = FALSE),checkProj = TRUE )
 
-		x.Msg(paste("Converting to", p4s@projargs) )
+		message(paste("Converting to", p4s@projargs) )
 			bbnew = .rect2spp(bb[1], bb[2], bb[3], bb[4])
 			bbnew =  spsample(bbnew, n = 1000, type = "regular", offset = c(0,0) )
 			proj4string(bbnew) = attributes(bb)$p4s
@@ -144,8 +144,8 @@ setMethod("rangeMapBboxSave",
 		res = all(res1, res2)
 		
 		if(res) 
-			x.Msg(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
-			x.Msg("Bounding box upload failed.")
+			message(c("Bounding box uploaded.", "PROJ4STRING set to ", attributes(bb)$p4s) ) else 
+			warning("Bounding box upload failed.")
 	 
 	 }
 )
@@ -153,7 +153,7 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxSave",  
 		signature  = c(object = "rangeMap", bbox = "Spatial", p4s = "missing"),
 		definition = function(object, bbox, p4s) {
-		if(! .is.empty(object@CON, object@BBOX) ) stop(x.Msg("Bounding box was allready saved for this project."))
+		if(! .is.empty(object@CON, object@BBOX) ) stop("Bounding box was allready saved for this project.")
 		
 		bb = c( bbox(bbox)[1, ], bbox(bbox)[2, ])
 		p4s = proj4string(bbox)
@@ -164,8 +164,8 @@ setMethod("rangeMapBboxSave",
 		res = all(res1, res2)
 		
 		if(res) 
-			x.Msg(c("Bounding box uploaded.", "PROJ4STRING set to ", p4s) ) else 
-			x.Msg("Bounding box upload failed.")
+			message(c("Bounding box uploaded.", "PROJ4STRING set to ", p4s) ) else 
+			warning("Bounding box upload failed.")
 		
 
 	 
@@ -175,7 +175,7 @@ setMethod("rangeMapBboxSave",
 setMethod("rangeMapBboxFetch",  
 	signature  = "rangeMap",
 		definition = function(object) {
-		if(.is.empty(object@CON, object@BBOX ) ) stop(x.Msg("Bounding box not yet constructed for this project!"))
+		if(.is.empty(object@CON, object@BBOX ) ) stop("Bounding box not yet constructed for this project!")
 		md = dbReadTable(object@CON, object@BBOX)
 		p4s = dbReadTable(object@CON, object@PROJ4STRING)
 		
@@ -214,14 +214,14 @@ setMethod("gridSizeSave",
 				bb  = global.bbox.fetch(object@CON)
 				minSpan = min(diff(bbox(bb)[1, ]), diff(bbox(bb)[2, ]))
 				object@gridSize = minSpan/100
-				x.Msg(paste("Default grid size used!"))
+				warning(paste("Default grid size used!"))
 			}
 			
 			grd = data.frame(object@gridSize)
 			names(grd) = object@GRIDSIZE
 			res = dbWriteTable(object@CON, object@GRIDSIZE, grd, append = TRUE, row.names = FALSE)
 			
-			if(res) x.Msg( paste("Grid size set to", object@gridSize, "map units.") )
+			if(res) message( paste("Grid size set to", object@gridSize, "map units.") )
 	}
 )
 	
@@ -232,7 +232,7 @@ setMethod("gridSizeFetch",
 	signature  = "rangeMap",
 		definition = function(object) {
 		
-		if(.is.empty(object@CON, object@GRIDSIZE)) stop(x.Msg("The grid size is not yet defined for this project!"))
+		if(.is.empty(object@CON, object@GRIDSIZE)) stop("The grid size is not yet defined for this project!")
 		
 		res = dbReadTable(object@CON, object@GRIDSIZE)[1,1]
 		return(res)
@@ -265,8 +265,8 @@ setMethod("canvasSave",
 	signature  = "rangeMap", 
 		definition = function(object) {
 		
-		if(!.is.empty(object@CON, object@CANVAS) ) stop(x.Msg("The canvas was allready constructed!"))
-		if(.is.empty(object@CON, object@GRIDSIZE) )  stop(x.Msg("The grid size is missing!"))
+		if(!.is.empty(object@CON, object@CANVAS) ) stop("The canvas was allready constructed!")
+		if(.is.empty(object@CON, object@GRIDSIZE) )  stop("The grid size is missing!")
 
 		bbox     = global.bbox.fetch(object@CON)
 		cellsize = gridSize.fetch(object@CON)
@@ -279,7 +279,7 @@ setMethod("canvasSave",
 
 		res = dbWriteTable(object@CON, object@CANVAS, cnv, append = TRUE, row.names = FALSE) 
 
-		if(res) x.Msg("Canvas uploaded.")
+		if(res) message("Canvas uploaded.")
 		
 		}
 	)	
@@ -290,7 +290,7 @@ setMethod("canvasFetch",
 		
 		cnv = RMQuery(object@CON, 'SELECT * FROM canvas' )
 
-		if(nrow(cnv) == 0) stop(x.Msg("The canvas is empty, did you run canvas.save()?"))
+		if(nrow(cnv) == 0) stop("The canvas is empty, did you run canvas.save()?")
 
 		coordinates(cnv) = ~ x + y
 

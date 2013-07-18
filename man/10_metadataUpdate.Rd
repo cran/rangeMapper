@@ -58,13 +58,16 @@ Valcu, M., Dale, J. and Kempenaers, B. (2012)  rangeMapper: A platform for the s
 require(rangeMapper)
 
 # data
-spdf = readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
-rloc = system.file(package = "rangeMapper", "extdata", "etopo1", "etopo1_Americas.tif")
+spdf = readOGR(system.file(package = "rangeMapper", 
+	"extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+rloc = system.file(package = "rangeMapper", "extdata",
+	"etopo1", "etopo1_Americas.tif")
 r = readGDAL(rloc, output.dim = c(50, 50))
 spdf = spTransform(spdf, CRS(proj4string(r)) )
 
 # the project 
-dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = tempdir() )
+dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, 
+	dir = tempdir() )
 rmap = new("rangeMap", CON = dbcon)	
 global.bbox.save(con = dbcon, bbox = spdf )
 gridSize.save(dbcon, gridSize = 300000)  
@@ -78,7 +81,7 @@ metadata.update (rmap,
 				if( !is.finite(res)) res = 0
 				res 
 				},
-			name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
+	name = 'AltitudeRange', map = r, na.rm = TRUE, overwrite = TRUE)
 
 # plot
 mr = RMQuery(dbcon, 'select * from metadata_ranges')

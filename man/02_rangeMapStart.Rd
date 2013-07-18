@@ -1,4 +1,3 @@
-
 \name{rangeMap.start}
 \alias{rangeMap.start}
 \alias{rangeMapStart}

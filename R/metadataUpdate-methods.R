@@ -31,7 +31,7 @@ setMethod("metadataUpdate",
 						
 			# loop through ranges,  apply FUN and update metadata_ranges
 			
-			x.Msg("Updating metadata_ranges ...", keep = FALSE)
+			message("Updating metadata_ranges ...")
 			pb = txtProgressBar(min = 0, max = length(mr), char = ".", style = 3)
 
 			for( i in 1:length(mr) ) {
@@ -52,7 +52,7 @@ setMethod("metadataUpdate",
 			}
 			
 	# last Msg
-	x.Msg( paste("Done in ", round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins"), keep = TRUE )
+	message( paste("Done in ", round(difftime(Sys.time(), Startprocess, units = "mins"),1), "mins") )
 	} 
 )
 

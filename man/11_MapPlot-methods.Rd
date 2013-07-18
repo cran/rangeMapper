@@ -20,7 +20,7 @@ This is a wrapper around \code{\link{spplot}}
 
 	\tabular{rl}{
 	\code{x} \tab a SpatialPixelsRangeMap object.\cr
-	\code{colorpalette}  \tab  A color palette. See also \code{\link{tkColorPalette}} which allows for interactive choice of color palettes.\cr 
+	\code{colorpalette}  \tab  A color palette. \cr 
 	\code{ncols}  \tab  Number of color classes required, default to 20; argument to be passed to \code{\link{classIntervals}}\cr   
 	\code{scales}  \tab  If \sQuote{FALSE}, default, axes scale are not drawn.\cr 
 	\code{style}  \tab  class interval style; see \code{\link{classIntervals}} for more details\cr  
@@ -59,11 +59,6 @@ pal = brewer.pal.get('RdYlGn')[11:1]
 
 plot(SR, style = "fisher", colorpalette = pal)
 
-# if there is tcltk support choose a color palette interactively. 
-if(interactive()) {
-	tkColorPalette(pal = brewer.pal.get(),name  = "pal")
-	plot(SR, style = "fisher", colorpalette = pal)
-	}
 	
 }
 
@@ -72,7 +67,6 @@ if(interactive()) {
 
 \seealso{
   \code{\link{classIntervals}}
-  \code{\link{tkColorPalette}}
   \code{\link{brewer.pal}}
 
   

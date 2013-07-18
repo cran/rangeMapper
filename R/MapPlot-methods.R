@@ -9,7 +9,7 @@ if (!isGeneric("plot"))    {
 
 setMethod("plot", signature(x='SpatialPixelsRangeMap', y='missing'), 
 
-	function(x, colorpalette = brewer.pal.get('Spectral')[11:1], ncols = 20, scales = FALSE, style = "equal",  ...) {
+function(x, colorpalette = brewer.pal.get('Spectral')[11:1], ncols = 20, scales = FALSE, style = "equal",  ...) {
 
 		trellis.par.set("regions", list(col= colorRampPalette(colorpalette, space = "Lab")(ncols) ) , warn = FALSE)
 		

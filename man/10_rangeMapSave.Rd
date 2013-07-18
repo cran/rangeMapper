@@ -56,14 +56,14 @@ Any valid SQL expression can be used to build up a subset. See \url{http://www.s
 
 
 \note{
-\code{SQL} aggregate functions are more eficient then their \R counterparts. For simple aggregate functions like mean, median, sd, count it is advisable to use \code{SQL} functions rather then R functions. 
+\code{SQL} aggregate functions are more efficient then their \R counterparts. For simple aggregate functions like mean, median, sd, count it is advisable to use \code{SQL} functions rather then R functions. 
 
 }
 
 
 
 \seealso{
-\code{link{[RSQLite.extfuns-package] {RSQLite.extfuns}}} for a list of additional SQL aggregate functions.
+\code{\link[RSQLite.extfuns]{RSQLite.extfuns} } for a list of additional SQL aggregate functions.
 \code{\link[rangeMapper]{metadataUpdate}}.
 }
 
@@ -83,8 +83,8 @@ f = system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined")
 global.bbox.save(con = dbcon, bbox = f, 
 	p4s = CRS("+proj=cea +lon_0=0 +lat_ts=30 +x_0=0 +y_0=0 +ellps=WGS84 +units=m +no_defs") ) 
 
-# upload grid size using the proposed default
-gridSize.save(dbcon, gridSize = 100000)  # cell size ~ 100km
+# upload grid size 
+gridSize.save(dbcon, gridSize = 200000)  # cell size ~ 200km
 
 #  save canvas 
 canvas.save(dbcon) 
@@ -107,8 +107,9 @@ rangeMap.save(dbcon, FUN = "median" , biotab = "wrens",
 # Fetch maps
 
 summary(rangeMap.fetch(dbcon) )
-
-# more examples at: http://rangemapper.r-forge.r-project.org
+ 
+ 
+# more examples at: http://rangemapper.orn.mpg.de/
 
 
 }

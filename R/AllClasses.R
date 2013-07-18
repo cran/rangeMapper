@@ -44,7 +44,7 @@ setClass("rangeMapStart",
 		), 
 		
 		validity = function(object) {
-		if(!file.exists(object@dir)) stop(x.Msg("'dir' should be set and point to a valid location."))
+		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
 		}
 	)
 	
@@ -80,21 +80,21 @@ setClass("rangeMap",
 		
 		validity = function(object) {
 		
-		if ( ! init_extensions(object@CON)) warning(x.Msg("Warning: Aggregate functions provided by RSQLite.extfuns packages not available!"))
+		if ( ! init_extensions(object@CON)) warning("Aggregate functions provided by RSQLite.extfuns packages not available!")
 		
 		if ( ! all( .dbtable.exists(object@CON, object@PROJ4STRING),
 				  .dbtable.exists(object@CON, object@METADATA_RANGES),
 				  .dbtable.exists(object@CON, object@GRIDSIZE),
 				  .dbtable.exists(object@CON, object@BBOX),
 				  .dbtable.exists(object@CON, object@CANVAS),
-				  .dbtable.exists(object@CON, object@RANGES) ) ) stop (x.Msg("Corrupt rangeMapper project!"))
+				  .dbtable.exists(object@CON, object@RANGES) ) ) stop ("Corrupt rangeMapper project!")
 		
 		projVer = try(sqliteQuickSQL(object@CON, paste("SELECT * FROM", object@VERSION) )$ver, silent = TRUE)
 		if(inherits(projVer, "try-error")) projVer = "0.0-0"
 		
 		curVer  = packageDescription("rangeMapper")$Version 		
 		if(compareVersion(curVer,  projVer) == 1)
-			x.Msg("The project was created with a previous version of rangeMapper, some functions may not work!")
+			warning("The project was created with a previous version of rangeMapper, some functions may not work!")
 		
 		}	
 	)
@@ -109,7 +109,7 @@ setClass("rangeFiles",
 		ogr = TRUE, 
 		polygons.only = TRUE), 
 		validity = function(object) {
-		if(!file.exists(object@dir)) stop(x.Msg("'dir' should be set and point to a valid location."))
+		if(!file.exists(object@dir)) stop("'dir' should be set and point to a valid location.")
 		
 		}
 	)
@@ -123,8 +123,8 @@ setClass("gridSize",
 		contains = "rangeMap", 
 		
 		validity = function(object)	{
-			if(!.is.empty(object@CON, object@GRIDSIZE)) stop(x.Msg("The grid size was allready set!"))
-			if(.is.empty(object@CON, object@BBOX)) stop(x.Msg("There is no bouding box!") )
+			if(!.is.empty(object@CON, object@GRIDSIZE)) stop("The grid size was allready set!")
+			if(.is.empty(object@CON, object@BBOX)) stop("There is no bouding box!")
 
 		},
 	)
@@ -134,7 +134,7 @@ setClass("rangeMapProcess",
 		contains = "rangeMap", 
 		
 		validity = function(object)	{
-					if(!.is.empty(object@CON, object@RANGES)) stop(x.Msg( paste(dQuote(object@RANGES), "table is not empty!")))
+					if(!.is.empty(object@CON, object@RANGES)) stop(paste(dQuote(object@RANGES), "table is not empty!"))
 		}
 )	
 
@@ -150,10 +150,10 @@ setClass("rangeMapSave",
 		validity = function(object)	{
 		# the new table should not exist
 			if(.dbtable.exists(object@CON, paste(object@MAP, object@tableName, sep = "") ) ) 
-				stop(x.Msg( paste(sQuote(object@tableName), " already exists."))	)
+				stop(paste(sQuote(object@tableName), " already exists."))
 			
 			if(.dbtable.exists(object@CON, paste(object@BIO, object@tableName, sep = "") ) ) 
-				stop(x.Msg( paste(sQuote(object@tableName), " already exists."))	)
+				stop( paste(sQuote(object@tableName), " already exists."))	
 			
 		}
 	)
@@ -167,7 +167,7 @@ setClass("bioSaveFile", representation(loc = "character", sep = "character"),
 							
 							), 
 							validity = function(object) {
-							if(!file.exists(object@loc)) stop(x.Msg(paste(sQuote(object@loc), "is not a valid file")))
+							if(!file.exists(object@loc)) stop(paste(sQuote(object@loc), "is not a valid file"))
 
 
 							}
@@ -189,8 +189,8 @@ setClass("MapImport", representation(path = "character"),
  
 							validity = function(object) {
 							
-							if(!file.exists(object@path)) stop( x.Msg( paste(sQuote(object@path), "is not a valid path.") ) )	
-							if(!require("raster")) stop(x.Msg("package raster is not available"))
+							if(!file.exists(object@path)) stop(paste(sQuote(object@path), "is not a valid path.") ) 	
+							if(!require("raster")) stop("package raster is not available")
 
 							} 
 
@@ -206,7 +206,7 @@ setClass("rangeMapFetch", representation(
 						invalidNam = sapply(mapNam, FUN = function(x) !.dbtable.exists(object@CON, x) )
 						
 						if( any(invalidNam) )
-						  stop(x.Msg(paste(sQuote(names(invalidNam[invalidNam] )), "is not a valid MAP!\n")))
+						  stop(paste(sQuote(names(invalidNam[invalidNam] )), "is not a valid MAP!\n"))
 						
 						# check if empty map
 						mapvar = sapply(mapNam, function(x)
@@ -216,7 +216,7 @@ setClass("rangeMapFetch", representation(
 						isempty = sapply(sql, function(x) sqliteQuickSQL(object@CON,  x)[, 1] ) < 1
 						
 						if(any(isempty))
-						 stop(x.Msg(paste(sQuote(mapNam[isempty]), "is an empty MAP!\n")))
+						 stop(paste(sQuote(mapNam[isempty]), "is an empty MAP!\n"))
 			}
 	)
 
@@ -241,9 +241,9 @@ setClass("rangeMapRemove", representation(
 									   object@GRIDSIZE%in%object@tableName|
 									   object@CANVAS%in%object@tableName|
 									   object@CANVAS%in%object@tableName)
-						stop(x.Msg( paste(object@PROJ4STRING,",", object@BBOX, ",",object@GRIDSIZE,",",
+						stop( paste(object@PROJ4STRING,",", object@BBOX, ",",object@GRIDSIZE,",",
 										object@CANVAS, "or", 
-										object@RANGES, "table(s) cannot be removed!")) )
+										object@RANGES, "table(s) cannot be removed!"))
 
 			}
 	)

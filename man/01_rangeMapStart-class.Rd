@@ -13,7 +13,7 @@ Methods of this class allows to initiate a new rangeMapper project.
 \section{Slots}{
   \describe{
 	\item{\code{dir}:}{Object of class \code{"character"}; the directory of the sqlite database.}
-	\item{\code{file}:}{Object of class \code{"character"}; sqlite database filename, If missing a default name is assigned.}
+	\item{\code{file}:}{Object of class \code{"character"}; sqlite database file-name, If missing a default name is assigned.}
 	\item{\code{skeleton}:}{Object of class \code{"list"} containing the sql code to initiate the sqlite database. }
 	\item{\code{overwrite}:}{Object of class \code{"logical"} when \code{TRUE} all the database tables are dropped.}
   }
