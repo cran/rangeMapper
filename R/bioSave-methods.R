@@ -22,7 +22,7 @@ setMethod("bioSave",
 
 		if(res) {
 			RMQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
-			x.Msg(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
+			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			}
 		}
 	)
@@ -45,9 +45,9 @@ setMethod("bioSave",
 
 		if(res) {
 			RMQuery(object@CON,(paste("CREATE  INDEX", paste(tableName, object@ID, sep = "_") , "ON", tableName ,  "(", object@ID ,")")) )
-			x.Msg(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
+			message(paste("Table", object@tableName, "saved as a ", object@BIO, "table") )
 			} else 
-				x.Msg(paste("Error in saving", object@tableName) )
+				message( paste("Error in saving", object@tableName) )
 		}
 	)
 
@@ -84,7 +84,7 @@ bio.merge <-  function(con, tableName, ...) {
 	ok = sapply(btabs, function(x) .dbtable.exists(dbcon, x) )
 
 	if(!all(ok)) 
-		x.Msg(stop(paste( dQuote(names(ok[!ok])), "is not a table of this rangeMapper project")))
+		stop(paste( dQuote(names(ok[!ok])), "is not a table of this rangeMapper project"))
 
 	ids = sapply(btabs, function(x) .extract.indexed(dbcon, x) )
 
@@ -121,7 +121,7 @@ metadata2bio <-function(con, ...) {
 
 	dat = RMQuery(r@CON, paste("select * from",  r@METADATA_RANGES) )
 
-	if(nrow(dat) == 0) stop(x.Msg( paste("Empty", r@METADATA_RANGES, "table")) )
+	if(nrow(dat) == 0) stop( paste("Empty", r@METADATA_RANGES, "table"))
 	
 
 	b = new("bioSaveDataFrame", CON = con, loc = dat, tableName = r@METADATA_RANGES, ID = r@BIOID, ...)

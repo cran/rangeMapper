@@ -8,7 +8,7 @@
 	\pkg{rangeMapper} is a front end platform for the study of macroecology of life history traits at both inter-specific and assemblage levels. 
 	}
 \details{
-	The package uses species range (extent-of-occurrence) vector polygons and life history traits datasets to build up maps (e.g. species richness, mean body mass, \dots). \cr
+	The package uses species range (extent-of-occurrence) vector polygons and life history traits data-sets to build up maps (e.g. species richness, mean body mass, \dots). \cr
 	\pkg{rangeMapper} comes with an user-friendly platform-independent tcltk graphical user interface. 
 }
 \keyword{package}

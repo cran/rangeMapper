@@ -1,4 +1,3 @@
-
 \name{global.bbox}
 \alias{global.bbox}
 \alias{global.bbox.save}
@@ -79,7 +78,7 @@ bbox0 = global.bbox.fetch(dbcon)
 plot(bbox0, axes = TRUE)
 
 
-# more examples at: http://rangemapper.r-forge.r-project.org
+# more examples at: http://rangemapper.orn.mpg.de/
 
 }	
 	

@@ -60,20 +60,21 @@ wd = tempdir()
 rdr= system.file(package = "rangeMapper", "extdata", "wrens", "vector")
 dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = wd)
 global.bbox.save(con = dbcon, bbox = rdr)
-gridSize.save(dbcon) ; canvas.save(dbcon) 
+gridSize.save(dbcon, gridSize = 2) ; canvas.save(dbcon) 
 system.time(processRanges(dir = rdr, con =  dbcon))
 }
 
 # One file containing all the ranges
-r = readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
+r = readOGR(system.file(package = "rangeMapper", "extdata", 
+	"wrens", "vector_combined"), "wrens", verbose = FALSE)
 
 dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = wd )
 global.bbox.save(con = dbcon, bbox = r)
-gridSize.save(dbcon)  
+gridSize.save(dbcon, gridSize = 2)  
 canvas.save(dbcon) 
 
 system.time(processRanges(spdf = r, con =  dbcon, ID = "sci_name" ))
-# ~ 12 times faster than processing individual ranges.
+# ~ 18 times faster than processing individual ranges.
 
 }
 

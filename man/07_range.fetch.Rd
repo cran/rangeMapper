@@ -38,8 +38,10 @@ Valcu, M., Dale, J. and Kempenaers, B. (2012)  rangeMapper: A platform for the s
 \examples{
 wd = setwd(tempdir())
 require(rangeMapper)
-spdf = readOGR(system.file(package = "rangeMapper", "extdata", "wrens", "vector_combined"), "wrens", verbose = FALSE)
-dbcon = rangeMap.start(file = "wrens.sqlite", overwrite = TRUE, dir = tempdir() )
+spdf = readOGR(system.file(package = "rangeMapper", "extdata", 
+	"wrens", "vector_combined"), "wrens", verbose = FALSE)
+dbcon = rangeMap.start(file = "wrens.sqlite", 
+	overwrite = TRUE, dir = tempdir() )
 rmo = rangeMap("wrens.sqlite")
 global.bbox.save(con = dbcon, bbox = spdf)
 gridSize.save(dbcon, gridSize = 3)  

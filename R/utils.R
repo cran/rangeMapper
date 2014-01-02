@@ -1,277 +1,12 @@
 
-
-
-x.Msg <- function(x.Msg=Sys.time(), tkMainWindow = "win", tkElement = "x.Msg", eol = "\n", keep = TRUE, clearup = FALSE, getTime = FALSE, envir = ".RangeMapper") {
-
-   x.Msg	= paste(x.Msg, collapse = eol)
-   x.Msg	= paste(" >>", x.Msg, collapse = " ")
-   
-   
-  if(getTime) x.Msg = paste( "<", Sys.time(), ">\n", x.Msg, sep = "")
-  
-  if(exists(envir)) env = eval(parse(text = envir)) else env = NULL
-  
-  # if  tcltk envir is set
-  if(is.environment(env) && exists(tkMainWindow, envir = env) && exists(tkElement, envir = env) ) {
-
-	  x.MsgWindow = get(tkElement, envir = env)
-	  mainWindow = get(tkMainWindow, envir = env)
-	  
-	# prepare  message container 
-	 if(! exists("sessionx.Msg", envir = env) ) assign("sessionx.Msg", list(), envir = env)
-	 
-	# clearup any existing messages from env	
-		if(clearup) {
-			tkdelete(x.MsgWindow, "0.0" , "1000.0" )
-			assign("sessionx.Msg", list(), envir = env)
-			}
-	# if x.Msg is to be kept then append it to sessionx.Msg 
-		if(keep) assign("sessionx.Msg", c( get("sessionx.Msg", envir = env), x.Msg ) , envir = env )
-			
-	#  print to GUI element
-		tkdelete(x.MsgWindow, "1.0" , "100.0" ) 
-		x.MsgList = get("sessionx.Msg", envir = env)
-		
-		lapply(x.MsgList , function(x) tkinsert(x.MsgWindow, "end" , paste(x,eol) ) )
-		
-		if(!keep) tkinsert(x.MsgWindow, "end" , paste(x.Msg,eol) ) 
-		
-		tkyview.moveto(get(tkElement, envir = env), 1)
-		tkfocus(get(tkMainWindow, envir = env ))
-		
-		tcl("update", "idletasks") 		 
-
-}	else   cat(x.Msg, eol)
-	
-    invisible(flush.console() )
-	
-} 
-
-
 brewer.pal.get <- function(palette = NULL) {
-	pal = brewer.pal.info[, ]
+	pal = brewer.pal.info
 	pal = pal[!pal$category == "qual",]
 	bp = lapply(split(pal, row.names(pal)), FUN = function(x) brewer.pal(x$maxcolors, row.names(x)))
 	if(!is.null(palette) && palette%in%names(bp) ) bp = bp[palette][[1]]
 	bp 		   
 }
 
-
-# tclttk	
-tkMakeColorPalette <- function(n) {
-	if(missing(n)) n = 8
-	if(!exists(".RangeMapper")) x.make.env()	
-		
-	top  =  tktoplevel()
-	tkwm.title(top,"Choose one or more colors")
-
-	cols = vector(mode = "list", length = 4)	  
-
-	x.put("out", vector(mode = "character"))
-
-	PickColor  =  function(colCanvas) {
-		  color  =  tclvalue(tcl("tk_chooseColor"))
-		  if (nchar(color) > 0) { tkconfigure(colCanvas, bg = color)
-			  x.put("out", c(x.get("out"), color))
-			}
-	}
-
-	for(i in 1:length(cols))
-	 cols[[i]] = tkcanvas(top,width = 50,height = 36)
-
-	tkgrid(cols[[1]], tkbutton(top,text="Choose 1st color", height= 2, command = function() PickColor(cols[[1]]) ) )
-	tkgrid(cols[[2]], tkbutton(top,text="Choose 2nd color", height= 2, command = function() PickColor(cols[[2]]) ) )
-	tkgrid(cols[[3]], tkbutton(top,text="Choose 3rd color", height= 2, command = function() PickColor(cols[[3]]) ) )
-	tkgrid(cols[[4]], tkbutton(top,text="Choose 4th color", height= 2, command = function() PickColor(cols[[4]]) ) )
-
-		onOK = function() {
-			if(length(x.get("out")) >= 1) {
-				x.put("out", c(x.get("out"), colorRampPalette(x.get("out"), space = "Lab")(n)))
-				tkdestroy(top)
-				}
-		}
-
-	tkgrid(tkbutton(top, text = "OK", width = 6, command = onOK ),sticky = "e")
-	 
-	tkwait.window(top)
-
-	return(x.get("out"))
-
-	}
-	
-tkColorPalette <- function(pal, name, palette.size = 45, envir = .GlobalEnv) { 
-
-	require(tcltk); require(pixmap)
-
-	wd = getwd()
-	on.exit(setwd(wd))
-	setwd(tempdir())
-
-	top = tktoplevel()
-	tkwm.title(top, "Choose a pallete")  
-
-	frm1    = tkframe(top, relief = "ridge", borderwidth = 2)
-	frm2    = tkframe(top, relief = "flat", borderwidth = 1)
-	frm3    = tkframe(top, relief = "flat", borderwidth = 2)
-
-	x = ceiling(sqrt(length(pal)))
-	y = floor(sqrt(length(pal)))
-
-	cols = rep(1:x, x)
-	rows = rep(1:y, each = x)
-
-	# Inverse palette ?
-	cb = tkcheckbutton(frm2)
-	cbValue = tclVar("0")
-	tkconfigure(cb,variable=cbValue)
-	lab = tklabel(frm2,text="Inversed palette")
-	tkgrid(lab, row = 0, column = 1, sticky = "e")
-	tkgrid(cb, row = 0, column = 2, sticky = "e")
-	
-	
-	#  add name and pos  pal
-	for(i in 1:length(pal) ) pal[[i]] = c(names(pal[i]), cols[i], rows[i], pal[[i]])
-
-	lapply(	pal, function(x) {
-		
-		onPush = function() {
-			out = x[- c(1,2,3)]
-			#if inversed palette
-			cbVal = as.character(tclvalue(cbValue))
-			if (cbVal=="1") out = out[length(out) : 1] 
-			attributes(out) = list(palette = x[1] )
-			assign(name, out, envir = envir)
-			tkdestroy(top)
-			}  
-	
-			pali = x[1]
-			rampi = colorRampPalette(x[- c(1,2,3)], space = "Lab")(palette.size)[palette.size:1] 
-			pnmi = pixmapIndexed(rep(1:palette.size, palette.size), nrow=palette.size, col= rampi)
-			write.pnm(pnmi, file = pali)
-			
-			img.nam = pali
-			img = tkimage.create("photo", file= img.nam )
-			assign(  img.nam, tkbutton(frm1, image  =  img,text= img.nam  , command  =  onPush) )
-			tkgrid(get(img.nam),  column  = x[2], row = x[3],sticky = "w" )
-
-	})
-
-	
-	# choose palette
-	
-		onOK = function() {
-			tkdestroy(top)
-			out = tkMakeColorPalette(9)
-			attributes(out) = list(palette = "user_defined")
-			assign(name, out, envir = envir)
-			}  
-	
-	lab2 = tklabel(frm3,text="_______________________________")
-	tkgrid(lab2, row = 0, column = 1, sticky = "w")
-	tkgrid(tkbutton(frm3, text = "User defined palette", command = onOK), row = 1, column = 1, sticky = "w")
- 
-	
-	tkpack(frm1); tkpack(frm2); tkpack(frm3)
-	
-	tkfocus(top)
-    tkwait.window(top)
-		
-	
-}
-
-tkdbBrowse <- function(con, prefix = NULL, tables.name.only = FALSE, info) {
-	
-	require(tcltk)
-	tclRequire("BWidget")
-	
-	
-	if(!is.null(prefix) && !.dbtable.exists(con, paste(prefix, "%", sep = "") ) ) 
-		stop(x.Msg(paste("The active project does not contain any", dQuote(prefix), "table" )))
-	
-	dbpath = dbGetInfo(con)$dbname
-	
-	tabs = RMQuery(con, "select name from sqlite_master where type = 'table';")$name
-	
-	fields = lapply(split(tabs, tabs), function(x) RMQuery(con, paste("PRAGMA table_info(", x, ");"))$name)
-	
-
-	if(!is.null(prefix)) { 
-		fields = fields[grep(prefix, names(fields))]
-		names(fields) = gsub(paste(prefix, "_", sep = ""), "", names(fields))
-		}
-
-	top <- tktoplevel()
-	tkwm.title(top,dbGetInfo(con)$dbname)
-	tkfocus(top)
-	
-	xScr       <- tkscrollbar(top,command=function(...)tkxview(dbTree,...),orient="horizontal")
-	yScr       <- tkscrollbar(top,command=function(...)tkyview(dbTree,...))
-	dbTree <- tkwidget(top,"Tree",xscrollcommand=function(...)tkset(xScr,...),
-									  yscrollcommand=function(...)tkset(yScr,...),
-										width=nchar(dbpath), height= length(unlist(fields )) )
-	tkgrid(dbTree,yScr) 
-	tkgrid(xScr)
-	tkgrid.configure(yScr,stick="nsw")
-	tkgrid.configure(xScr,stick="new")
-
-	
-	for(i in 1:length(fields)){
-		
-		tkinsert(dbTree,"end","root", names(fields)[i] ,text=names(fields)[i])
-			
-			if(!tables.name.only == TRUE) {
-				for(j in 1:length(fields[[i]]) ) {
-				tkinsert(dbTree,"end",names(fields)[i], paste(names(fields)[i], j), text= fields[[i]][j])
-				}
-			}
-	
-	}
-
-	
-	onOK = function() {
-	v = tclvalue(tcl(dbTree,"selection", "get") )
-	
-	v = unlist(strsplit(v, "\\} \\{"))
-	v[1] = gsub("\\{", "", v[1] )
-	v[length(v)] = gsub("\\}", "", v[length(v)] )
-	
-	v = strsplit(v, " ")
-	if(tables.name.only)
-		v = data.frame(dbtable = unlist(v), fieldnam = NA)
-	
-	if(!tables.name.only) {
-	v = do.call("rbind", v)
-	v = data.frame(v, stringsAsFactors = FALSE)
-	names(v) = c("dbtable", "fieldnam")
-	for(i in 1:nrow(v) )
-		v[i, "fieldnam"] = fields[v[i, "dbtable"]][[1]][as.numeric(v[i, "fieldnam"])]
-
-	}
-	
-
-	    out <<- v 
-			
-	    tkdestroy(top)
-	}
-	
-	
-	 if(!missing(info)) 
-		tkgrid(tklabel(top, text = info))
-
-	tkgrid(tkbutton(top, text = "OK", width = 6, command = onOK ))
- 
-
-	
-	tkwait.window(top)
-	
-	if(!exists("out")) out = NULL
-	
-	return(out)
-
-	
-}
-
-# DB
 RMQuery <- function (con, statement) {
 	
 	sqliteQuickSQL(con, statement)
@@ -315,30 +50,30 @@ if(nrow(res) == 0) TRUE else
 } 
 
 .sqlAggregate <- function(fun){
- # list of sql aggregate functions
- # If fun is given checks for its existence else return the list of sqlite aggregate functions
+	 # list of sql aggregate functions
+	 # If fun is given checks for its existence else return the list of sqlite aggregate functions
 
-funs = list(avg      = "avg", 
-stdev         = "stdev",
-variance      = "variance",
-mode          = "mode",
-median        = "median",
-lower_quartile= "lower_quartile",
-upper_quartile= "upper_quartile",
-sum           = "total",
-max           = "max",
-min           = "min",
-count         = "count")
- 
-class(funs) = "simple.list"
+	funs = list(avg      = "avg", 
+	stdev         = "stdev",
+	variance      = "variance",
+	mode          = "mode",
+	median        = "median",
+	lower_quartile= "lower_quartile",
+	upper_quartile= "upper_quartile",
+	sum           = "total",
+	max           = "max",
+	min           = "min",
+	count         = "count")
+	 
+	class(funs) = "simple.list"
 
 
 
-if(missing(fun) )
- return(funs) else if
-	(fun%in%funs) return(TRUE) else
-			stop(x.Msg(sQuote(fun), "is not a known sqlite aggregate function!" ))
-	}
+	if(missing(fun) )
+	 return(funs) else if
+		(fun%in%funs) return(TRUE) else
+				stop(sQuote(fun), "is not a known sqlite aggregate function!")
+}
 
 .dbRemoveField <- function(con, table.name, col.name) {
 	

@@ -57,10 +57,10 @@ setMethod("rangeMapSave",
 		# CHECKS
 		biotab = paste(object@BIO, object@biotab, sep = "")
 			if(!.dbtable.exists(object@CON,biotab) ) 
-			stop(x.Msg( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname))))
+			stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
 		# object@biotrait should exist as a field in biotab
 		if(!.dbfield.exists(object@CON,biotab, object@biotrait) ) 
-			stop(x.Msg(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab))))
+			stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
 		# fun should  be known by sqlite	
 		.sqlAggregate(FUN)
 				
@@ -83,7 +83,7 @@ setMethod("rangeMapSave",
 		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		RMQuery(object@CON, paste("INSERT INTO" ,tableName, sql) )
 		
-		# out x.Msg
+	
 		return(.dbtable.exists(object@CON, tableName))
 			
 		
@@ -95,10 +95,10 @@ setMethod("rangeMapSave",
 		# CHECKS
 		biotab = paste(object@BIO, object@biotab, sep = "")
 			if(!.dbtable.exists(object@CON,biotab) ) 
-			stop(x.Msg( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname))))
+			stop( paste(sQuote(object@biotab), "is not a table of", sQuote(dbGetInfo(object@CON)$dbname)))
 		# object@biotrait should exist as a field in biotab
 		if(!.dbfield.exists(object@CON,biotab, object@biotrait) ) 
-			stop(x.Msg(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab))))
+			stop(paste(sQuote(object@biotrait), "is not a field of", sQuote(object@biotab)))
 		
 		# BIO_tab name
 		biotab = paste(object@BIO, object@biotab, sep = "")
@@ -114,7 +114,7 @@ setMethod("rangeMapSave",
 		d = RMQuery(object@CON, sql)
 		
 		if(nrow(d) == 0) {
-			stop(x.Msg( paste("The map is going to be empty! Maybe the bioid in", sQuote(object@biotab), " BIO table was wrongly set.") )) }
+			stop( paste("The map is going to be empty! Maybe the bioid in", sQuote(object@biotab), " BIO table was wrongly set.") ) }
 		
 		
 		# return list
@@ -145,7 +145,7 @@ setMethod("rangeMapSave",
 		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 		
-		#out x.Msg
+
 		return(.dbtable.exists(object@CON, tableName))
 			
 		}
@@ -174,7 +174,7 @@ setMethod("rangeMapSave",
 		RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 		dbWriteTable(object@CON, tableName, X, row.names = FALSE, append = TRUE)
 		
-		#out x.Msg
+
 		return(.dbtable.exists(object@CON, tableName))
 			
 		}
@@ -196,10 +196,10 @@ setMethod("rangeMapImport",
 	tableName = paste(object@MAP, object@tableName, sep = "")		
 		
 	cnv = canvas.fetch(object@CON)
-	x.Msg("Converting canvas to polygons...")
+	message("Converting canvas to polygons...")
 	cnv = rasterToPolygons(raster(cnv))
 	
-	x.Msg("Loading external MAP data...")
+	message("Loading external MAP data...")
 	rst = raster(object@path)
 		
 	# is there any other way to compare CRS-s ?	
@@ -207,25 +207,25 @@ setMethod("rangeMapImport",
 		warning(sQuote(filenam), " may have a different PROJ4 string;\n", "canvas:", CRSargs(CRS(proj4string(cnv))), "\n", filenam, ":", CRSargs(projection(rst, FALSE)) )
 	
 	rstp = as(as(rst, "SpatialGridDataFrame"), "SpatialPointsDataFrame") 
-	x.Msg("Extracting Layer 1...")
+	message("Extracting Layer 1...")
 	rstp = rstp[which(!is.na(rstp@data[,1])), ]
 	
 	rstp@data$ptid = as.numeric(rownames(rstp@data)) # add point id
 	
-	x.Msg(paste("Performing overlay: canvas polygons over", filenam, "...") )	
+	message(paste("Performing overlay: canvas polygons over", filenam, "...") )	
 	o = overlay(cnv, rstp) # #TODO change with over
 	o$ptid = as.numeric(rownames(o))
 
 	o = merge(o, rstp@data, by = "ptid")
 	o$ptid = NULL
 	
-	x.Msg("Agregating data...")
+	message("Agregating data...")
 	o = aggregate(o[, 2], list(o[,1]), FUN = FUN, na.rm = TRUE, ...)
 	
 	names(o) = c(object@ID, object@tableName) 
 
 	# build table and index
-	x.Msg("Creating table and indexes...")
+	message("Creating table and indexes...")
 	RMQuery(object@CON, paste("CREATE TABLE" ,tableName, "(", object@ID, "INTEGER,",object@tableName, "FLOAT)"))
 	RMQuery(object@CON, paste("CREATE INDEX", paste(tableName, "id", sep = "_") , "ON", tableName, "(id)") )
 	dbWriteTable(object@CON, tableName, o, row.names = FALSE, append = TRUE)
@@ -233,7 +233,7 @@ setMethod("rangeMapImport",
 	
 	res = .dbtable.exists(object@CON, tableName)
 	
-	if(res) x.Msg(paste(sQuote(basename(object@path)), "imported"))
+	if(res) message(paste(sQuote(basename(object@path)), "imported"))
 	
 	return(res)	
 							

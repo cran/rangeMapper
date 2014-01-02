@@ -71,9 +71,9 @@ rangeFetch <- function(rangeMap, bioid) {
 		res = SpatialPolygons(d, proj4string= p4s)
 
 		if(require(rgeos)) {
-			res = gUnionCascaded(res)
+			res = rgeos::gUnionCascaded(res)
 			} else
-			 warning('Adjacent SpatialPolygons cannot be dissolved, install rgeos and try again!')
+			 warning('rgeos is not available, adjacent SpatialPolygons cannot be dissolved!')
 		res	
 }
 

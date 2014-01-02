@@ -28,7 +28,7 @@ setMethod("rangeMapStart",
 				sqliteQuickSQL(CON, verSql)
 				}
 		
-			if(!object@overwrite && file.exists) stop(x.Msg(paste("File", object@file, "already exists!")))
+			if(!object@overwrite && file.exists) stop(paste("File", object@file, "already exists!"))
 		
 		   
 			} 
@@ -46,10 +46,10 @@ rangeMap.start <- function(...) {
 	obj = new("rangeMapStart", ... )
 	
 	rangeMapStart(obj)
-	x.Msg( paste("New session", Sys.time() ) , clearup = TRUE)
+	message( paste("New session", Sys.time() ) )
 	
 	
-	x.Msg(paste("PROJECT:", obj@file, "\nDIRECTORY:",obj@dir) )
+	message(paste("PROJECT:", obj@file, "\nDIRECTORY:",obj@dir) )
 	
 	f = paste(obj@dir, obj@file, sep = .Platform$file.sep)
 	
@@ -60,7 +60,7 @@ rangeMap.start <- function(...) {
 
 rangeMap.open <- function(path, verbose = TRUE) {
 	
-	x.Msg(clearup = TRUE)
+	stopifnot(file.exists(path))
 	
 	dbcon = dbConnect(dbDriver("SQLite"), dbname= path)
 	

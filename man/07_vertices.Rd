@@ -37,7 +37,8 @@ Valcu, M., Dale, J. and Kempenaers, B. (2012)  rangeMapper: A platform for the s
 \examples{
 require(rangeMapper)
 f = system.file(package = "rangeMapper", "extdata", "wrens", "vector")
-camgul = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)[6, ] # path to Campylorhynchus_gularis breeding range
+# path to Campylorhynchus_gularis breeding range:
+camgul = selectShpFiles(f, ogr = TRUE, polygons.only = TRUE)[6, ] 
 r = readOGR(camgul$dsn, camgul$layer)
 mp = vertices(r, mean)
 v = vertices(r)
