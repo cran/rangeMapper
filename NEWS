@@ -1,4 +1,8 @@
 
+Changes in version 0.2-6
+BUG FIXES
+    o   fixed a bug in bio.merge(). 
+
 Changes in version 0.2-4
 NEW FEATURES
 	o    The old tcltk GUI has been replaced with a GUI based on shiny.

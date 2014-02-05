@@ -1,6 +1,4 @@
 
-if(getRversion() >= '2.15.1') utils::globalVariables(c('dbcon')) 
-
 
 setGeneric("bioSave", function(object, ...)  	standardGeneric("bioSave") )
 
@@ -79,20 +77,20 @@ bio.merge <-  function(con, tableName, ...) {
 
 	if(length(dots) > 0) 
 	 btabs = paste(r@BIO, dots, sep = "") else
-	 btabs = RMQuery(dbcon, paste("select name from sqlite_master where type = 'table' and tbl_name like '", r@BIO,"%'", sep = ""))$name
+	 btabs = RMQuery(con, paste("select name from sqlite_master where type = 'table' and tbl_name like '", r@BIO,"%'", sep = ""))$name
 
-	ok = sapply(btabs, function(x) .dbtable.exists(dbcon, x) )
+	ok = sapply(btabs, function(x) .dbtable.exists(con, x) )
 
 	if(!all(ok)) 
 		stop(paste( dQuote(names(ok[!ok])), "is not a table of this rangeMapper project"))
 
-	ids = sapply(btabs, function(x) .extract.indexed(dbcon, x) )
+	ids = sapply(btabs, function(x) .extract.indexed(con, x) )
 
 	head = paste("(", paste(paste("SELECT DISTINCT",ids,"as", r@BIOID , "FROM",  names(ids)), collapse = " UNION "), ") as x")
 
 	colnames = unlist(lapply(btabs, 
 		function(x) { 
-			a = RMQuery(dbcon, paste("pragma table_info(" , shQuote(x),")" ))$name
+			a = RMQuery(con, paste("pragma table_info(" , shQuote(x),")" ))$name
 			alias = paste(a, gsub(r@BIO, "", x) , sep = "_" )
 			nm = paste(x, a,sep = "." )
 			paste(nm, alias, sep = " as ")		
@@ -107,7 +105,7 @@ bio.merge <-  function(con, tableName, ...) {
 
 	sqls = paste("create table", tableName,  "as", colnames, "FROM", head,  paste(joins, collapse = " " ))
 	# make table
-	res = RMQuery(dbcon, sqls)
+	res = RMQuery(con, sqls)
 	
 	# add index
 	RMQuery(r@CON,( paste("CREATE  INDEX", paste(tableName, r@BIOID, sep = "_") , "ON", tableName ,  "(", r@BIOID ,")") ) )

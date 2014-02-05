@@ -89,12 +89,12 @@ setClass("rangeMap",
 				  .dbtable.exists(object@CON, object@CANVAS),
 				  .dbtable.exists(object@CON, object@RANGES) ) ) stop ("Corrupt rangeMapper project!")
 		
-		projVer = try(sqliteQuickSQL(object@CON, paste("SELECT * FROM", object@VERSION) )$ver, silent = TRUE)
-		if(inherits(projVer, "try-error")) projVer = "0.0-0"
+		# projVer = try(sqliteQuickSQL(object@CON, paste("SELECT * FROM", object@VERSION) )$ver, silent = TRUE)
+		# if(inherits(projVer, "try-error")) projVer = "0.0-0"
 		
-		curVer  = packageDescription("rangeMapper")$Version 		
-		if(compareVersion(curVer,  projVer) == 1)
-			warning("The project was created with a previous version of rangeMapper, some functions may not work!")
+		# curVer  = packageDescription("rangeMapper")$Version 		
+		# if(compareVersion(curVer,  projVer) == 1)
+			# message("This project was created with rangeMapper ", projVer)
 		
 		}	
 	)
