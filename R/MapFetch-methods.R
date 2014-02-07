@@ -1,4 +1,8 @@
 
+
+# 2013-Nov-21 10:09:39
+
+
 setGeneric("rangeMapFetch", function(object, ...) 					standardGeneric("rangeMapFetch") )
 
 setMethod("rangeMapFetch",  
