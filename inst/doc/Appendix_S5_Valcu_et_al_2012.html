@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+<meta name="author" content="Mihai Valcu" />
+
+<meta name="date" content="2016-01-01" />
+
+<title>Case study 4: The influence of range size on the relationship between species richness and body size</title>
+
+
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+
+
+<link href="data:text/css,body%20%7B%0A%20%20background%2Dcolor%3A%20%23fff%3B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20max%2Dwidth%3A%20700px%3B%0A%20%20overflow%3A%20visible%3B%0A%20%20padding%2Dleft%3A%202em%3B%0A%20%20padding%2Dright%3A%202em%3B%0A%20%20font%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0A%20%20font%2Dsize%3A%2014px%3B%0A%20%20line%2Dheight%3A%201%2E35%3B%0A%7D%0A%0A%23header%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0A%0A%23TOC%20%7B%0A%20%20clear%3A%20both%3B%0A%20%20margin%3A%200%200%2010px%2010px%3B%0A%20%20padding%3A%204px%3B%0A%20%20width%3A%20400px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20border%2Dradius%3A%205px%3B%0A%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20font%2Dsize%3A%2013px%3B%0A%20%20line%2Dheight%3A%201%2E3%3B%0A%7D%0A%20%20%23TOC%20%2Etoctitle%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%20%20font%2Dsize%3A%2015px%3B%0A%20%20%20%20margin%2Dleft%3A%205px%3B%0A%20%20%7D%0A%0A%20%20%23TOC%20ul%20%7B%0A%20%20%20%20padding%2Dleft%3A%2040px%3B%0A%20%20%20%20margin%2Dleft%3A%20%2D1%2E5em%3B%0A%20%20%20%20margin%2Dtop%3A%205px%3B%0A%20%20%20%20margin%2Dbottom%3A%205px%3B%0A%20%20%7D%0A%20%20%23TOC%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dleft%3A%20%2D2em%3B%0A%20%20%7D%0A%20%20%23TOC%20li%20%7B%0A%20%20%20%20line%2Dheight%3A%2016px%3B%0A%20%20%7D%0A%0Atable%20%7B%0A%20%20margin%3A%201em%20auto%3B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dcolor%3A%20%23DDDDDD%3B%0A%20%20border%2Dstyle%3A%20outset%3B%0A%20%20border%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0A%20%20border%2Dwidth%3A%202px%3B%0A%20%20padding%3A%205px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0A%20%20border%2Dwidth%3A%201px%3B%0A%20%20border%2Dstyle%3A%20inset%3B%0A%20%20line%2Dheight%3A%2018px%3B%0A%20%20padding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0A%20%20border%2Dleft%2Dstyle%3A%20none%3B%0A%20%20border%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Ap%20%7B%0A%20%20margin%3A%200%2E5em%200%3B%0A%7D%0A%0Ablockquote%20%7B%0A%20%20background%2Dcolor%3A%20%23f6f6f6%3B%0A%20%20padding%3A%200%2E25em%200%2E75em%3B%0A%7D%0A%0Ahr%20%7B%0A%20%20border%2Dstyle%3A%20solid%3B%0A%20%20border%3A%20none%3B%0A%20%20border%2Dtop%3A%201px%20solid%20%23777%3B%0A%20%20margin%3A%2028px%200%3B%0A%7D%0A%0Adl%20%7B%0A%20%20margin%2Dleft%3A%200%3B%0A%7D%0A%20%20dl%20dd%20%7B%0A%20%20%20%20margin%2Dbottom%3A%2013px%3B%0A%20%20%20%20margin%2Dleft%3A%2013px%3B%0A%20%20%7D%0A%20%20dl%20dt%20%7B%0A%20%20%20%20font%2Dweight%3A%20bold%3B%0A%20%20%7D%0A%0Aul%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%7D%0A%20%20ul%20li%20%7B%0A%20%20%20%20list%2Dstyle%3A%20circle%20outside%3B%0A%20%20%7D%0A%20%20ul%20ul%20%7B%0A%20%20%20%20margin%2Dbottom%3A%200%3B%0A%20%20%7D%0A%0Apre%2C%20code%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20color%3A%20%23333%3B%0A%7D%0Apre%20%7B%0A%20%20white%2Dspace%3A%20pre%2Dwrap%3B%20%20%20%20%2F%2A%20Wrap%20long%20lines%20%2A%2F%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20margin%3A%205px%200px%2010px%200px%3B%0A%20%20padding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0A%20%20background%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0A%0Acode%20%7B%0A%20%20font%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0A%20%20font%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0A%20%20padding%3A%202px%200px%3B%0A%7D%0A%0Adiv%2Efigure%20%7B%0A%20%20text%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0A%20%20background%2Dcolor%3A%20%23FFFFFF%3B%0A%20%20padding%3A%202px%3B%0A%20%20border%3A%201px%20solid%20%23DDDDDD%3B%0A%20%20border%2Dradius%3A%203px%3B%0A%20%20border%3A%201px%20solid%20%23CCCCCC%3B%0A%20%20margin%3A%200%205px%3B%0A%7D%0A%0Ah1%20%7B%0A%20%20margin%2Dtop%3A%200%3B%0A%20%20font%2Dsize%3A%2035px%3B%0A%20%20line%2Dheight%3A%2040px%3B%0A%7D%0A%0Ah2%20%7B%0A%20%20border%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20padding%2Dbottom%3A%202px%3B%0A%20%20font%2Dsize%3A%20145%25%3B%0A%7D%0A%0Ah3%20%7B%0A%20%20border%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0A%20%20padding%2Dtop%3A%2010px%3B%0A%20%20font%2Dsize%3A%20120%25%3B%0A%7D%0A%0Ah4%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0A%20%20margin%2Dleft%3A%208px%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Ah5%2C%20h6%20%7B%0A%20%20border%2Dbottom%3A%201px%20solid%20%23ccc%3B%0A%20%20font%2Dsize%3A%20105%25%3B%0A%7D%0A%0Aa%20%7B%0A%20%20color%3A%20%230033dd%3B%0A%20%20text%2Ddecoration%3A%20none%3B%0A%7D%0A%20%20a%3Ahover%20%7B%0A%20%20%20%20color%3A%20%236666ff%3B%20%7D%0A%20%20a%3Avisited%20%7B%0A%20%20%20%20color%3A%20%23800080%3B%20%7D%0A%20%20a%3Avisited%3Ahover%20%7B%0A%20%20%20%20color%3A%20%23BB00BB%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%20%20a%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0A%20%20%20%20text%2Ddecoration%3A%20underline%3B%20%7D%0A%0A%2F%2A%20Class%20described%20in%20https%3A%2F%2Fbenjeffrey%2Ecom%2Fposts%2Fpandoc%2Dsyntax%2Dhighlighting%2Dcss%0A%20%20%20Colours%20from%20https%3A%2F%2Fgist%2Egithub%2Ecom%2Frobsimmons%2F1172277%20%2A%2F%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Keyword%20%2A%2F%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%2F%2A%20DataType%20%2A%2F%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%2F%2A%20DecVal%20%28decimal%20values%29%20%2A%2F%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20BaseN%20%2A%2F%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Float%20%2A%2F%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20Char%20%2A%2F%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%2F%2A%20String%20%2A%2F%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%2F%2A%20Comment%20%2A%2F%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%2F%2A%20OtherToken%20%2A%2F%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20AlertToken%20%2A%2F%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%2F%2A%20Function%20calls%20%2A%2F%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%2F%2A%20ErrorTok%20%2A%2F%0A%0A" rel="stylesheet" type="text/css" />
+
+</head>
+
+<body>
+
+
+
+<div id="header">
+<h1 class="title">Case study 4: The influence of range size on the relationship between species richness and body size</h1>
+<h4 class="author"><em>Mihai Valcu</em></h4>
+<h4 class="date"><em>2016-01-01</em></h4>
+</div>
+
+
+<div id="appendix-s5" class="section level2">
+<h2>Appendix S5</h2>
+<p>Supporting information in <em>Valcu, M., Dale, J., and Kempenaers, B. (2012). rangeMapper: a platform for the study of macroecology of life-history traits. Global Ecology and Biogeography 21, 945-951.</em></p>
+<p>The example shown here is run on the wrens dataset which is part of the package. The wrens dataset has 84 species while the case study presented in the paper was run on 8434 bird species. Therefore both the settings and the results shown below are not identical with the results presented in <em>Valcu et al 2012</em>.</p>
+<div id="project-set-up" class="section level3">
+<h3>Project Set Up</h3>
+<pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rangeMapper)
+breding_ranges =<span class="st"> </span>rgdal::<span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,
+     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
+<span class="kw">data</span>(wrens)
+d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )
+con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> <span class="dv">1</span>, <span class="dt">spdf =</span> breding_ranges,
+             <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,<span class="dt">metadata =</span> <span class="kw">rangeTraits</span>()[<span class="st">'Area'</span>],
+             <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</code></pre>
+<pre><code>## New session 2016-01-01 17:40:12
+## PROJECT: wrens.sqlite 
+## DIRECTORY: /tmp/RtmpQXAmRj
+## Bounding box uploaded.PROJ4STRING set to +proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0
+## Grid size set to 1 map units.
+## Canvas uploaded.
+## Writing to project.
+## 84 ranges updated; Elapsed time: 1.2 secs
+## Extracting metadata...
+## Table biotab saved as a  BIO_ table
+## +______________+
+## class            rangeMap
+## Project_location /tmp/RtmpQXAmRj/wrens.sqlite
+## SQLite_version   3.8.6
+## Proj4            +proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0
+## CellSize         1
+## Extent           xmin=-164.8716,xmax=-34.60225,ymin=-55.72056,ymax=61.5632
+## BIO_tables       biotab
+## MAP_tables       species_richness
+## METADATA_RANGES  Area
+## +______________+</code></pre>
+<p>Range size classes</p>
+<pre class="sourceCode r"><code class="sourceCode r">mt =<span class="st"> </span>RSQLite::<span class="kw">dbReadTable</span>(con, <span class="st">&quot;metadata_ranges&quot;</span>)
+
+Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt$Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )
+rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">area =</span> <span class="kw">exp</span>(Q), <span class="dt">quant =</span>  <span class="kw">gsub</span>(<span class="st">&quot;%&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(Q)) )</code></pre>
+</div>
+<div id="run-log10median_body_mass-sqrtspecies_richness-regression-for-each-range-size-interval" class="section level3">
+<h3>Run <code>log10(median_body_mass) ~ sqrt(species_richness)</code> regression for each range size interval</h3>
+<pre class="sourceCode r"><code class="sourceCode r">W =<span class="st"> </span><span class="dv">4</span>   <span class="co"># size of the moving window</span>
+
+output =<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(rangeA))
+<span class="kw">names</span>(output) =<span class="st"> </span>rangeA$quant
+
+for(i in <span class="kw">seq</span>(<span class="dv">1</span>:(<span class="kw">nrow</span>(rangeA) -<span class="st"> </span>W) ) ) {
+
+  <span class="co"># Define  map subset</span>
+  area_subset =<span class="kw">list</span>(<span class="dt">metadata_ranges =</span> <span class="kw">paste</span>(<span class="st">&quot;Area between&quot;</span>,  rangeA[i,<span class="st">&quot;area&quot;</span>],
+  <span class="st">&quot;and&quot;</span>, rangeA[i+W,<span class="st">&quot;area&quot;</span>]))
+
+  <span class="co"># Save map</span>
+  <span class="kw">rangeMap.save</span>(con, <span class="dt">subset =</span> area_subset , <span class="dt">biotab =</span> <span class="st">&quot;biotab&quot;</span>,
+  <span class="dt">biotrait =</span> <span class="st">&quot;body_mass&quot;</span>, <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">tableName =</span> <span class="st">&quot;median_body_mass&quot;</span>,
+  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
+
+  <span class="co"># Fetch map</span>
+  m =<span class="st"> </span><span class="kw">rangeMap.fetch</span>( con, <span class="kw">c</span>(<span class="st">&quot;species_richness&quot;</span>, <span class="st">&quot;median_body_mass&quot;</span>), <span class="dt">spatial =</span> <span class="ot">FALSE</span> )
+
+  <span class="co"># Perform OLS regression</span>
+  <span class="co"># NOTE: In order to perform a spatial simultaneous autoregressive error</span>
+   <span class="co"># regression</span>
+  <span class="co">#  see 'errorsarlm ' function and the auxiliary neighbours list functions in</span>
+   <span class="co"># 'spdep' package.</span>
+  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) ~<span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)
+
+  output[[i]] =<span class="st">  </span>fm
+
+}
+
+output =<span class="st"> </span>output[!<span class="kw">sapply</span>(output, is.null)]</code></pre>
+</div>
+<div id="extract-regression-parameters-and-plot" class="section level3">
+<h3>Extract Regression Parameters and plot</h3>
+<pre class="sourceCode r"><code class="sourceCode r">X =<span class="st"> </span><span class="kw">lapply</span>(output, function(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],
+        <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>], <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>]) )
+X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)
+X$rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))
+
+<span class="co"># Plot</span>
+
+<span class="kw">require</span>(ggplot2)
+
+<span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) +
+<span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) +
+<span class="st">    </span><span class="kw">geom_line</span>() +
+<span class="st">    </span><span class="kw">geom_point</span>() +
+<span class="st">    </span><span class="kw">theme_bw</span>()</code></pre>
+<p><img src="data:image/png;base64,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" /></p>
+</div>
+</div>
+
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
