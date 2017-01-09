@@ -1,15 +1,15 @@
 Package: rangeMapper
-Version: 0.3-0
+Version: 0.3-1
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
     person("Joan", "Maspons", role = "ctb")
     )
-Title: A Platform for the Study of Macroecology of Life History Traits
-Depends: R (>= 3.0.0)
-Imports: methods, sp, rgdal, RSQLite(>= 1.0.0), rgeos, raster,
-        maptools, gridExtra, lattice, ggplot2, RColorBrewer, classInt,
-        magrittr, data.table, foreach
+Title: A Platform for the Study of Macro-Ecology of Life History Traits
+Depends: R (>= 3.0.0), RSQLite(>= 1.0.0)
+Imports: methods, sp, rgdal, rgeos, raster, maptools, gridExtra,
+        lattice, ggplot2, RColorBrewer, classInt, magrittr, data.table,
+        foreach
 Suggests: shiny (>= 0.8.0), doParallel, testthat, knitr, rmarkdown,
         MASS
 Description: Tools for easy generation of (life-history) traits maps based on
@@ -27,10 +27,10 @@ Collate: 'AAA.R' 'AllClasses.R' 'GUI.R' 'MapCanvas-methods.R'
         'utils-spatial.R' 'utils.R'
 VignetteBuilder: knitr
 NeedsCompilation: no
-Packaged: 2016-01-03 20:13:17 UTC; mihai
+Packaged: 2017-01-09 08:16:00 UTC; mihai
 Author: Mihai Valcu [aut, cre],
   James Dale [aut],
   Joan Maspons [ctb]
 Maintainer: Mihai Valcu <valcu@orn.mpg.de>
 Repository: CRAN
-Date/Publication: 2016-01-03 22:28:14
+Date/Publication: 2017-01-09 10:00:32

@@ -28,7 +28,7 @@ P_richness = 0.75 # species richness probability
 P_endemics = 0.35 # endemic species richness probability
 
 ## ------------------------------------------------------------------------
-# 1) Save the species richeness (SR) map
+# 1) Save the species richness (SR) map
 rangeMap.save(dbcon, tableName = "species_richness")
 
 # 2) Fetch the SR map and find the SR value corresponding with the probability
@@ -42,8 +42,8 @@ rangeMap.save(dbcon, tableName = "species_richness_hotspots",
         paste("species_richness >=", sr_threshold)) )
 
 ## ------------------------------------------------------------------------
-# 1) Save endemics species richnes map
-es = RSQLite::dbGetQuery(dbcon, "select Area from metadata_ranges")
+# 1) Save endemics species richness map
+es = dbGetQuery(dbcon, "select Area from metadata_ranges")
 es_threshold = quantile(es$Area, probs = P_endemics, na.rm = TRUE)
 
 rangeMap.save(dbcon, tableName = "endemics_spRichness",subset =

@@ -52,7 +52,7 @@ test_that("ONE SpPolyDF WITH metadata", {
 
 	expect_that(rangeMap.fetch(dbcon, spatial = FALSE) , is_a("data.table") )
 
-	expect_more_than(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
+	expect_gt(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
 
 	})
 
@@ -76,28 +76,28 @@ test_that("MULTIPLE SpPolyDF-s WITH metadata", {
 
 	expect_that(rangeMap.fetch(dbcon, spatial = FALSE) , is_a("data.table") )
 
-	expect_more_than(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
+	expect_gt(nrow( dbGetQuery(dbcon, 'SELECT * from metadata_ranges') ), 0 )
 
 	})
 
-# !! testthat.R hung when run with R cmd check
-# test_that("Parallel", {
+# R CMD check hangs
+# test_that("Process Ranges works parallel", {
 #
-# 	require(doParallel)
-# 	cl = makePSOCKcluster(2)
-# 	registerDoParallel(cl)
+#  	require(doParallel)
+#  	cl = makePSOCKcluster(2)
+#  	registerDoParallel(cl)
 #
-# 	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
-# 	global.bbox.save(con = dbcon, bbox = r)
-# 	gridSize.save(dbcon, gridSize = 10)
-# 	canvas.save(dbcon)
-# 	processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
+#  	dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
+#  	global.bbox.save(con = dbcon, bbox = r)
+#  	gridSize.save(dbcon, gridSize = 10)
+#  	canvas.save(dbcon)
+#  	processRanges(con = dbcon, spdf = r, ID = "sci_name", metadata = rangeTraits() )
 #
-# 	stopCluster(cl)
-# 	registerDoSEQ()
+#  	stopCluster(cl)
+#  	registerDoSEQ()
 #
-# 	})
-#
+#  	})
+
 
 
 

@@ -3,7 +3,7 @@
 #' @param con       a \code{connection} object.
 #' @param spdf    	\code{\link[sp]{SpatialPolygonsDataFrame}} object containing all the ranges.
 #' @param dir     	ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.
-#' @param ID      	when spdf is set this is a \code{character} vector given the name of the range.
+#' @param ID      	a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).
 #' @param metadata 	a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.
 #' @note            if a parallel backend is registered with the \code{foreach} package then \code{processRanges} runs in parallel.
 #' @export
@@ -13,7 +13,8 @@
 #'\dontrun{
 #' if (require(doParallel) ) {
 #'  cl = makePSOCKcluster(2)
-#'  registerDoParallel(cl) }
+#'  registerDoParallel(cl)
+#'  }
 #' }
 #'
 #' dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
@@ -35,17 +36,22 @@ setGeneric("processRanges",
 #' @describeIn  processRanges Method 1: One SpatialPolygonsDataFrame containing all the ranges. No metadata.
 setMethod("processRanges",
 	signature = c(con        = "SQLiteConnection",
-				 spdf        = "SpatialPolygonsDataFrame",
-				 dir         = "missing",
-				 ID          = "character",
-				 metadata    = "missing"),
+							 spdf        = "SpatialPolygonsDataFrame",
+							 dir         = "missing",
+							 ID          = "character",
+							 metadata    = "missing"),
 	definition = function(con, spdf, ID,  metadata){
 
 	Startprocess = Sys.time()
 	# ini
-		`%trypar%` = if(getDoParRegistered() && getDoParWorkers() > 1) `%dopar%` else `%do%`
+		DoPar = getDoParRegistered() && getDoParWorkers() > 1
+		`%trypar%` = if(DoPar) `%dopar%` else `%do%`
 		ranges.exists(con)
 		rmo = new("rangeMap", CON = con)
+
+		td = tempfile('processRanges_')
+		dir.create(td)
+		wd = getwd()
 
 	# Elements
 		cnv = canvas.fetch(con) %>% as(., "SpatialPointsDataFrame")
@@ -60,19 +66,28 @@ setMethod("processRanges",
 			}
 
 	# range over canvas
-		roc = foreach(i = spdf$ID, .packages = c('sp'), .combine = rbind) %trypar% {
+		message("Performing ", if(DoPar) 'parallel' else 'serial', " range overlay... ", 'In case something goes wrong check', td)
+		if(DoPar)
+		 message("In a Linux environment you can run e.g. ", dQuote(paste('while sleep 1; do ls',td  ,'-f |wc -l; done')), ' to follow progress.'  )
+
+		foreach(i = as.character(spdf$ID) , .packages = c('rangeMapper') ) %trypar% {
  			spi  = spdf[spdf$ID == i, ]
- 			nami = spi$ID[1]
- 			rangeOverlay( spi , cnv, nami)
+ 			oi   = rangeOverlay( spi , cnv, i)
+ 			setwd(td)
+ 			write.table(oi, file = i , sep = ",", quote = FALSE, row.names = FALSE)
 			}
 
+		setwd(wd)
+
 	# db update
-		message("Writing to project.")
-		res = dbWriteTable(con, rmo@RANGES, roc, append = TRUE, row.names = FALSE)
+		message("Writing overlay output to project...")
 
+		inc = list.files(td, full.names = TRUE)
 
-		if(res) message(paste(length(unique(spdf$ID)) , "ranges updated; Elapsed time:",
-						round(difftime(Sys.time(), Startprocess, units = "secs"),1), "secs") )
+		res = sapply(inc, FUN = function(f)  dbWriteTable(con, rmo@RANGES, fread(f), append = TRUE, row.names = FALSE) )
+
+		if(any(res)) message(sum(res), " out of ", length(spdf$ID) , " ranges updated; Elapsed time: ",
+						round(difftime(Sys.time(), Startprocess, units = "mins"),1), " mins")
 
 	})
 

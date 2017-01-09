@@ -33,7 +33,7 @@ processRanges(con, spdf, dir, ID, metadata)
 
 \item{dir}{ranges file directory where the individual ranges shp files are located. In this case the range ID is the file name.}
 
-\item{ID}{when spdf is set this is a \code{character} vector given the name of the range.}
+\item{ID}{a character vector of length one. An \code{spdf} column name indicating the range ID (e.g. species name).}
 
 \item{metadata}{a named list of functions. See \code{\link{rangeTraits}} and \code{\link{metadata.update}}.}
 }
@@ -59,7 +59,8 @@ require(rgdal)
 \dontrun{
 if (require(doParallel) ) {
  cl = makePSOCKcluster(2)
- registerDoParallel(cl) }
+ registerDoParallel(cl)
+ }
 }
 
 dbcon = rangeMap.start(file = "wrens.sqlite", dir = tempdir(), overwrite = TRUE)
