@@ -4,7 +4,7 @@
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 
@@ -12,7 +12,7 @@
 
 <meta name="author" content="Mihai Valcu" />
 
-<meta name="date" content="2016-10-12" />
+<meta name="date" content="2018-05-17" />
 
 <title>Case study 4: The influence of range size on the relationship between species richness and body size</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Case study 4: The influence of range size on the relationship between species richness and body size</h1>
 <h4 class="author"><em>Mihai Valcu</em></h4>
-<h4 class="date"><em>2016-10-12</em></h4>
+<h4 class="date"><em>2018-05-17</em></h4>
 
 
 
@@ -81,26 +81,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="project-set-up" class="section level3">
 <h3>Project Set Up</h3>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rangeMapper)
-breding_ranges =<span class="st"> </span>rgdal::<span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,
+breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,
      <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 <span class="kw">data</span>(wrens)
 d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )
 con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> <span class="dv">1</span>, <span class="dt">spdf =</span> breding_ranges,
              <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,<span class="dt">metadata =</span> <span class="kw">rangeTraits</span>()[<span class="st">'Area'</span>],
              <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## New session 2016-10-12 21:32:34</code></pre>
+<pre><code>## New session 2018-05-17 11:51:32</code></pre>
 <pre><code>## PROJECT: wrens.sqlite 
-## DIRECTORY: /tmp/RtmpFA9qpD</code></pre>
+## DIRECTORY: /tmp/RtmpKpi3Rm</code></pre>
 <pre><code>## Grid size set to 1 map units.</code></pre>
 <pre><code>## Canvas uploaded.</code></pre>
-<pre><code>## Performing serial range overlay... In case something goes wrong check/tmp/RtmpFA9qpD/processRanges_3489429651c</code></pre>
+<pre><code>## Performing serial range overlay... In case something goes wrong check/tmp/RtmpKpi3Rm/processRanges_65df67409ef6</code></pre>
 <pre><code>## Writing overlay output to project...</code></pre>
 <pre><code>## 84 out of 84 ranges updated; Elapsed time: 0 mins</code></pre>
 <pre><code>## Extracting metadata...</code></pre>
 <pre><code>## Table biotab saved as a  BIO_ table</code></pre>
 <pre><code>## +______________+</code></pre>
 <pre><code>## class            rangeMap
-## Project_location /tmp/RtmpFA9qpD/wrens.sqlite
+## Project_location /tmp/RtmpKpi3Rm/wrens.sqlite
 ## Proj4            +proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0
 ## CellSize         1
 ## Extent           xmin=-164.8716,xmax=-34.60225,ymin=-55.72056,ymax=61.5632
@@ -111,7 +111,7 @@ con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quo
 <p>Range size classes</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt =<span class="st"> </span><span class="kw">dbReadTable</span>(con, <span class="st">&quot;metadata_ranges&quot;</span>)
 
-Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt$Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )
+Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt<span class="op">$</span>Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )
 rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">area =</span> <span class="kw">exp</span>(Q), <span class="dt">quant =</span>  <span class="kw">gsub</span>(<span class="st">&quot;%&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(Q)) )</code></pre></div>
 </div>
 <div id="run-log10median_body_mass-sqrtspecies_richness-regression-for-each-range-size-interval" class="section level3">
@@ -119,13 +119,13 @@ rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class=
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">W =<span class="st"> </span><span class="dv">4</span>   <span class="co"># size of the moving window</span>
 
 output =<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(rangeA))
-<span class="kw">names</span>(output) =<span class="st"> </span>rangeA$quant
+<span class="kw">names</span>(output) =<span class="st"> </span>rangeA<span class="op">$</span>quant
 
-for(i in <span class="kw">seq</span>(<span class="dv">1</span>:(<span class="kw">nrow</span>(rangeA) -<span class="st"> </span>W) ) ) {
+<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(rangeA) <span class="op">-</span><span class="st"> </span>W) ) ) {
 
   <span class="co"># Define  map subset</span>
   area_subset =<span class="kw">list</span>(<span class="dt">metadata_ranges =</span> <span class="kw">paste</span>(<span class="st">&quot;Area between&quot;</span>,  rangeA[i,<span class="st">&quot;area&quot;</span>],
-  <span class="st">&quot;and&quot;</span>, rangeA[i+W,<span class="st">&quot;area&quot;</span>]))
+  <span class="st">&quot;and&quot;</span>, rangeA[i<span class="op">+</span>W,<span class="st">&quot;area&quot;</span>]))
 
   <span class="co"># Save map</span>
   <span class="kw">rangeMap.save</span>(con, <span class="dt">subset =</span> area_subset , <span class="dt">biotab =</span> <span class="st">&quot;biotab&quot;</span>,
@@ -136,35 +136,35 @@ for(i in <span class="kw">seq</span>(<span class="dv">1</span>:(<span class="kw"
   m =<span class="st"> </span><span class="kw">rangeMap.fetch</span>( con, <span class="kw">c</span>(<span class="st">&quot;species_richness&quot;</span>, <span class="st">&quot;median_body_mass&quot;</span>), <span class="dt">spatial =</span> <span class="ot">FALSE</span> )
 
   <span class="co"># Perform OLS regression</span>
-  <span class="co"># NOTE: In order to perform a spatial simultaneous autoregressive error</span>
+  <span class="co"># </span><span class="al">NOTE</span><span class="co">: In order to perform a spatial simultaneous autoregressive error</span>
    <span class="co"># regression</span>
   <span class="co">#  see 'errorsarlm ' function and the auxiliary neighbours list functions in</span>
    <span class="co"># 'spdep' package.</span>
-  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) ~<span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)
+  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)
 
   output[[i]] =<span class="st">  </span>fm
 
 }
 
-output =<span class="st"> </span>output[!<span class="kw">sapply</span>(output, is.null)]</code></pre></div>
+output =<span class="st"> </span>output[<span class="op">!</span><span class="kw">sapply</span>(output, is.null)]</code></pre></div>
 </div>
 <div id="extract-regression-parameters-and-plot" class="section level3">
 <h3>Extract Regression Parameters and plot</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X =<span class="st"> </span><span class="kw">lapply</span>(output, function(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X =<span class="st"> </span><span class="kw">lapply</span>(output, <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],
         <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>], <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>]) )
 X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)
-X$rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))
+X<span class="op">$</span>rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))
 
 <span class="co"># Plot</span>
 
 <span class="kw">require</span>(ggplot2)
 
-<span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) +
-<span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) +
-<span class="st">    </span><span class="kw">geom_line</span>() +
-<span class="st">    </span><span class="kw">geom_point</span>() +
+<span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
+<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
 <span class="st">    </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 
@@ -175,7 +175,7 @@ X$rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span c
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

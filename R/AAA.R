@@ -4,7 +4,7 @@
     }
 
 # data.table, foreach, rangeMapExport 'values'
-utils::globalVariables(c('i', '.', 'value', 'CON'))
+utils::globalVariables(c('i', '.', ':=', 'value', 'CON'))
 
 #' @import sp methods RSQLite lattice ggplot2 parallel
 NULL
@@ -27,7 +27,7 @@ NULL
 #' @importFrom foreach foreach %do% %dopar% getDoParRegistered getDoParWorkers
 NULL
 
-#' @importFrom data.table data.table setDT setattr melt set fread
+#' @importFrom data.table data.table setDT setattr melt set fread setnames
 NULL
 
 #' @importFrom rgeos gUnionCascaded readWKT

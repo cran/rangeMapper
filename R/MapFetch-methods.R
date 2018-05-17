@@ -11,7 +11,7 @@ as.rmap.frame <-function(x, ...) {
 #' @param p4s      proj4string
 #' @param gridSize grid size
 #' @param bbox     global bounding box, a list  with x and y
-#' @param \dots    extra argumnents
+#' @param \dots    extra arguments
 #' @export
 #' @return         an rmap.frame object which inherits
 #'                 from \code{\link[data.table]{data.table}}
@@ -34,26 +34,36 @@ setMethod("rangeMapFetch",
     	#build tableName(s)
 		mapNam = paste(object@MAP, object@tableName, sep = "")
 
-		# map variable
-		mapvar = sapply(mapNam, function(x)
-					setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
-		# sql string
-		dotid = paste('x', 1:length(mapNam), sep = "")
-		mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
+		# mapvar = sapply(mapNam, function(x)setdiff(dbGetQuery(object@CON, paste("pragma table_info(", x, ")"))$name, object@ID ) )
+		# sql string: replace with merge to avoid https://github.com/r-dbi/RSQLite/issues/65
+		#dotid = paste('x', 1:length(mapNam), sep = "")
+		#mapdat = paste(paste(paste(dotid,mapvar, sep = "."), object@tableName, sep = " as "), collapse = ",")
+		#sql = paste("SELECT c.x, c.y,", mapdat,
+		#"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
+		# x   = dbGetQuery(object@CON, sql)
+		# x = setDT(x)
 
-		sql = paste("SELECT c.x, c.y,", mapdat,
-		"from canvas as c LEFT JOIN",paste(paste(mapNam, dotid, "on c.id = ", dotid, ".id"), collapse = " LEFT JOIN "))
+		# canvas
+		M = dbReadTable(object@CON, object@CANVAS) %>% data.table
+		
+		# add variables to canvas
+		for( i in 1:length(mapNam)) {
+			v = dbReadTable(object@CON, mapNam[i]) %>% data.table
+			setnames(v,  setdiff(names(v), object@ID)  ,  gsub('MAP_', '',mapNam[i])  )
+			M = merge(M, v, by = object@ID, all.x = TRUE, sort = FALSE)
+			}
+		M[, (object@ID):=NULL] 		
+
+
 
 
 		# elements
-		x   = dbGetQuery(object@CON, sql)
 		p4s = dbReadTable(object@CON, object@PROJ4STRING)[1,1]
 		grd = gridSize.fetch(object@CON)
 		bbx = global.bbox.fetch(object@CON) %>% vertices %>% coordinates %>% data.frame %>% as.list
 
 		# rmap.frame
-		x = setDT(x)
-		as.rmap.frame(x, p4s = p4s, gridSize = grd, bbox = bbx)
+		as.rmap.frame(M, p4s = p4s, gridSize = grd, bbox = bbx)
 
 
 		}
@@ -66,7 +76,7 @@ setMethod("rangeMapFetch",
 #' @param maps    map(s) name as character vector. If missing then all the maps are returned.
 #' @param spatial If TRUE (default) a \code{SpatialPixelsRangeMap} is returned, else a \code{rmap.frame}.
 #' @return        an object of SpatialPixelsRangeMap or \code{data.table}  containing the spatial coordinates
-#'                and \code{proj4} string as an atribute if \code{spatial = FALSE}.
+#'                and \code{proj4} string as an attribute if \code{spatial = FALSE}.
 #' @export
 rangeMap.fetch <- function(con, maps, spatial = TRUE) {
 	if(missing(maps)) maps = dbGetQuery(con, 'select name from sqlite_master where type = "table" and tbl_name like "MAP_%"')$name

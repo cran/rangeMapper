@@ -127,11 +127,11 @@ setMethod("processRanges",
 				switch(x, double = 'NUMERIC',
 						 integer = 'INTEGER',
 						 logical = 'INTEGER',
-						 varchar = 'TEXT') )
+						 character = 'TEXT') )
 		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
 
 		# prepare metadata table
-		sapply(st$sql, dbGetQuery, conn =  con)
+		sapply(st$sql, dbExecute, conn =  con)
 		# save
 		dbWriteTable(con, rmo@METADATA_RANGES, rtr, append = TRUE, row.names = FALSE)
 
@@ -216,11 +216,11 @@ setMethod("processRanges",
 				switch(x, double = 'NUMERIC',
 						 integer = 'INTEGER',
 						 logical = 'INTEGER',
-						 varchar = 'TEXT') )
+						 character = 'TEXT') )
 		st$sql = paste("ALTER TABLE metadata_ranges ADD COLUMN", st$cols, st$sqltypes)
 
 		# prepare metadata table
-		sapply(st$sql, dbGetQuery, conn =  con)
+		sapply(st$sql, dbExecute, conn =  con)
 		# save 1st range metadata
 		dbWriteTable(con, rmo@METADATA_RANGES, rtr1, append = TRUE, row.names = FALSE)
 
