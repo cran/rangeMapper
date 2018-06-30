@@ -1,5 +1,5 @@
 Package: rangeMapper
-Version: 0.3-3
+Version: 0.3-4
 Authors@R: c(
     person("Mihai", "Valcu", ,"valcu@orn.mpg.de", c("aut", "cre")),
     person("James", "Dale", , "J.Dale@massey.ac.nz", "aut"),
@@ -28,10 +28,10 @@ Collate: 'AAA.R' 'AllClasses.R' 'GUI.R' 'MapCanvas-methods.R'
 VignetteBuilder: knitr
 Encoding: UTF-8
 NeedsCompilation: no
-Packaged: 2018-05-17 09:51:36 UTC; mihai
+Packaged: 2018-06-30 20:04:59 UTC; mihai
 Author: Mihai Valcu [aut, cre],
   James Dale [aut],
   Joan Maspons [ctb]
 Maintainer: Mihai Valcu <valcu@orn.mpg.de>
 Repository: CRAN
-Date/Publication: 2018-05-17 13:18:17 UTC
+Date/Publication: 2018-06-30 21:10:43 UTC

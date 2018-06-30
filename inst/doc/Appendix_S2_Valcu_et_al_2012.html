@@ -12,7 +12,7 @@
 
 <meta name="author" content="Mihai Valcu" />
 
-<meta name="date" content="2018-05-17" />
+<meta name="date" content="2018-06-30" />
 
 <title>Case study 1: Different biodiversity hotspots and their congruence.</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Case study 1: Different biodiversity hotspots and their congruence.</h1>
 <h4 class="author"><em>Mihai Valcu</em></h4>
-<h4 class="date"><em>2018-05-17</em></h4>
+<h4 class="date"><em>2018-06-30</em></h4>
 
 
 
@@ -85,11 +85,11 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <span class="kw">require</span>(rangeMapper)</code></pre></div>
 <pre><code>## Loading required package: rangeMapper</code></pre>
 <pre><code>## Loading required package: RSQLite</code></pre>
-<pre><code>## This is rangeMapper 0.3-3</code></pre>
+<pre><code>## This is rangeMapper 0.3-4</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dbcon =<span class="st"> </span><span class="kw">rangeMap.start</span>(<span class="dt">file =</span> <span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">dir =</span> td, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## New session 2018-05-17 11:50:58</code></pre>
+<pre><code>## New session 2018-06-30 22:04:28</code></pre>
 <pre><code>## PROJECT: wrens.sqlite 
-## DIRECTORY: /tmp/RtmpKpi3Rm</code></pre>
+## DIRECTORY: /tmp/Rtmpd4bqsD</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># Location of the vector(*.shp) breeding ranges on disk</span>
 branges =<span class="st"> </span><span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>, <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>)</code></pre></div>
 <p>Saves the global bounding box as the union of all species bounding boxes.</p>
@@ -108,9 +108,7 @@ branges =<span class="st"> </span><span class="kw">system.file</span>(<span clas
 <p>Performs vector range maps interpolation with the canvas.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">r =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(branges, <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
 <span class="kw">processRanges</span>(<span class="dt">spdf =</span> r, <span class="dt">con =</span>  dbcon, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>, <span class="dt">metadata =</span> <span class="kw">rangeTraits</span>() )</code></pre></div>
-<pre><code>## Warning in .local(con, spdf, ID, metadata): Reprojecting to &quot;+proj=longlat
-## +datum=NAD83 +no_defs &quot;</code></pre>
-<pre><code>## Performing serial range overlay... In case something goes wrong check/tmp/RtmpKpi3Rm/processRanges_65df288984af</code></pre>
+<pre><code>## Performing serial range overlay... In case something goes wrong check/tmp/Rtmpd4bqsD/processRanges_1afb41a8e04</code></pre>
 <pre><code>## Writing overlay output to project...</code></pre>
 <pre><code>## 84 out of 84 ranges updated; Elapsed time: 0 mins</code></pre>
 <pre><code>## Extracting metadata...</code></pre>
