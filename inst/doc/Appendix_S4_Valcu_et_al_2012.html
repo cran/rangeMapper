@@ -12,54 +12,284 @@
 
 <meta name="author" content="Mihai Valcu" />
 
-<meta name="date" content="2018-06-30" />
+<meta name="date" content="2019-03-26" />
 
 <title>Case study 3: The influence of grid size on the relationship between species richness and body size</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -70,7 +300,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Case study 3: The influence of grid size on the relationship between species richness and body size</h1>
 <h4 class="author"><em>Mihai Valcu</em></h4>
-<h4 class="date"><em>2018-06-30</em></h4>
+<h4 class="date"><em>2019-03-26</em></h4>
 
 
 
@@ -81,47 +311,47 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="project-set-up" class="section level3">
 <h3>Project Set Up</h3>
 <p>Define grid size vector of increasing grid sizes.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rangeMapper)
-<span class="kw">data</span>(wrens) <span class="co"># life history data</span>
-breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,
-     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-
-gridSizes =<span class="st"> </span><span class="kw">round</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> <span class="dv">4</span>, <span class="dt">length.out =</span> <span class="dv">10</span>), <span class="dv">2</span>)</code></pre></div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">require</span>(rangeMapper)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2"><span class="kw">data</span>(wrens) <span class="co"># life history data</span></a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4">     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">gridSizes =<span class="st"> </span><span class="kw">round</span>(<span class="kw">seq</span>(<span class="dt">from =</span> <span class="dv">1</span>, <span class="dt">to =</span> <span class="dv">4</span>, <span class="dt">length.out =</span> <span class="dv">10</span>), <span class="dv">2</span>)</a></code></pre></div>
 </div>
 <div id="run-log10median_body_mass-sqrtspecies_richness-regression-for-each-grid-size" class="section level3">
 <h3>Run <code>log10(median_body_mass) ~ sqrt(species_richness)</code> regression for each grid size</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">output =<span class="st"> </span><span class="kw">list</span>()
-
-<span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(gridSizes) ) {
-
-  d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )
-  con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> gridSizes[i], <span class="dt">spdf =</span> breding_ranges,
-               <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,
-               <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
-  o =<span class="st"> </span><span class="kw">rangeMap.fetch</span>(con, <span class="dt">spatial =</span> <span class="ot">FALSE</span>)
-
-  output[[i]] =<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st"> </span><span class="kw">sqrt</span>(species_richness), <span class="dt">data=</span> o)
-
-}</code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb2-1" data-line-number="1">output =<span class="st"> </span><span class="kw">list</span>()</a>
+<a class="sourceLine" id="cb2-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb2-3" data-line-number="3"><span class="cf">for</span>( i <span class="cf">in</span> <span class="dv">1</span><span class="op">:</span><span class="kw">length</span>(gridSizes) ) {</a>
+<a class="sourceLine" id="cb2-4" data-line-number="4"></a>
+<a class="sourceLine" id="cb2-5" data-line-number="5">  d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )</a>
+<a class="sourceLine" id="cb2-6" data-line-number="6">  con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> gridSizes[i], <span class="dt">spdf =</span> breding_ranges,</a>
+<a class="sourceLine" id="cb2-7" data-line-number="7">               <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,</a>
+<a class="sourceLine" id="cb2-8" data-line-number="8">               <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb2-9" data-line-number="9">  o =<span class="st"> </span><span class="kw">rangeMap.fetch</span>(con, <span class="dt">spatial =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb2-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb2-11" data-line-number="11">  output[[i]] =<span class="st"> </span><span class="kw">lm</span>(<span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st"> </span><span class="kw">sqrt</span>(species_richness), <span class="dt">data=</span> o)</a>
+<a class="sourceLine" id="cb2-12" data-line-number="12"></a>
+<a class="sourceLine" id="cb2-13" data-line-number="13">}</a></code></pre></div>
 </div>
 <div id="extract-and-plot-regression-parameters" class="section level3">
 <h3>Extract and plot regression parameters</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X =<span class="st"> </span><span class="kw">lapply</span>(output,
-  <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],
-    <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>],
-    <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>])
-    )
-X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)
-X<span class="op">$</span>gridSize =<span class="st"> </span>gridSizes
-
-<span class="kw">require</span>(ggplot2)
-
-<span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> gridSize, <span class="dt">y =</span> slope)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb3-1" data-line-number="1">X =<span class="st"> </span><span class="kw">lapply</span>(output,</a>
+<a class="sourceLine" id="cb3-2" data-line-number="2">  <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb3-3" data-line-number="3">    <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>],</a>
+<a class="sourceLine" id="cb3-4" data-line-number="4">    <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>])</a>
+<a class="sourceLine" id="cb3-5" data-line-number="5">    )</a>
+<a class="sourceLine" id="cb3-6" data-line-number="6">X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)</a>
+<a class="sourceLine" id="cb3-7" data-line-number="7">X<span class="op">$</span>gridSize =<span class="st"> </span>gridSizes</a>
+<a class="sourceLine" id="cb3-8" data-line-number="8"></a>
+<a class="sourceLine" id="cb3-9" data-line-number="9"><span class="kw">require</span>(ggplot2)</a>
+<a class="sourceLine" id="cb3-10" data-line-number="10"></a>
+<a class="sourceLine" id="cb3-11" data-line-number="11"><span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> gridSize, <span class="dt">y =</span> slope)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-12" data-line-number="12"><span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-14" data-line-number="14"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb3-15" data-line-number="15"><span class="st">    </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 

@@ -12,54 +12,284 @@
 
 <meta name="author" content="Mihai Valcu" />
 
-<meta name="date" content="2018-06-30" />
+<meta name="date" content="2019-03-26" />
 
 <title>Case study 4: The influence of range size on the relationship between species richness and body size</title>
 
 
 
 <style type="text/css">code{white-space: pre;}</style>
-<style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+<style type="text/css" data-origin="pandoc">
+a.sourceLine { display: inline-block; line-height: 1.25; }
+a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
+a.sourceLine:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode { white-space: pre; position: relative; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+code.sourceCode { white-space: pre-wrap; }
+a.sourceLine { text-indent: -1em; padding-left: 1em; }
+}
+pre.numberSource a.sourceLine
+  { position: relative; left: -4em; }
+pre.numberSource a.sourceLine::before
+  { content: attr(data-line-number);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; pointer-events: all; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {  }
+@media screen {
+a.sourceLine::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
 </style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
 
 
 
-<link href="data:text/css;charset=utf-8,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23header%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%20code%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" rel="stylesheet" type="text/css" />
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#header {
+text-align: center;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
 
 </head>
 
@@ -70,7 +300,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Case study 4: The influence of range size on the relationship between species richness and body size</h1>
 <h4 class="author"><em>Mihai Valcu</em></h4>
-<h4 class="date"><em>2018-06-30</em></h4>
+<h4 class="date"><em>2019-03-26</em></h4>
 
 
 
@@ -80,27 +310,26 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>The example shown here is run on the wrens dataset which is part of the package. The wrens dataset has 84 species while the case study presented in the paper was run on 8434 bird species. Therefore both the settings and the results shown below are not identical with the results presented in <em>Valcu et al 2012</em>.</p>
 <div id="project-set-up" class="section level3">
 <h3>Project Set Up</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(rangeMapper)
-breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,
-     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)
-<span class="kw">data</span>(wrens)
-d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )
-con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> <span class="dv">1</span>, <span class="dt">spdf =</span> breding_ranges,
-             <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,<span class="dt">metadata =</span> <span class="kw">rangeTraits</span>()[<span class="st">'Area'</span>],
-             <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</code></pre></div>
-<pre><code>## New session 2018-06-30 22:04:56</code></pre>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">require</span>(rangeMapper)</a>
+<a class="sourceLine" id="cb1-2" data-line-number="2">breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,</a>
+<a class="sourceLine" id="cb1-3" data-line-number="3">     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
+<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">data</span>(wrens)</a>
+<a class="sourceLine" id="cb1-5" data-line-number="5">d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )</a>
+<a class="sourceLine" id="cb1-6" data-line-number="6">con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> <span class="dv">1</span>, <span class="dt">spdf =</span> breding_ranges,</a>
+<a class="sourceLine" id="cb1-7" data-line-number="7">             <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,<span class="dt">metadata =</span> <span class="kw">rangeTraits</span>()[<span class="st">'Area'</span>],</a>
+<a class="sourceLine" id="cb1-8" data-line-number="8">             <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
+<pre><code>## New session 2019-03-26 17:22:44</code></pre>
 <pre><code>## PROJECT: wrens.sqlite 
-## DIRECTORY: /tmp/Rtmpd4bqsD</code></pre>
+## DIRECTORY: /tmp/Rtmp6x8Ng1</code></pre>
 <pre><code>## Grid size set to 1 map units.</code></pre>
 <pre><code>## Canvas uploaded.</code></pre>
-<pre><code>## Performing serial range overlay... In case something goes wrong check/tmp/Rtmpd4bqsD/processRanges_1afb32950127</code></pre>
 <pre><code>## Writing overlay output to project...</code></pre>
 <pre><code>## 84 out of 84 ranges updated; Elapsed time: 0 mins</code></pre>
 <pre><code>## Extracting metadata...</code></pre>
 <pre><code>## Table biotab saved as a  BIO_ table</code></pre>
 <pre><code>## +______________+</code></pre>
 <pre><code>## class            rangeMap
-## Project_location /tmp/Rtmpd4bqsD/wrens.sqlite
+## Project_location /tmp/Rtmp6x8Ng1/wrens.sqlite
 ## Proj4            +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
 ## CellSize         1
 ## Extent           xmin=-164.8716,xmax=-34.60225,ymin=-55.72056,ymax=61.5632
@@ -109,62 +338,62 @@ con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quo
 ## METADATA_RANGES  Area</code></pre>
 <pre><code>## +______________+</code></pre>
 <p>Range size classes</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mt =<span class="st"> </span><span class="kw">dbReadTable</span>(con, <span class="st">&quot;metadata_ranges&quot;</span>)
-
-Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt<span class="op">$</span>Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )
-rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">area =</span> <span class="kw">exp</span>(Q), <span class="dt">quant =</span>  <span class="kw">gsub</span>(<span class="st">&quot;%&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(Q)) )</code></pre></div>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">mt =<span class="st"> </span><span class="kw">dbReadTable</span>(con, <span class="st">&quot;metadata_ranges&quot;</span>)</a>
+<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb13-3" data-line-number="3">Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt<span class="op">$</span>Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )</a>
+<a class="sourceLine" id="cb13-4" data-line-number="4">rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">area =</span> <span class="kw">exp</span>(Q), <span class="dt">quant =</span>  <span class="kw">gsub</span>(<span class="st">&quot;%&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(Q)) )</a></code></pre></div>
 </div>
 <div id="run-log10median_body_mass-sqrtspecies_richness-regression-for-each-range-size-interval" class="section level3">
 <h3>Run <code>log10(median_body_mass) ~ sqrt(species_richness)</code> regression for each range size interval</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">W =<span class="st"> </span><span class="dv">4</span>   <span class="co"># size of the moving window</span>
-
-output =<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(rangeA))
-<span class="kw">names</span>(output) =<span class="st"> </span>rangeA<span class="op">$</span>quant
-
-<span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(rangeA) <span class="op">-</span><span class="st"> </span>W) ) ) {
-
-  <span class="co"># Define  map subset</span>
-  area_subset =<span class="kw">list</span>(<span class="dt">metadata_ranges =</span> <span class="kw">paste</span>(<span class="st">&quot;Area between&quot;</span>,  rangeA[i,<span class="st">&quot;area&quot;</span>],
-  <span class="st">&quot;and&quot;</span>, rangeA[i<span class="op">+</span>W,<span class="st">&quot;area&quot;</span>]))
-
-  <span class="co"># Save map</span>
-  <span class="kw">rangeMap.save</span>(con, <span class="dt">subset =</span> area_subset , <span class="dt">biotab =</span> <span class="st">&quot;biotab&quot;</span>,
-  <span class="dt">biotrait =</span> <span class="st">&quot;body_mass&quot;</span>, <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">tableName =</span> <span class="st">&quot;median_body_mass&quot;</span>,
-  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)
-
-  <span class="co"># Fetch map</span>
-  m =<span class="st"> </span><span class="kw">rangeMap.fetch</span>( con, <span class="kw">c</span>(<span class="st">&quot;species_richness&quot;</span>, <span class="st">&quot;median_body_mass&quot;</span>), <span class="dt">spatial =</span> <span class="ot">FALSE</span> )
-
-  <span class="co"># Perform OLS regression</span>
-  <span class="co"># </span><span class="al">NOTE</span><span class="co">: In order to perform a spatial simultaneous autoregressive error</span>
-   <span class="co"># regression</span>
-  <span class="co">#  see 'errorsarlm ' function and the auxiliary neighbours list functions in</span>
-   <span class="co"># 'spdep' package.</span>
-  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)
-
-  output[[i]] =<span class="st">  </span>fm
-
-}
-
-output =<span class="st"> </span>output[<span class="op">!</span><span class="kw">sapply</span>(output, is.null)]</code></pre></div>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">W =<span class="st"> </span><span class="dv">4</span>   <span class="co"># size of the moving window</span></a>
+<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
+<a class="sourceLine" id="cb14-3" data-line-number="3">output =<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(rangeA))</a>
+<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw">names</span>(output) =<span class="st"> </span>rangeA<span class="op">$</span>quant</a>
+<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(rangeA) <span class="op">-</span><span class="st"> </span>W) ) ) {</a>
+<a class="sourceLine" id="cb14-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb14-8" data-line-number="8">  <span class="co"># Define  map subset</span></a>
+<a class="sourceLine" id="cb14-9" data-line-number="9">  area_subset =<span class="kw">list</span>(<span class="dt">metadata_ranges =</span> <span class="kw">paste</span>(<span class="st">&quot;Area between&quot;</span>,  rangeA[i,<span class="st">&quot;area&quot;</span>],</a>
+<a class="sourceLine" id="cb14-10" data-line-number="10">  <span class="st">&quot;and&quot;</span>, rangeA[i<span class="op">+</span>W,<span class="st">&quot;area&quot;</span>]))</a>
+<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
+<a class="sourceLine" id="cb14-12" data-line-number="12">  <span class="co"># Save map</span></a>
+<a class="sourceLine" id="cb14-13" data-line-number="13">  <span class="kw">rangeMap.save</span>(con, <span class="dt">subset =</span> area_subset , <span class="dt">biotab =</span> <span class="st">&quot;biotab&quot;</span>,</a>
+<a class="sourceLine" id="cb14-14" data-line-number="14">  <span class="dt">biotrait =</span> <span class="st">&quot;body_mass&quot;</span>, <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">tableName =</span> <span class="st">&quot;median_body_mass&quot;</span>,</a>
+<a class="sourceLine" id="cb14-15" data-line-number="15">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
+<a class="sourceLine" id="cb14-16" data-line-number="16"></a>
+<a class="sourceLine" id="cb14-17" data-line-number="17">  <span class="co"># Fetch map</span></a>
+<a class="sourceLine" id="cb14-18" data-line-number="18">  m =<span class="st"> </span><span class="kw">rangeMap.fetch</span>( con, <span class="kw">c</span>(<span class="st">&quot;species_richness&quot;</span>, <span class="st">&quot;median_body_mass&quot;</span>), <span class="dt">spatial =</span> <span class="ot">FALSE</span> )</a>
+<a class="sourceLine" id="cb14-19" data-line-number="19"></a>
+<a class="sourceLine" id="cb14-20" data-line-number="20">  <span class="co"># Perform OLS regression</span></a>
+<a class="sourceLine" id="cb14-21" data-line-number="21">  <span class="co"># </span><span class="al">NOTE</span><span class="co">: In order to perform a spatial simultaneous autoregressive error</span></a>
+<a class="sourceLine" id="cb14-22" data-line-number="22">   <span class="co"># regression</span></a>
+<a class="sourceLine" id="cb14-23" data-line-number="23">  <span class="co">#  see 'errorsarlm ' function and the auxiliary neighbours list functions in</span></a>
+<a class="sourceLine" id="cb14-24" data-line-number="24">   <span class="co"># 'spdep' package.</span></a>
+<a class="sourceLine" id="cb14-25" data-line-number="25">  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)</a>
+<a class="sourceLine" id="cb14-26" data-line-number="26"></a>
+<a class="sourceLine" id="cb14-27" data-line-number="27">  output[[i]] =<span class="st">  </span>fm</a>
+<a class="sourceLine" id="cb14-28" data-line-number="28"></a>
+<a class="sourceLine" id="cb14-29" data-line-number="29">}</a>
+<a class="sourceLine" id="cb14-30" data-line-number="30"></a>
+<a class="sourceLine" id="cb14-31" data-line-number="31">output =<span class="st"> </span>output[<span class="op">!</span><span class="kw">sapply</span>(output, is.null)]</a></code></pre></div>
 </div>
 <div id="extract-regression-parameters-and-plot" class="section level3">
 <h3>Extract Regression Parameters and plot</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">X =<span class="st"> </span><span class="kw">lapply</span>(output, <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],
-        <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>], <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>]) )
-X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)
-X<span class="op">$</span>rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))
-
-<span class="co"># Plot</span>
-
-<span class="kw">require</span>(ggplot2)
-
-<span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="st">    </span><span class="kw">theme_bw</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">X =<span class="st"> </span><span class="kw">lapply</span>(output, <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],</a>
+<a class="sourceLine" id="cb15-2" data-line-number="2">        <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>], <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>]) )</a>
+<a class="sourceLine" id="cb15-3" data-line-number="3">X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)</a>
+<a class="sourceLine" id="cb15-4" data-line-number="4">X<span class="op">$</span>rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))</a>
+<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
+<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co"># Plot</span></a>
+<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
+<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="kw">require</span>(ggplot2)</a>
+<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
+<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
+<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">    </span><span class="kw">theme_bw</span>()</a></code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
 </div>
 
