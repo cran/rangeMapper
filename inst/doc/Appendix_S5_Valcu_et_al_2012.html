@@ -1,413 +1,333 @@
 <!DOCTYPE html>
-
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html>
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
-<meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<meta name="generator" content="pandoc" />
+<title>Appendix S5</title>
 
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<meta name="author" content="Mihai Valcu" />
-
-<meta name="date" content="2019-03-26" />
-
-<title>Case study 4: The influence of range size on the relationship between species richness and body size</title>
-
-
-
-<style type="text/css">code{white-space: pre;}</style>
-<style type="text/css" data-origin="pandoc">
-a.sourceLine { display: inline-block; line-height: 1.25; }
-a.sourceLine { pointer-events: none; color: inherit; text-decoration: inherit; }
-a.sourceLine:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode { white-space: pre; position: relative; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-code.sourceCode { white-space: pre-wrap; }
-a.sourceLine { text-indent: -1em; padding-left: 1em; }
-}
-pre.numberSource a.sourceLine
-  { position: relative; left: -4em; }
-pre.numberSource a.sourceLine::before
-  { content: attr(data-line-number);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; pointer-events: all; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-    color: #aaaaaa;
+<script type="text/javascript">
+window.onload = function() {
+  var imgs = document.getElementsByTagName('img'), i, img;
+  for (i = 0; i < imgs.length; i++) {
+    img = imgs[i];
+    // center an image if it is the only element of its parent
+    if (img.parentElement.childElementCount === 1)
+      img.parentElement.style.textAlign = 'center';
   }
-pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
-div.sourceCode
-  {  }
-@media screen {
-a.sourceLine::before { text-decoration: underline; }
-}
-code span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code span.at { color: #7d9029; } /* Attribute */
-code span.bn { color: #40a070; } /* BaseN */
-code span.bu { } /* BuiltIn */
-code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code span.ch { color: #4070a0; } /* Char */
-code span.cn { color: #880000; } /* Constant */
-code span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code span.dt { color: #902000; } /* DataType */
-code span.dv { color: #40a070; } /* DecVal */
-code span.er { color: #ff0000; font-weight: bold; } /* Error */
-code span.ex { } /* Extension */
-code span.fl { color: #40a070; } /* Float */
-code span.fu { color: #06287e; } /* Function */
-code span.im { } /* Import */
-code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-code span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code span.op { color: #666666; } /* Operator */
-code span.ot { color: #007020; } /* Other */
-code span.pp { color: #bc7a00; } /* Preprocessor */
-code span.sc { color: #4070a0; } /* SpecialChar */
-code span.ss { color: #bb6688; } /* SpecialString */
-code span.st { color: #4070a0; } /* String */
-code span.va { color: #19177c; } /* Variable */
-code span.vs { color: #4070a0; } /* VerbatimString */
-code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+};
+</script>
 
+<!-- Styles for R syntax highlighter -->
+<style type="text/css">
+   pre .operator,
+   pre .paren {
+     color: rgb(104, 118, 135)
+   }
+
+   pre .literal {
+     color: #990073
+   }
+
+   pre .number {
+     color: #099;
+   }
+
+   pre .comment {
+     color: #998;
+     font-style: italic
+   }
+
+   pre .keyword {
+     color: #900;
+     font-weight: bold
+   }
+
+   pre .identifier {
+     color: rgb(0, 0, 0);
+   }
+
+   pre .string {
+     color: #d14;
+   }
 </style>
-<script>
-// apply pandoc div.sourceCode style to pre.sourceCode instead
-(function() {
-  var sheets = document.styleSheets;
-  for (var i = 0; i < sheets.length; i++) {
-    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
-    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
-    for (var j = 0; j < rules.length; j++) {
-      var rule = rules[j];
-      // check if there is a div.sourceCode rule
-      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
-      var style = rule.style.cssText;
-      // check if color or background-color is set
-      if (rule.style.color === '' || rule.style.backgroundColor === '') continue;
-      // replace div.sourceCode by a pre.sourceCode rule
-      sheets[i].deleteRule(j);
-      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
-    }
-  }
-})();
+
+<!-- R syntax highlighter -->
+<script type="text/javascript">
+var hljs=new function(){function m(p){return p.replace(/&/gm,"&amp;").replace(/</gm,"&lt;")}function f(r,q,p){return RegExp(q,"m"+(r.cI?"i":"")+(p?"g":""))}function b(r){for(var p=0;p<r.childNodes.length;p++){var q=r.childNodes[p];if(q.nodeName=="CODE"){return q}if(!(q.nodeType==3&&q.nodeValue.match(/\s+/))){break}}}function h(t,s){var p="";for(var r=0;r<t.childNodes.length;r++){if(t.childNodes[r].nodeType==3){var q=t.childNodes[r].nodeValue;if(s){q=q.replace(/\n/g,"")}p+=q}else{if(t.childNodes[r].nodeName=="BR"){p+="\n"}else{p+=h(t.childNodes[r])}}}if(/MSIE [678]/.test(navigator.userAgent)){p=p.replace(/\r/g,"\n")}return p}function a(s){var r=s.className.split(/\s+/);r=r.concat(s.parentNode.className.split(/\s+/));for(var q=0;q<r.length;q++){var p=r[q].replace(/^language-/,"");if(e[p]){return p}}}function c(q){var p=[];(function(s,t){for(var r=0;r<s.childNodes.length;r++){if(s.childNodes[r].nodeType==3){t+=s.childNodes[r].nodeValue.length}else{if(s.childNodes[r].nodeName=="BR"){t+=1}else{if(s.childNodes[r].nodeType==1){p.push({event:"start",offset:t,node:s.childNodes[r]});t=arguments.callee(s.childNodes[r],t);p.push({event:"stop",offset:t,node:s.childNodes[r]})}}}}return t})(q,0);return p}function k(y,w,x){var q=0;var z="";var s=[];function u(){if(y.length&&w.length){if(y[0].offset!=w[0].offset){return(y[0].offset<w[0].offset)?y:w}else{return w[0].event=="start"?y:w}}else{return y.length?y:w}}function t(D){var A="<"+D.nodeName.toLowerCase();for(var B=0;B<D.attributes.length;B++){var C=D.attributes[B];A+=" "+C.nodeName.toLowerCase();if(C.value!==undefined&&C.value!==false&&C.value!==null){A+='="'+m(C.value)+'"'}}return A+">"}while(y.length||w.length){var v=u().splice(0,1)[0];z+=m(x.substr(q,v.offset-q));q=v.offset;if(v.event=="start"){z+=t(v.node);s.push(v.node)}else{if(v.event=="stop"){var p,r=s.length;do{r--;p=s[r];z+=("</"+p.nodeName.toLowerCase()+">")}while(p!=v.node);s.splice(r,1);while(r<s.length){z+=t(s[r]);r++}}}}return z+m(x.substr(q))}function j(){function q(x,y,v){if(x.compiled){return}var u;var s=[];if(x.k){x.lR=f(y,x.l||hljs.IR,true);for(var w in x.k){if(!x.k.hasOwnProperty(w)){continue}if(x.k[w] instanceof Object){u=x.k[w]}else{u=x.k;w="keyword"}for(var r in u){if(!u.hasOwnProperty(r)){continue}x.k[r]=[w,u[r]];s.push(r)}}}if(!v){if(x.bWK){x.b="\\b("+s.join("|")+")\\s"}x.bR=f(y,x.b?x.b:"\\B|\\b");if(!x.e&&!x.eW){x.e="\\B|\\b"}if(x.e){x.eR=f(y,x.e)}}if(x.i){x.iR=f(y,x.i)}if(x.r===undefined){x.r=1}if(!x.c){x.c=[]}x.compiled=true;for(var t=0;t<x.c.length;t++){if(x.c[t]=="self"){x.c[t]=x}q(x.c[t],y,false)}if(x.starts){q(x.starts,y,false)}}for(var p in e){if(!e.hasOwnProperty(p)){continue}q(e[p].dM,e[p],true)}}function d(B,C){if(!j.called){j();j.called=true}function q(r,M){for(var L=0;L<M.c.length;L++){if((M.c[L].bR.exec(r)||[null])[0]==r){return M.c[L]}}}function v(L,r){if(D[L].e&&D[L].eR.test(r)){return 1}if(D[L].eW){var M=v(L-1,r);return M?M+1:0}return 0}function w(r,L){return L.i&&L.iR.test(r)}function K(N,O){var M=[];for(var L=0;L<N.c.length;L++){M.push(N.c[L].b)}var r=D.length-1;do{if(D[r].e){M.push(D[r].e)}r--}while(D[r+1].eW);if(N.i){M.push(N.i)}return f(O,M.join("|"),true)}function p(M,L){var N=D[D.length-1];if(!N.t){N.t=K(N,E)}N.t.lastIndex=L;var r=N.t.exec(M);return r?[M.substr(L,r.index-L),r[0],false]:[M.substr(L),"",true]}function z(N,r){var L=E.cI?r[0].toLowerCase():r[0];var M=N.k[L];if(M&&M instanceof Array){return M}return false}function F(L,P){L=m(L);if(!P.k){return L}var r="";var O=0;P.lR.lastIndex=0;var M=P.lR.exec(L);while(M){r+=L.substr(O,M.index-O);var N=z(P,M);if(N){x+=N[1];r+='<span class="'+N[0]+'">'+M[0]+"</span>"}else{r+=M[0]}O=P.lR.lastIndex;M=P.lR.exec(L)}return r+L.substr(O,L.length-O)}function J(L,M){if(M.sL&&e[M.sL]){var r=d(M.sL,L);x+=r.keyword_count;return r.value}else{return F(L,M)}}function I(M,r){var L=M.cN?'<span class="'+M.cN+'">':"";if(M.rB){y+=L;M.buffer=""}else{if(M.eB){y+=m(r)+L;M.buffer=""}else{y+=L;M.buffer=r}}D.push(M);A+=M.r}function G(N,M,Q){var R=D[D.length-1];if(Q){y+=J(R.buffer+N,R);return false}var P=q(M,R);if(P){y+=J(R.buffer+N,R);I(P,M);return P.rB}var L=v(D.length-1,M);if(L){var O=R.cN?"</span>":"";if(R.rE){y+=J(R.buffer+N,R)+O}else{if(R.eE){y+=J(R.buffer+N,R)+O+m(M)}else{y+=J(R.buffer+N+M,R)+O}}while(L>1){O=D[D.length-2].cN?"</span>":"";y+=O;L--;D.length--}var r=D[D.length-1];D.length--;D[D.length-1].buffer="";if(r.starts){I(r.starts,"")}return R.rE}if(w(M,R)){throw"Illegal"}}var E=e[B];var D=[E.dM];var A=0;var x=0;var y="";try{var s,u=0;E.dM.buffer="";do{s=p(C,u);var t=G(s[0],s[1],s[2]);u+=s[0].length;if(!t){u+=s[1].length}}while(!s[2]);if(D.length>1){throw"Illegal"}return{r:A,keyword_count:x,value:y}}catch(H){if(H=="Illegal"){return{r:0,keyword_count:0,value:m(C)}}else{throw H}}}function g(t){var p={keyword_count:0,r:0,value:m(t)};var r=p;for(var q in e){if(!e.hasOwnProperty(q)){continue}var s=d(q,t);s.language=q;if(s.keyword_count+s.r>r.keyword_count+r.r){r=s}if(s.keyword_count+s.r>p.keyword_count+p.r){r=p;p=s}}if(r.language){p.second_best=r}return p}function i(r,q,p){if(q){r=r.replace(/^((<[^>]+>|\t)+)/gm,function(t,w,v,u){return w.replace(/\t/g,q)})}if(p){r=r.replace(/\n/g,"<br>")}return r}function n(t,w,r){var x=h(t,r);var v=a(t);var y,s;if(v){y=d(v,x)}else{return}var q=c(t);if(q.length){s=document.createElement("pre");s.innerHTML=y.value;y.value=k(q,c(s),x)}y.value=i(y.value,w,r);var u=t.className;if(!u.match("(\\s|^)(language-)?"+v+"(\\s|$)")){u=u?(u+" "+v):v}if(/MSIE [678]/.test(navigator.userAgent)&&t.tagName=="CODE"&&t.parentNode.tagName=="PRE"){s=t.parentNode;var p=document.createElement("div");p.innerHTML="<pre><code>"+y.value+"</code></pre>";t=p.firstChild.firstChild;p.firstChild.cN=s.cN;s.parentNode.replaceChild(p.firstChild,s)}else{t.innerHTML=y.value}t.className=u;t.result={language:v,kw:y.keyword_count,re:y.r};if(y.second_best){t.second_best={language:y.second_best.language,kw:y.second_best.keyword_count,re:y.second_best.r}}}function o(){if(o.called){return}o.called=true;var r=document.getElementsByTagName("pre");for(var p=0;p<r.length;p++){var q=b(r[p]);if(q){n(q,hljs.tabReplace)}}}function l(){if(window.addEventListener){window.addEventListener("DOMContentLoaded",o,false);window.addEventListener("load",o,false)}else{if(window.attachEvent){window.attachEvent("onload",o)}else{window.onload=o}}}var e={};this.LANGUAGES=e;this.highlight=d;this.highlightAuto=g;this.fixMarkup=i;this.highlightBlock=n;this.initHighlighting=o;this.initHighlightingOnLoad=l;this.IR="[a-zA-Z][a-zA-Z0-9_]*";this.UIR="[a-zA-Z_][a-zA-Z0-9_]*";this.NR="\\b\\d+(\\.\\d+)?";this.CNR="\\b(0[xX][a-fA-F0-9]+|(\\d+(\\.\\d*)?|\\.\\d+)([eE][-+]?\\d+)?)";this.BNR="\\b(0b[01]+)";this.RSR="!|!=|!==|%|%=|&|&&|&=|\\*|\\*=|\\+|\\+=|,|\\.|-|-=|/|/=|:|;|<|<<|<<=|<=|=|==|===|>|>=|>>|>>=|>>>|>>>=|\\?|\\[|\\{|\\(|\\^|\\^=|\\||\\|=|\\|\\||~";this.ER="(?![\\s\\S])";this.BE={b:"\\\\.",r:0};this.ASM={cN:"string",b:"'",e:"'",i:"\\n",c:[this.BE],r:0};this.QSM={cN:"string",b:'"',e:'"',i:"\\n",c:[this.BE],r:0};this.CLCM={cN:"comment",b:"//",e:"$"};this.CBLCLM={cN:"comment",b:"/\\*",e:"\\*/"};this.HCM={cN:"comment",b:"#",e:"$"};this.NM={cN:"number",b:this.NR,r:0};this.CNM={cN:"number",b:this.CNR,r:0};this.BNM={cN:"number",b:this.BNR,r:0};this.inherit=function(r,s){var p={};for(var q in r){p[q]=r[q]}if(s){for(var q in s){p[q]=s[q]}}return p}}();hljs.LANGUAGES.cpp=function(){var a={keyword:{"false":1,"int":1,"float":1,"while":1,"private":1,"char":1,"catch":1,"export":1,virtual:1,operator:2,sizeof:2,dynamic_cast:2,typedef:2,const_cast:2,"const":1,struct:1,"for":1,static_cast:2,union:1,namespace:1,unsigned:1,"long":1,"throw":1,"volatile":2,"static":1,"protected":1,bool:1,template:1,mutable:1,"if":1,"public":1,friend:2,"do":1,"return":1,"goto":1,auto:1,"void":2,"enum":1,"else":1,"break":1,"new":1,extern:1,using:1,"true":1,"class":1,asm:1,"case":1,typeid:1,"short":1,reinterpret_cast:2,"default":1,"double":1,register:1,explicit:1,signed:1,typename:1,"try":1,"this":1,"switch":1,"continue":1,wchar_t:1,inline:1,"delete":1,alignof:1,char16_t:1,char32_t:1,constexpr:1,decltype:1,noexcept:1,nullptr:1,static_assert:1,thread_local:1,restrict:1,_Bool:1,complex:1},built_in:{std:1,string:1,cin:1,cout:1,cerr:1,clog:1,stringstream:1,istringstream:1,ostringstream:1,auto_ptr:1,deque:1,list:1,queue:1,stack:1,vector:1,map:1,set:1,bitset:1,multiset:1,multimap:1,unordered_set:1,unordered_map:1,unordered_multiset:1,unordered_multimap:1,array:1,shared_ptr:1}};return{dM:{k:a,i:"</",c:[hljs.CLCM,hljs.CBLCLM,hljs.QSM,{cN:"string",b:"'\\\\?.",e:"'",i:"."},{cN:"number",b:"\\b(\\d+(\\.\\d*)?|\\.\\d+)(u|U|l|L|ul|UL|f|F)"},hljs.CNM,{cN:"preprocessor",b:"#",e:"$"},{cN:"stl_container",b:"\\b(deque|list|queue|stack|vector|map|set|bitset|multiset|multimap|unordered_map|unordered_set|unordered_multiset|unordered_multimap|array)\\s*<",e:">",k:a,r:10,c:["self"]}]}}}();hljs.LANGUAGES.r={dM:{c:[hljs.HCM,{cN:"number",b:"\\b0[xX][0-9a-fA-F]+[Li]?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+(?:[eE][+\\-]?\\d*)?L\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\b\\d+\\.(?!\\d)(?:i\\b)?",e:hljs.IMMEDIATE_RE,r:1},{cN:"number",b:"\\b\\d+(?:\\.\\d*)?(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"number",b:"\\.\\d+(?:[eE][+\\-]?\\d*)?i?\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"keyword",b:"(?:tryCatch|library|setGeneric|setGroupGeneric)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\.",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\.\\.\\d+(?![\\w.])",e:hljs.IMMEDIATE_RE,r:10},{cN:"keyword",b:"\\b(?:function)",e:hljs.IMMEDIATE_RE,r:2},{cN:"keyword",b:"(?:if|in|break|next|repeat|else|for|return|switch|while|try|stop|warning|require|attach|detach|source|setMethod|setClass)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"literal",b:"(?:NA|NA_integer_|NA_real_|NA_character_|NA_complex_)\\b",e:hljs.IMMEDIATE_RE,r:10},{cN:"literal",b:"(?:NULL|TRUE|FALSE|T|F|Inf|NaN)\\b",e:hljs.IMMEDIATE_RE,r:1},{cN:"identifier",b:"[a-zA-Z.][a-zA-Z0-9._]*\\b",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"<\\-(?!\\s*\\d)",e:hljs.IMMEDIATE_RE,r:2},{cN:"operator",b:"\\->|<\\-",e:hljs.IMMEDIATE_RE,r:1},{cN:"operator",b:"%%|~",e:hljs.IMMEDIATE_RE},{cN:"operator",b:">=|<=|==|!=|\\|\\||&&|=|\\+|\\-|\\*|/|\\^|>|<|!|&|\\||\\$|:",e:hljs.IMMEDIATE_RE,r:0},{cN:"operator",b:"%",e:"%",i:"\\n",r:1},{cN:"identifier",b:"`",e:"`",r:0},{cN:"string",b:'"',e:'"',c:[hljs.BE],r:0},{cN:"string",b:"'",e:"'",c:[hljs.BE],r:0},{cN:"paren",b:"[[({\\])}]",e:hljs.IMMEDIATE_RE,r:0}]}};
+hljs.initHighlightingOnLoad();
 </script>
 
 
 
-<style type="text/css">body {
-background-color: #fff;
-margin: 1em auto;
-max-width: 700px;
-overflow: visible;
-padding-left: 2em;
-padding-right: 2em;
-font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
-font-size: 14px;
-line-height: 1.35;
+<style type="text/css">
+body, td {
+   font-family: sans-serif;
+   background-color: white;
+   font-size: 13px;
 }
-#header {
-text-align: center;
+
+body {
+  max-width: 800px;
+  margin: auto;
+  padding: 1em;
+  line-height: 20px;
 }
-#TOC {
-clear: both;
-margin: 0 0 10px 10px;
-padding: 4px;
-width: 400px;
-border: 1px solid #CCCCCC;
-border-radius: 5px;
-background-color: #f6f6f6;
-font-size: 13px;
-line-height: 1.3;
+
+tt, code, pre {
+   font-family: 'DejaVu Sans Mono', 'Droid Sans Mono', 'Lucida Console', Consolas, Monaco, monospace;
 }
-#TOC .toctitle {
-font-weight: bold;
-font-size: 15px;
-margin-left: 5px;
+
+h1 {
+   font-size:2.2em;
 }
-#TOC ul {
-padding-left: 40px;
-margin-left: -1.5em;
-margin-top: 5px;
-margin-bottom: 5px;
+
+h2 {
+   font-size:1.8em;
 }
-#TOC ul ul {
-margin-left: -2em;
+
+h3 {
+   font-size:1.4em;
 }
-#TOC li {
-line-height: 16px;
+
+h4 {
+   font-size:1.0em;
 }
-table {
-margin: 1em auto;
-border-width: 1px;
-border-color: #DDDDDD;
-border-style: outset;
-border-collapse: collapse;
+
+h5 {
+   font-size:0.9em;
 }
-table th {
-border-width: 2px;
-padding: 5px;
-border-style: inset;
+
+h6 {
+   font-size:0.8em;
 }
-table td {
-border-width: 1px;
-border-style: inset;
-line-height: 18px;
-padding: 5px 5px;
+
+a:visited {
+   color: rgb(50%, 0%, 50%);
 }
-table, table th, table td {
-border-left-style: none;
-border-right-style: none;
-}
-table thead, table tr.even {
-background-color: #f7f7f7;
-}
-p {
-margin: 0.5em 0;
-}
-blockquote {
-background-color: #f6f6f6;
-padding: 0.25em 0.75em;
-}
-hr {
-border-style: solid;
-border: none;
-border-top: 1px solid #777;
-margin: 28px 0;
-}
-dl {
-margin-left: 0;
-}
-dl dd {
-margin-bottom: 13px;
-margin-left: 13px;
-}
-dl dt {
-font-weight: bold;
-}
-ul {
-margin-top: 0;
-}
-ul li {
-list-style: circle outside;
-}
-ul ul {
-margin-bottom: 0;
-}
-pre, code {
-background-color: #f7f7f7;
-border-radius: 3px;
-color: #333;
-white-space: pre-wrap; 
+
+pre, img {
+  max-width: 100%;
 }
 pre {
-border-radius: 3px;
-margin: 5px 0px 10px 0px;
-padding: 10px;
+  overflow-x: auto;
 }
-pre:not([class]) {
-background-color: #f7f7f7;
+pre code {
+   display: block; padding: 0.5em;
 }
-code {
-font-family: Consolas, Monaco, 'Courier New', monospace;
-font-size: 85%;
-}
-p > code, li > code {
-padding: 2px 0px;
-}
-div.figure {
-text-align: center;
-}
-img {
-background-color: #FFFFFF;
-padding: 2px;
-border: 1px solid #DDDDDD;
-border-radius: 3px;
-border: 1px solid #CCCCCC;
-margin: 0 5px;
-}
-h1 {
-margin-top: 0;
-font-size: 35px;
-line-height: 40px;
-}
-h2 {
-border-bottom: 4px solid #f7f7f7;
-padding-top: 10px;
-padding-bottom: 2px;
-font-size: 145%;
-}
-h3 {
-border-bottom: 2px solid #f7f7f7;
-padding-top: 10px;
-font-size: 120%;
-}
-h4 {
-border-bottom: 1px solid #f7f7f7;
-margin-left: 8px;
-font-size: 105%;
-}
-h5, h6 {
-border-bottom: 1px solid #ccc;
-font-size: 105%;
-}
-a {
-color: #0033dd;
-text-decoration: none;
-}
-a:hover {
-color: #6666ff; }
-a:visited {
-color: #800080; }
-a:visited:hover {
-color: #BB00BB; }
-a[href^="http:"] {
-text-decoration: underline; }
-a[href^="https:"] {
-text-decoration: underline; }
 
-code > span.kw { color: #555; font-weight: bold; } 
-code > span.dt { color: #902000; } 
-code > span.dv { color: #40a070; } 
-code > span.bn { color: #d14; } 
-code > span.fl { color: #d14; } 
-code > span.ch { color: #d14; } 
-code > span.st { color: #d14; } 
-code > span.co { color: #888888; font-style: italic; } 
-code > span.ot { color: #007020; } 
-code > span.al { color: #ff0000; font-weight: bold; } 
-code > span.fu { color: #900; font-weight: bold; }  code > span.er { color: #a61717; background-color: #e3d2d2; } 
+code {
+  font-size: 92%;
+  border: 1px solid #ccc;
+}
+
+code[class] {
+  background-color: #F8F8F8;
+}
+
+table, td, th {
+  border: none;
+}
+
+blockquote {
+   color:#666666;
+   margin:0;
+   padding-left: 1em;
+   border-left: 0.5em #EEE solid;
+}
+
+hr {
+   height: 0px;
+   border-bottom: none;
+   border-top-width: thin;
+   border-top-style: dotted;
+   border-top-color: #999999;
+}
+
+@media print {
+   * {
+      background: transparent !important;
+      color: black !important;
+      filter:none !important;
+      -ms-filter: none !important;
+   }
+
+   body {
+      font-size:12pt;
+      max-width:100%;
+   }
+
+   a, a:visited {
+      text-decoration: underline;
+   }
+
+   hr {
+      visibility: hidden;
+      page-break-before: always;
+   }
+
+   pre, blockquote {
+      padding-right: 1em;
+      page-break-inside: avoid;
+   }
+
+   tr, img {
+      page-break-inside: avoid;
+   }
+
+   img {
+      max-width: 100% !important;
+   }
+
+   @page :left {
+      margin: 15mm 20mm 15mm 10mm;
+   }
+
+   @page :right {
+      margin: 15mm 10mm 15mm 20mm;
+   }
+
+   p, h2, h3 {
+      orphans: 3; widows: 3;
+   }
+
+   h2, h3 {
+      page-break-after: avoid;
+   }
+}
 </style>
+
+
 
 </head>
 
 <body>
-
-
-
-
-<h1 class="title toc-ignore">Case study 4: The influence of range size on the relationship between species richness and body size</h1>
-<h4 class="author"><em>Mihai Valcu</em></h4>
-<h4 class="date"><em>2019-03-26</em></h4>
-
-
-
-<div id="appendix-s5" class="section level2">
 <h2>Appendix S5</h2>
-<p>Supporting information in <em>Valcu, M., Dale, J., and Kempenaers, B. (2012). rangeMapper: a platform for the study of macroecology of life-history traits. Global Ecology and Biogeography 21, 945-951.</em></p>
-<p>The example shown here is run on the wrens dataset which is part of the package. The wrens dataset has 84 species while the case study presented in the paper was run on 8434 bird species. Therefore both the settings and the results shown below are not identical with the results presented in <em>Valcu et al 2012</em>.</p>
-<div id="project-set-up" class="section level3">
+
+<p>Supporting information in  <em>Valcu, M., Dale, J., and Kempenaers, B. (2012).
+rangeMapper: a platform for the study of macroecology of life-history traits.
+Global Ecology and Biogeography 21, 945-951.</em></p>
+
+<p>The example shown here is run on the wrens dataset which is part of the package.
+The wrens dataset has 84 species while the case study presented in the paper
+was run on 8434 bird species. Therefore both the settings and the results shown
+below are not identical with the results presented in <em>Valcu et al 2012</em>.</p>
+
 <h3>Project Set Up</h3>
-<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb1-1" data-line-number="1"><span class="kw">require</span>(rangeMapper)</a>
-<a class="sourceLine" id="cb1-2" data-line-number="2">breding_ranges =<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="kw">system.file</span>(<span class="dt">package =</span> <span class="st">&quot;rangeMapper&quot;</span>,</a>
-<a class="sourceLine" id="cb1-3" data-line-number="3">     <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;wrens&quot;</span>, <span class="st">&quot;vector_combined&quot;</span>), <span class="st">&quot;wrens&quot;</span>, <span class="dt">verbose =</span> <span class="ot">FALSE</span>)</a>
-<a class="sourceLine" id="cb1-4" data-line-number="4"><span class="kw">data</span>(wrens)</a>
-<a class="sourceLine" id="cb1-5" data-line-number="5">d =<span class="st"> </span><span class="kw">subset</span>(wrens, <span class="dt">select =</span> <span class="kw">c</span>(<span class="st">'sci_name'</span>, <span class="st">'body_mass'</span>) )</a>
-<a class="sourceLine" id="cb1-6" data-line-number="6">con =<span class="st"> </span><span class="kw">ramp</span>(<span class="st">&quot;wrens.sqlite&quot;</span>, <span class="dt">gridSize =</span> <span class="dv">1</span>, <span class="dt">spdf =</span> breding_ranges,</a>
-<a class="sourceLine" id="cb1-7" data-line-number="7">             <span class="dt">biotab =</span> d, <span class="dt">ID =</span> <span class="st">&quot;sci_name&quot;</span>,<span class="dt">metadata =</span> <span class="kw">rangeTraits</span>()[<span class="st">'Area'</span>],</a>
-<a class="sourceLine" id="cb1-8" data-line-number="8">             <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a></code></pre></div>
-<pre><code>## New session 2019-03-26 17:22:44</code></pre>
+
+<pre><code class="r">require(rangeMapper)
+breding_ranges = rgdal::readOGR(system.file(package = &quot;rangeMapper&quot;,
+     &quot;extdata&quot;, &quot;wrens&quot;, &quot;vector_combined&quot;), &quot;wrens&quot;, verbose = FALSE)
+data(wrens)
+d = subset(wrens, select = c(&#39;sci_name&#39;, &#39;body_mass&#39;) )
+con = ramp(&quot;wrens.sqlite&quot;, gridSize = 1, spdf = breding_ranges,
+             biotab = d, ID = &quot;sci_name&quot;,metadata = rangeTraits()[&#39;Area&#39;],
+             overwrite = TRUE)
+</code></pre>
+
+<pre><code>## New session 2019-10-25 17:52:42
+</code></pre>
+
 <pre><code>## PROJECT: wrens.sqlite 
-## DIRECTORY: /tmp/Rtmp6x8Ng1</code></pre>
-<pre><code>## Grid size set to 1 map units.</code></pre>
-<pre><code>## Canvas uploaded.</code></pre>
-<pre><code>## Writing overlay output to project...</code></pre>
-<pre><code>## 84 out of 84 ranges updated; Elapsed time: 0 mins</code></pre>
-<pre><code>## Extracting metadata...</code></pre>
-<pre><code>## Table biotab saved as a  BIO_ table</code></pre>
-<pre><code>## +______________+</code></pre>
+## DIRECTORY: /tmp/Rtmpe4D7pf
+</code></pre>
+
+<pre><code>## Grid size set to 1 map units.
+</code></pre>
+
+<pre><code>## Canvas uploaded.
+</code></pre>
+
+<pre><code>## Writing overlay output to project...
+</code></pre>
+
+<pre><code>## 84 out of 84 ranges updated; Elapsed time: 0 mins
+</code></pre>
+
+<pre><code>## Extracting metadata...
+</code></pre>
+
+<pre><code>## Table biotab saved as a  BIO_ table
+</code></pre>
+
+<pre><code>## +______________+
+</code></pre>
+
 <pre><code>## class            rangeMap
-## Project_location /tmp/Rtmp6x8Ng1/wrens.sqlite
+## Project_location /tmp/Rtmpe4D7pf/wrens.sqlite
 ## Proj4            +proj=longlat +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +no_defs
 ## CellSize         1
 ## Extent           xmin=-164.8716,xmax=-34.60225,ymin=-55.72056,ymax=61.5632
 ## BIO_tables       biotab
 ## MAP_tables       species_richness
-## METADATA_RANGES  Area</code></pre>
-<pre><code>## +______________+</code></pre>
+## METADATA_RANGES  Area
+</code></pre>
+
+<pre><code>## +______________+
+</code></pre>
+
 <p>Range size classes</p>
-<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb13-1" data-line-number="1">mt =<span class="st"> </span><span class="kw">dbReadTable</span>(con, <span class="st">&quot;metadata_ranges&quot;</span>)</a>
-<a class="sourceLine" id="cb13-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb13-3" data-line-number="3">Q =<span class="st"> </span><span class="kw">quantile</span>(<span class="kw">log</span>(mt<span class="op">$</span>Area),  <span class="dt">probs =</span> <span class="kw">seq</span>(<span class="fl">0.05</span>, <span class="dv">1</span>, <span class="fl">0.1</span>) )</a>
-<a class="sourceLine" id="cb13-4" data-line-number="4">rangeA =<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">area =</span> <span class="kw">exp</span>(Q), <span class="dt">quant =</span>  <span class="kw">gsub</span>(<span class="st">&quot;%&quot;</span>, <span class="st">&quot;&quot;</span>, <span class="kw">names</span>(Q)) )</a></code></pre></div>
-</div>
-<div id="run-log10median_body_mass-sqrtspecies_richness-regression-for-each-range-size-interval" class="section level3">
+
+<pre><code class="r">mt = dbReadTable(con, &quot;metadata_ranges&quot;)
+
+Q = quantile(log(mt$Area),  probs = seq(0.05, 1, 0.1) )
+rangeA = data.frame(area = exp(Q), quant =  gsub(&quot;%&quot;, &quot;&quot;, names(Q)) )
+</code></pre>
+
 <h3>Run <code>log10(median_body_mass) ~ sqrt(species_richness)</code> regression for each range size interval</h3>
-<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb14-1" data-line-number="1">W =<span class="st"> </span><span class="dv">4</span>   <span class="co"># size of the moving window</span></a>
-<a class="sourceLine" id="cb14-2" data-line-number="2"></a>
-<a class="sourceLine" id="cb14-3" data-line-number="3">output =<span class="st"> </span><span class="kw">vector</span>(<span class="dt">mode =</span> <span class="st">&quot;list&quot;</span>, <span class="dt">length =</span> <span class="kw">nrow</span>(rangeA))</a>
-<a class="sourceLine" id="cb14-4" data-line-number="4"><span class="kw">names</span>(output) =<span class="st"> </span>rangeA<span class="op">$</span>quant</a>
-<a class="sourceLine" id="cb14-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb14-6" data-line-number="6"><span class="cf">for</span>(i <span class="cf">in</span> <span class="kw">seq</span>(<span class="dv">1</span><span class="op">:</span>(<span class="kw">nrow</span>(rangeA) <span class="op">-</span><span class="st"> </span>W) ) ) {</a>
-<a class="sourceLine" id="cb14-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb14-8" data-line-number="8">  <span class="co"># Define  map subset</span></a>
-<a class="sourceLine" id="cb14-9" data-line-number="9">  area_subset =<span class="kw">list</span>(<span class="dt">metadata_ranges =</span> <span class="kw">paste</span>(<span class="st">&quot;Area between&quot;</span>,  rangeA[i,<span class="st">&quot;area&quot;</span>],</a>
-<a class="sourceLine" id="cb14-10" data-line-number="10">  <span class="st">&quot;and&quot;</span>, rangeA[i<span class="op">+</span>W,<span class="st">&quot;area&quot;</span>]))</a>
-<a class="sourceLine" id="cb14-11" data-line-number="11"></a>
-<a class="sourceLine" id="cb14-12" data-line-number="12">  <span class="co"># Save map</span></a>
-<a class="sourceLine" id="cb14-13" data-line-number="13">  <span class="kw">rangeMap.save</span>(con, <span class="dt">subset =</span> area_subset , <span class="dt">biotab =</span> <span class="st">&quot;biotab&quot;</span>,</a>
-<a class="sourceLine" id="cb14-14" data-line-number="14">  <span class="dt">biotrait =</span> <span class="st">&quot;body_mass&quot;</span>, <span class="dt">FUN =</span> <span class="st">&quot;median&quot;</span>, <span class="dt">tableName =</span> <span class="st">&quot;median_body_mass&quot;</span>,</a>
-<a class="sourceLine" id="cb14-15" data-line-number="15">  <span class="dt">overwrite =</span> <span class="ot">TRUE</span>)</a>
-<a class="sourceLine" id="cb14-16" data-line-number="16"></a>
-<a class="sourceLine" id="cb14-17" data-line-number="17">  <span class="co"># Fetch map</span></a>
-<a class="sourceLine" id="cb14-18" data-line-number="18">  m =<span class="st"> </span><span class="kw">rangeMap.fetch</span>( con, <span class="kw">c</span>(<span class="st">&quot;species_richness&quot;</span>, <span class="st">&quot;median_body_mass&quot;</span>), <span class="dt">spatial =</span> <span class="ot">FALSE</span> )</a>
-<a class="sourceLine" id="cb14-19" data-line-number="19"></a>
-<a class="sourceLine" id="cb14-20" data-line-number="20">  <span class="co"># Perform OLS regression</span></a>
-<a class="sourceLine" id="cb14-21" data-line-number="21">  <span class="co"># </span><span class="al">NOTE</span><span class="co">: In order to perform a spatial simultaneous autoregressive error</span></a>
-<a class="sourceLine" id="cb14-22" data-line-number="22">   <span class="co"># regression</span></a>
-<a class="sourceLine" id="cb14-23" data-line-number="23">  <span class="co">#  see 'errorsarlm ' function and the auxiliary neighbours list functions in</span></a>
-<a class="sourceLine" id="cb14-24" data-line-number="24">   <span class="co"># 'spdep' package.</span></a>
-<a class="sourceLine" id="cb14-25" data-line-number="25">  fm =<span class="st"> </span><span class="kw">lm</span>( <span class="kw">log10</span>(median_body_mass) <span class="op">~</span><span class="st">  </span><span class="kw">sqrt</span>(species_richness), m)</a>
-<a class="sourceLine" id="cb14-26" data-line-number="26"></a>
-<a class="sourceLine" id="cb14-27" data-line-number="27">  output[[i]] =<span class="st">  </span>fm</a>
-<a class="sourceLine" id="cb14-28" data-line-number="28"></a>
-<a class="sourceLine" id="cb14-29" data-line-number="29">}</a>
-<a class="sourceLine" id="cb14-30" data-line-number="30"></a>
-<a class="sourceLine" id="cb14-31" data-line-number="31">output =<span class="st"> </span>output[<span class="op">!</span><span class="kw">sapply</span>(output, is.null)]</a></code></pre></div>
-</div>
-<div id="extract-regression-parameters-and-plot" class="section level3">
+
+<pre><code class="r">W = 4   # size of the moving window
+
+output = vector(mode = &quot;list&quot;, length = nrow(rangeA))
+names(output) = rangeA$quant
+
+for(i in seq(1:(nrow(rangeA) - W) ) ) {
+
+  # Define  map subset
+  area_subset =list(metadata_ranges = paste(&quot;Area between&quot;,  rangeA[i,&quot;area&quot;],
+  &quot;and&quot;, rangeA[i+W,&quot;area&quot;]))
+
+  # Save map
+  rangeMap.save(con, subset = area_subset , biotab = &quot;biotab&quot;,
+  biotrait = &quot;body_mass&quot;, FUN = &quot;median&quot;, tableName = &quot;median_body_mass&quot;,
+  overwrite = TRUE)
+
+  # Fetch map
+  m = rangeMap.fetch( con, c(&quot;species_richness&quot;, &quot;median_body_mass&quot;), spatial = FALSE )
+
+  # Perform OLS regression
+  # NOTE: In order to perform a spatial simultaneous autoregressive error
+   # regression
+  #  see &#39;errorsarlm &#39; function and the auxiliary neighbours list functions in
+   # &#39;spdep&#39; package.
+  fm = lm( log10(median_body_mass) ~  sqrt(species_richness), m)
+
+  output[[i]] =  fm
+
+}
+
+output = output[!sapply(output, is.null)]
+</code></pre>
+
 <h3>Extract Regression Parameters and plot</h3>
-<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb15-1" data-line-number="1">X =<span class="st"> </span><span class="kw">lapply</span>(output, <span class="cf">function</span>(x) <span class="kw">data.frame</span>(<span class="dt">slope =</span> <span class="kw">coef</span>(x)[<span class="dv">2</span>],</a>
-<a class="sourceLine" id="cb15-2" data-line-number="2">        <span class="dt">ciu =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">1</span>], <span class="dt">cil =</span> <span class="kw">confint</span>(x)[<span class="dv">2</span>,<span class="dv">2</span>]) )</a>
-<a class="sourceLine" id="cb15-3" data-line-number="3">X =<span class="st"> </span><span class="kw">do.call</span>(rbind, X)</a>
-<a class="sourceLine" id="cb15-4" data-line-number="4">X<span class="op">$</span>rangeSize =<span class="st"> </span><span class="kw">as.numeric</span>(<span class="kw">row.names</span>(X))</a>
-<a class="sourceLine" id="cb15-5" data-line-number="5"></a>
-<a class="sourceLine" id="cb15-6" data-line-number="6"><span class="co"># Plot</span></a>
-<a class="sourceLine" id="cb15-7" data-line-number="7"></a>
-<a class="sourceLine" id="cb15-8" data-line-number="8"><span class="kw">require</span>(ggplot2)</a>
-<a class="sourceLine" id="cb15-9" data-line-number="9"></a>
-<a class="sourceLine" id="cb15-10" data-line-number="10"><span class="kw">ggplot</span>(X, <span class="kw">aes</span>(<span class="dt">x =</span> rangeSize, <span class="dt">y =</span> slope)) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-11" data-line-number="11"><span class="st">    </span><span class="kw">geom_errorbar</span>(<span class="kw">aes</span>(<span class="dt">ymin =</span> cil, <span class="dt">ymax =</span> ciu), <span class="dt">width=</span> <span class="dv">0</span>) <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-12" data-line-number="12"><span class="st">    </span><span class="kw">geom_line</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-13" data-line-number="13"><span class="st">    </span><span class="kw">geom_point</span>() <span class="op">+</span></a>
-<a class="sourceLine" id="cb15-14" data-line-number="14"><span class="st">    </span><span class="kw">theme_bw</span>()</a></code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
-</div>
-</div>
 
+<pre><code class="r">X = lapply(output, function(x) data.frame(slope = coef(x)[2],
+        ciu = confint(x)[2,1], cil = confint(x)[2,2]) )
+X = do.call(rbind, X)
+X$rangeSize = as.numeric(row.names(X))
 
+# Plot
 
-<!-- dynamically load mathjax for compatibility with self-contained -->
-<script>
-  (function () {
-    var script = document.createElement("script");
-    script.type = "text/javascript";
-    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
-    document.getElementsByTagName("head")[0].appendChild(script);
-  })();
-</script>
+require(ggplot2)
+
+ggplot(X, aes(x = rangeSize, y = slope)) +
+    geom_errorbar(aes(ymin = cil, ymax = ciu), width= 0) +
+    geom_line() +
+    geom_point() +
+    theme_bw()
+</code></pre>
+
+<p><img src="data:image/png;base64,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" alt="plot of chunk unnamed-chunk-4"/></p>
 
 </body>
+
 </html>
