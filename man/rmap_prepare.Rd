@@ -2,16 +2,15 @@
 % Please edit documentation in R/2_prepare.R
 \name{rmap_prepare}
 \alias{rmap_prepare}
+\alias{rmap_prepare,rmapConnection,character,numeric,missing-method}
+\alias{rmap_prepare,rmapConnection,character,numeric,numeric-method}
 \title{Define a canvas and process ranges}
 \usage{
-rmap_prepare(
-  con,
-  grid_type = "hex",
-  cellsize,
-  chunksize = 1/10,
-  verbose = TRUE,
-  ...
-)
+rmap_prepare(con, grid_type, cellsize, chunksize, ...)
+
+\S4method{rmap_prepare}{rmapConnection,character,numeric,missing}(con, grid_type, cellsize, chunksize, ...)
+
+\S4method{rmap_prepare}{rmapConnection,character,numeric,numeric}(con, grid_type = "hex", cellsize, chunksize = 1/10, ...)
 }
 \arguments{
 \item{con}{a \code{rangeMapper} connection made with  \code{\link[=rmap_connect]{rmap_connect()}}.}
@@ -20,10 +19,7 @@ rmap_prepare(
 
 \item{cellsize}{target cellsize, see \code{\link[sf:st_make_grid]{sf::st_make_grid()}}.}
 
-\item{chunksize}{parallel processing chunk size expressed as proportion from the range size. Default to 1/10.
-When running sequential processing \code{chunksize} should be set to 1. See details.}
-
-\item{verbose}{default to TRUE. Narrate what is happening.}
+\item{chunksize}{parallel processing chunk size expressed as proportion from the range size. Default to 1/10.}
 
 \item{...}{further arguments passed to \code{\link[sf:st_make_grid]{sf::st_make_grid()}}}
 }
@@ -31,7 +27,7 @@ When running sequential processing \code{chunksize} should be set to 1. See deta
 TRUE when the table is written to the project file, FALSE otherwise.
 }
 \description{
-\code{rmap_prepare} updates a 'raw' project containing ranges( \code{\link[=rmap_add_ranges]{rmap_add_ranges()}} ) to a ready to use project.
+\code{rmap_prepare} updates a 'raw' unprepared project to a ready to use project.
 \code{rmap_prepare} creates the project's canvas and assign each range to its corresponding canvas cells by
 performing a spatial intersection between the ranges and the canvas. The canvas is a regular grid
 of squares or hexagons.
@@ -45,11 +41,11 @@ Additionally, you can keep track of of the computations using \code{\link[progre
 }
 \examples{
 
-# SIMPLE IN-MEMORY PROJECT
+# IN-MEMORY PROJECT
 require(rangeMapper)
 con = rmap_connect() 
 rmap_add_ranges(con, wrens, 'sci_name')
-rmap_prepare(con, 'hex', cellsize=500, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize=500)
 dbDisconnect(con)
 
 \dontrun{
@@ -75,4 +71,7 @@ plan(sequential)
 \references{
 Birch, C. P., Oom, S. P., & Beecham, J. A. (2007). Rectangular and hexagonal grids used for observation,
 experiment and simulation in ecology. Ecological modelling, 206(3-4), 347-359.
+}
+\seealso{
+\code{\link[=rmap_add_ranges]{rmap_add_ranges()}}
 }

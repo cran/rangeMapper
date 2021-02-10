@@ -66,7 +66,7 @@ context(" -> Utilities <- ")
 
         expect_identical( sf::st_geometry(wrens)[[1]], sf::st_geometry(x)[[1]] )
         
-        expect_true( st_crs(wrens) == st_crs(x) )
+        expect_equal( st_crs(wrens) , st_crs(x) )
         
 
         })
@@ -75,7 +75,7 @@ context(" -> Utilities <- ")
 
         con = rmap_connect()
         rmap_add_ranges(con, wrens, 'sci_name')
-        rmap_prepare(con, 'hex', 500, chunksize=1)
+        rmap_prepare(con, 'hex', 500)
 
 
         expect_is(rmap_to_sf(con, 'wkt_ranges'), 'sf')

@@ -3,6 +3,7 @@ library(knitr)
 opts_chunk$set(
   warning = FALSE, 
   message = FALSE, 
+  fig.width = 4,   
   fig.height = 5,   
   collapse = TRUE,
   comment = "#>"
@@ -22,7 +23,7 @@ wrens$breeding_range_area = st_area(wrens)
 con = rmap_connect()
 
 rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-rmap_prepare(con, 'hex', cellsize = 500, chunksize = 1)
+rmap_prepare(con, 'hex', cellsize = 500)
 rmap_add_bio(con, wrens, 'sci_name')
 
 
@@ -78,7 +79,7 @@ rmap_save_map(con, subset = 'cumul_congruence_threshold', dst = 'Cumul_congruenc
 
 
 
-## ---- fig.height = 10---------------------------------------------------------
+## ---- fig.height = 10, fig.width = 8------------------------------------------
 study_area = rmap_to_sf(con, 'species_richness')  %>% st_union
 bmr = rmap_to_sf(con, pattern = 'hotspots')  %>% 
       melt(id.vars = c('geometry', 'cell_id') )  %>% 
@@ -121,9 +122,11 @@ ggplot(m) +
 cellSizes = seq(from = 700, to = 1500, length.out = 5)
 
 FUN = function(g) {
+  options(rmap.verbose = FALSE)
+  
   con = rmap_connect()
   rmap_add_ranges(con, x = wrens, ID = 'sci_name')
-  rmap_prepare(con, 'hex', cellsize=g, chunksize = 1, verbose = FALSE)
+  rmap_prepare(con, 'hex', cellsize=g)
   rmap_add_bio(con, wrens, 'sci_name')
   rmap_save_map(con)
   rmap_save_map(con, fun = 'median', src='wrens', v = 'male_tarsus', dst='median_male_tarsus')
@@ -134,6 +137,9 @@ FUN = function(g) {
         summary %>% coefficients %>% data.frame %>% .[-1, ]
 
   o$cell_size = g
+
+  options(rmap.verbose = TRUE)
+
   o
 
   }
@@ -142,7 +148,7 @@ FUN = function(g) {
 o = lapply(cellSizes, FUN)   %>% rbindlist
 
 
-## ---- , fig.height = 4--------------------------------------------------------
+## -----------------------------------------------------------------------------
 
 ggplot(o, aes(x = cell_size, y = Estimate)) +
     geom_point() +
@@ -196,7 +202,7 @@ x = m[, {
 x[, Quantiles :=  quant[1:maxn]  ]
 
 
-## ---- fig.height = 4----------------------------------------------------------
+## -----------------------------------------------------------------------------
 ggplot(x, aes(x = Quantiles, y = Estimate) ) +
     geom_errorbar(aes(ymin = `2.5 %`, ymax = `97.5 %`), width= 0) +
     geom_line() +

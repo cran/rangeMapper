@@ -152,7 +152,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>con <span class="ot">=</span> <span class="fu">rmap_connect</span>()</span></code></pre></div>
 <p>Wrens breeding ranges are imported.</p>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rmap_add_ranges</span>(con, <span class="at">x =</span> wrens, <span class="at">ID =</span> <span class="st">&#39;sci_name&#39;</span>)</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmap_prepare</span>(con, <span class="st">&#39;hex&#39;</span>, <span class="at">cellsize =</span> <span class="dv">500</span>, <span class="at">chunksize =</span> <span class="dv">1</span>)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">rmap_prepare</span>(con, <span class="st">&#39;hex&#39;</span>, <span class="at">cellsize =</span> <span class="dv">500</span>)</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">rmap_add_bio</span>(con, wrens, <span class="st">&#39;sci_name&#39;</span>)</span></code></pre></div>
 </div>
 <div id="do-larger-wren-species-have-smaller-clutches" class="section level3">
