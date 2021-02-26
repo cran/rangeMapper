@@ -3,11 +3,13 @@
 #' @import     graphics
 #' @importFrom glue glue 
 #' @import     RSQLite
-#' @importFrom data.table data.table setDT setnames setcolorder rbindlist timetaken
+#' @importFrom data.table data.table setorder setDT setnames setcolorder rbindlist timetaken
 #' @importFrom future   plan  multisession multicore sequential
 #' @importFrom future.apply future_lapply
 #' @importFrom progressr handlers progressor with_progress
-#' @importFrom sf st_as_sf  st_as_sfc st_as_binary st_crs st_crs<- st_make_grid st_bbox st_intersects st_drop_geometry
+#' @importFrom sf st_as_sf  st_as_sfc st_as_binary st_crs st_crs<- st_make_grid st_bbox 
+#'             st_intersects st_intersection st_drop_geometry st_union st_cast st_agr<-
+#'             st_read st_transform
 #' @importFrom exactextractr exact_extract
 #' @importFrom raster raster 
 #' 
@@ -27,6 +29,7 @@ utils::globalVariables(c(
     '.N',
     'N',
     ':=',
+    'con',
     'geometry',
     'bio_id',
     'cell_id', 

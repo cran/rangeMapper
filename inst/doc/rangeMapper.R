@@ -16,7 +16,7 @@ require(ggplot2)
 require(viridis)
 
 data(dem)
-data(wrens)
+wrens = read_wrens()
 wrens$breeding_range_area = st_area(wrens)
 
 
